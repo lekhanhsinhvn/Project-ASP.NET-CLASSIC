@@ -16,7 +16,7 @@ namespace Server.API.Types
             descriptor.Field(t => t.Email).Type<StringType>();
             descriptor.Field(t => t.Avatar).Type<StringType>();
             descriptor.Field(t => t.Password).Type<StringType>();
-            descriptor.Field(t => t.Role).Type<StringType>();
+            //descriptor.Field(t => t.Role).Type<StringType>();
             descriptor.Field(t => t.SuperiorId).Type<IntType>();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,9 +29,16 @@ namespace Server.DB.Models
         [Column(TypeName = "varchar(MAX)")]
         public string Password { get; set; }
 
-        public string Role { get; set; } = "User";
+        public virtual ICollection<Role> Roles { get; set; } 
 
         [Range(0, 1000, ErrorMessage = "SuperiorId must be from 1 to 1000")]
-        public int SuperiorId { get; set; } = 1000;
+        public int SuperiorId { get; set; }
+
+        [InverseProperty("Inferior")]
+        public virtual ICollection<Order>  InferiorOrders { get; set; }
+
+        [InverseProperty("Superior")]
+        public virtual ICollection<Order> SuperiorOrders { get; set; }
+
     }
 }

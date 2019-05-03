@@ -36,7 +36,7 @@ namespace Server.API.Repositories
                   .WithSecret(ConfigurationManager.AppSettings["JWTsecret"])
                   .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(24).ToUnixTimeSeconds())
                   .AddClaim("UserId", found.UserId)
-                  .AddClaim("Role", found.Role)
+                  //.AddClaim("Role", found.Role)
                   .Build();
             return Task.FromResult(token);
         }

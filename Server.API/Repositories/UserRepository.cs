@@ -82,12 +82,12 @@ namespace Server.API.Repositories
         public Task<User> CreateUser(User user, CancellationToken cancellationToken)
         {
             // only create User role
-            user.Role = "User";
+           // user.Role = "User";
             user.SuperiorId = 1000;
             // Create Admin role if User table is empty
             if (!_db.Users.Any())
             {
-                user.Role = "Admin";
+             //   user.Role = "Admin";
                 user.SuperiorId = 0;
             }
             if (ValidateUser(user))
@@ -173,7 +173,7 @@ namespace Server.API.Repositories
                 {
                     found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
                     found.Avatar = string.IsNullOrWhiteSpace(user.Avatar) ? found.Avatar : user.Avatar;
-                    found.Role = string.IsNullOrWhiteSpace(user.Role) ? found.Role : user.Role;
+               //     found.Role = string.IsNullOrWhiteSpace(user.Role) ? found.Role : user.Role;
                     found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null) ? found.SuperiorId : user.SuperiorId;
                 }
                 _db.SaveChanges();
@@ -221,7 +221,7 @@ namespace Server.API.Repositories
                         users.Sort((x, y) => x.Email.CompareTo(y.Email));
                         break;
                     case "Role":
-                        users.Sort((x, y) => x.Role.CompareTo(y.Role));
+                //        users.Sort((x, y) => x.Role.CompareTo(y.Role));
                         break;
                     case "SuperiorId":
                         users.Sort((x, y) => x.SuperiorId.CompareTo(y.SuperiorId));
@@ -243,7 +243,7 @@ namespace Server.API.Repositories
                         users.Sort((x, y) => y.Email.CompareTo(x.Email));
                         break;
                     case "Role":
-                        users.Sort((x, y) => y.Role.CompareTo(x.Role));
+                  //      users.Sort((x, y) => y.Role.CompareTo(x.Role));
                         break;
                     case "SuperiorId":
                         users.Sort((x, y) => y.SuperiorId.CompareTo(x.SuperiorId));
@@ -265,8 +265,8 @@ namespace Server.API.Repositories
             {
                 users.Where(u => u.UserId.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
-                                u.Email.Contains(search) ||
-                                u.Role.Contains(search));
+                                u.Email.Contains(search)) ;
+                               // || u.Role.Contains(search));
             }
             return users;
         }
@@ -285,7 +285,7 @@ namespace Server.API.Repositories
                 Email = user.Email,
                 Avatar = user.Avatar,
                 Password = "",
-                Role = user.Role,
+                //Role = user.Role,
                 SuperiorId = user.SuperiorId,
             };
             return _user;

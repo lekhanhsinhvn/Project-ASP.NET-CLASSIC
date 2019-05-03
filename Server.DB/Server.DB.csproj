@@ -52,7 +52,19 @@
     <Compile Include="Migrations\201905021723327_CreateUser.Designer.cs">
       <DependentUpon>201905021723327_CreateUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905031303169_CreateProductOrderCategory.cs" />
+    <Compile Include="Migrations\201905031303169_CreateProductOrderCategory.Designer.cs">
+      <DependentUpon>201905031303169_CreateProductOrderCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905031314291_CreateRole.cs" />
+    <Compile Include="Migrations\201905031314291_CreateRole.Designer.cs">
+      <DependentUpon>201905031314291_CreateRole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerContext.cs" />
@@ -64,6 +76,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201905021723327_CreateUser.resx">
       <DependentUpon>201905021723327_CreateUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905031303169_CreateProductOrderCategory.resx">
+      <DependentUpon>201905031303169_CreateProductOrderCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905031314291_CreateRole.resx">
+      <DependentUpon>201905031314291_CreateRole.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
