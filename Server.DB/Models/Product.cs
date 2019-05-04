@@ -15,7 +15,7 @@ namespace Server.DB.Models
 
         [Required]
         [MaxLength(50)]
-        public string ProductName { get; set; }
+        public string Name { get; set; }
 
         public float? Price { get; set; }
 

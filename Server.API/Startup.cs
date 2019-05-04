@@ -24,6 +24,8 @@ namespace Server.API
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAuthRepository, AuthRepository>();
             services.AddSingleton<IRoleRepository, RoleRepository>();
+            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             services.AddSingleton<Query>();
             services.AddSingleton<Mutation>();
@@ -39,8 +41,7 @@ namespace Server.API
                 c.RegisterMutationType<MutationType>();
 
                 c.RegisterType<UserType>();
-                //c.RegisterType<DroidType>();
-                //c.RegisterType<EpisodeType>();
+                c.RegisterType<RoleType>();
             }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = true });
             services.AddGraphQL(schema);
             return services.BuildServiceProvider();

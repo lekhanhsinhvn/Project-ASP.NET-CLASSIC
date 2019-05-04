@@ -23,32 +23,32 @@ namespace Server.API.Repositories
             {
                 throw new Exception("Already have that role");
             }
-            _db.Roles.Add(role);
             role.CreatedDate = DateTime.Now;
             role.ModifiedDate = DateTime.Now;
+            _db.Roles.Add(role);
             _db.SaveChanges();
             return Task.FromResult(role);
         }
 
         public Task<Role> DeleteRole(int RoleId, CancellationToken cancellationToken)
         {
-            Role role = _db.Roles.FirstOrDefault(x => x.RoleId == RoleId);
-            if (role != null)
+            Role found = _db.Roles.FirstOrDefault(x => x.RoleId == RoleId);
+            if (found != null)
             {
-                _db.Roles.Remove(role);
+                _db.Roles.Remove(found);
                 _db.SaveChanges();
             }
-            return Task.FromResult(role);
+            return Task.FromResult(found);
         }
 
         public Task<Role> GetRole(int RoleId, CancellationToken cancellationToken)
         {
-            Role role = _db.Roles.FirstOrDefault(x => x.RoleId == RoleId);
-            if (role == null)
+            Role found = _db.Roles.FirstOrDefault(x => x.RoleId == RoleId);
+            if (found == null)
             {
                 throw new Exception("Role doesn't exist.");
             }
-            return Task.FromResult(role);
+            return Task.FromResult(found);
         }
 
         public Task<List<Role>> GetRoles(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
@@ -78,9 +78,9 @@ namespace Server.API.Repositories
             {
                 throw new Exception("Role doesn't exist.");
             }
-            found.Name = string.IsNullOrWhiteSpace(role.Name) ? found.Name : role.Name;
             found.Description = string.IsNullOrWhiteSpace(role.Description) ? found.Description : role.Name;
-            found.Level = role.Level;
+            found.Level = role.Level==null ? role.Level : found.Level;
+            found.Users = role.Users;
             found.ModifiedDate = DateTime.Now;
             _db.SaveChanges();
             return Task.FromResult(_db.Roles.SingleOrDefault(i => i.RoleId == role.RoleId));
@@ -95,7 +95,7 @@ namespace Server.API.Repositories
                     case "RoleId":
                         roles.Sort((x, y) => x.RoleId.Value.CompareTo(y.RoleId));
                         break;
-                    case "Name":
+                    default:
                         roles.Sort((x, y) => x.Name.CompareTo(y.Name));
                         break;
                     case "Level":
@@ -117,7 +117,7 @@ namespace Server.API.Repositories
                     case "RoleId":
                         roles.Sort((x, y) => y.RoleId.Value.CompareTo(x.RoleId));
                         break;
-                    case "Name":
+                    default:
                         roles.Sort((x, y) => y.Name.CompareTo(x.Name));
                         break;
                     case "Level":
@@ -141,7 +141,9 @@ namespace Server.API.Repositories
                 roles.Where(u => u.RoleId.ToString().Contains(search) ||
                                 u.Level.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
-                                u.Description.Contains(search));
+                                u.Description.Contains(search) ||
+                                u.CreatedDate.ToString().Contains(search) ||
+                                u.ModifiedDate.ToString().Contains(search));
             }
             return roles;
         }

@@ -225,7 +225,7 @@ namespace Server.API.Repositories
                     case "UserId":
                         users.Sort((x, y) => x.UserId.Value.CompareTo(y.UserId));
                         break;
-                    case "Name":
+                    default:
                         users.Sort((x, y) => x.Name.CompareTo(y.Name));
                         break;
                     case "Email":
@@ -253,7 +253,7 @@ namespace Server.API.Repositories
                     case "UserId":
                         users.Sort((x, y) => y.UserId.Value.CompareTo(x.UserId));
                         break;
-                    case "Name":
+                    default:
                         users.Sort((x, y) => y.Name.CompareTo(x.Name));
                         break;
                     case "Email":
@@ -289,7 +289,9 @@ namespace Server.API.Repositories
                 users.Where(u => u.UserId.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
                                 u.Email.Contains(search) ||
-                                (u.Roles.SingleOrDefault(i => i.Name.Contains(search)) != null));
+                                (u.Roles.SingleOrDefault(i => i.Name.Contains(search)) != null) ||
+                                u.CreatedDate.ToString().Contains(search) ||
+                                u.ModifiedDate.ToString().Contains(search));
             }
             return users;
         }
