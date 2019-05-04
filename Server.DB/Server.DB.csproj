@@ -48,17 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201905021723327_CreateUser.cs" />
-    <Compile Include="Migrations\201905021723327_CreateUser.Designer.cs">
-      <DependentUpon>201905021723327_CreateUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905031303169_CreateProductOrderCategory.cs" />
-    <Compile Include="Migrations\201905031303169_CreateProductOrderCategory.Designer.cs">
-      <DependentUpon>201905031303169_CreateProductOrderCategory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905031314291_CreateRole.cs" />
-    <Compile Include="Migrations\201905031314291_CreateRole.Designer.cs">
-      <DependentUpon>201905031314291_CreateRole.cs</DependentUpon>
+    <Compile Include="Migrations\201905040711166_CreateDatabase.cs" />
+    <Compile Include="Migrations\201905040711166_CreateDatabase.Designer.cs">
+      <DependentUpon>201905040711166_CreateDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
@@ -74,14 +66,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905021723327_CreateUser.resx">
-      <DependentUpon>201905021723327_CreateUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905031303169_CreateProductOrderCategory.resx">
-      <DependentUpon>201905031303169_CreateProductOrderCategory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905031314291_CreateRole.resx">
-      <DependentUpon>201905031314291_CreateRole.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905040711166_CreateDatabase.resx">
+      <DependentUpon>201905040711166_CreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

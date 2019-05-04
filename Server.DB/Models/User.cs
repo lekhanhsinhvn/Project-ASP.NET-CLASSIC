@@ -8,7 +8,7 @@ namespace Server.DB.Models
     public class User
     {
         [Key]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         [Required]
         [MinLength(5, ErrorMessage = "Name cannot be less than 5")]
@@ -32,7 +32,11 @@ namespace Server.DB.Models
         public virtual ICollection<Role> Roles { get; set; } 
 
         [Range(0, 1000, ErrorMessage = "SuperiorId must be from 1 to 1000")]
-        public int SuperiorId { get; set; }
+        public int? SuperiorId { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
 
         [InverseProperty("Inferior")]
         public virtual ICollection<Order>  InferiorOrders { get; set; }

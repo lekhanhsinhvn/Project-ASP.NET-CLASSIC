@@ -31,11 +31,7 @@ namespace Server.API.Repositories
             {
                 throw new Exception("User doesn't exist.");
             }
-            else
-            {
-                return Task.FromResult(removePassword(user));
-            }
-            
+            return Task.FromResult(removePassword(user));
         }
 
         /// <summary>
@@ -82,28 +78,39 @@ namespace Server.API.Repositories
         public Task<User> CreateUser(User user, CancellationToken cancellationToken)
         {
             // only create User role
-           // user.Role = "User";
-            user.SuperiorId = 1000;
+            Role role = null;
+            user.Roles = new List<Role>();
             // Create Admin role if User table is empty
-            if (!_db.Users.Any())
+            if (_db.Users.Any())
             {
-             //   user.Role = "Admin";
+                role = _db.Roles.SingleOrDefault(i => i.Name.Equals("User"));
+                user.SuperiorId = 1000;
+            }
+            else
+            {
+                role = _db.Roles.SingleOrDefault(i => i.Name.Equals("Admin"));
                 user.SuperiorId = 0;
             }
+            user.Roles.Add(role);
             if (ValidateUser(user))
             {
                 if (_db.Users.SingleOrDefault(i => i.Email == user.Email) != null)
                 {
                     throw new Exception("The Email is already in use.");
                 }
-                user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Password, hashType: BCrypt.Net.HashType.SHA384);
-                if (string.IsNullOrWhiteSpace(user.Avatar))
+                else
                 {
-                    user.Avatar = "default.png";
+                    user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Password, hashType: BCrypt.Net.HashType.SHA384);
+                    if (string.IsNullOrWhiteSpace(user.Avatar))
+                    {
+                        user.Avatar = "default.png";
+                    }
+                    user.CreatedDate = DateTime.Now;
+                    user.ModifiedDate = DateTime.Now;
+                    _db.Users.Add(user);
+                    _db.SaveChanges();
                 }
-                _db.Users.Add(user);
             }
-            _db.SaveChanges();
             return Task.FromResult(removePassword(_db.Users.SingleOrDefault(i => i.Email == user.Email)));
         }
 
@@ -138,18 +145,19 @@ namespace Server.API.Repositories
                 var found = _db.Users.SingleOrDefault(i => i.UserId == user.UserId);
                 if (found != null)
                 {
-                    if (!BCrypt.Net.BCrypt.EnhancedVerify(user.Password, found.Password, hashType: BCrypt.Net.HashType.SHA384))
-                    {
-                        throw new Exception("Incorrect password.");
-                    }
-                    found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
-                    found.Avatar = string.IsNullOrWhiteSpace(user.Avatar) ? found.Avatar : user.Avatar;
-                    if (!string.IsNullOrWhiteSpace(newPassword))
-                    {
-                        found.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newPassword, hashType: BCrypt.Net.HashType.SHA384);
-                    }
-
+                    throw new Exception("User doesn't exist.");
                 }
+                if (!BCrypt.Net.BCrypt.EnhancedVerify(user.Password, found.Password, hashType: BCrypt.Net.HashType.SHA384))
+                {
+                    throw new Exception("Incorrect password.");
+                }
+                found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
+                found.Avatar = string.IsNullOrWhiteSpace(user.Avatar) ? found.Avatar : user.Avatar;
+                if (!string.IsNullOrWhiteSpace(newPassword))
+                {
+                    found.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newPassword, hashType: BCrypt.Net.HashType.SHA384);
+                }
+                user.ModifiedDate = DateTime.Now;
                 _db.SaveChanges();
             }
             return Task.FromResult(removePassword(_db.Users.SingleOrDefault(i => i.Email == user.Email)));
@@ -169,13 +177,16 @@ namespace Server.API.Repositories
             if (ValidateUser(user))
             {
                 var found = _db.Users.SingleOrDefault(i => i.UserId == user.UserId);
-                if (found != null)
+                if (found == null)
                 {
-                    found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
-                    found.Avatar = string.IsNullOrWhiteSpace(user.Avatar) ? found.Avatar : user.Avatar;
-               //     found.Role = string.IsNullOrWhiteSpace(user.Role) ? found.Role : user.Role;
-                    found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null) ? found.SuperiorId : user.SuperiorId;
+                    throw new Exception("User doesn't exist.");
                 }
+
+                found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
+                found.Avatar = string.IsNullOrWhiteSpace(user.Avatar) ? found.Avatar : user.Avatar;
+                found.Roles = user.Roles;
+                found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null) ? found.SuperiorId : user.SuperiorId;
+                user.ModifiedDate = DateTime.Now;
                 _db.SaveChanges();
             }
             return Task.FromResult(removePassword(_db.Users.SingleOrDefault(i => i.Email == user.Email)));
@@ -205,14 +216,14 @@ namespace Server.API.Repositories
         /// <param name="sort"></param>
         /// <param name="asc"></param>
         /// <returns></returns>
-        public List<User> SortUsers(List<User> users, string sort, bool asc)
+        private List<User> SortUsers(List<User> users, string sort, bool asc)
         {
             if (asc)
             {
                 switch (sort)
                 {
                     case "UserId":
-                        users.Sort((x, y) => x.UserId.CompareTo(y.UserId));
+                        users.Sort((x, y) => x.UserId.Value.CompareTo(y.UserId));
                         break;
                     case "Name":
                         users.Sort((x, y) => x.Name.CompareTo(y.Name));
@@ -220,11 +231,17 @@ namespace Server.API.Repositories
                     case "Email":
                         users.Sort((x, y) => x.Email.CompareTo(y.Email));
                         break;
-                    case "Role":
-                //        users.Sort((x, y) => x.Role.CompareTo(y.Role));
-                        break;
+                    //case "Role":
+                    //    users.Sort((x, y) => x.Roles.CompareTo(y.Roles));
+                    //    break;
                     case "SuperiorId":
-                        users.Sort((x, y) => x.SuperiorId.CompareTo(y.SuperiorId));
+                        users.Sort((x, y) => x.SuperiorId.Value.CompareTo(y.SuperiorId));
+                        break;
+                    case "CreatedUpdate":
+                        users.Sort((x, y) => x.CreatedDate.Value.CompareTo(y.CreatedDate));
+                        break;
+                    case "ModifiedUpdate":
+                        users.Sort((x, y) => x.ModifiedDate.Value.CompareTo(y.ModifiedDate));
                         break;
                 }
 
@@ -234,7 +251,7 @@ namespace Server.API.Repositories
                 switch (sort)
                 {
                     case "UserId":
-                        users.Sort((x, y) => y.UserId.CompareTo(x.UserId));
+                        users.Sort((x, y) => y.UserId.Value.CompareTo(x.UserId));
                         break;
                     case "Name":
                         users.Sort((x, y) => y.Name.CompareTo(x.Name));
@@ -242,11 +259,17 @@ namespace Server.API.Repositories
                     case "Email":
                         users.Sort((x, y) => y.Email.CompareTo(x.Email));
                         break;
-                    case "Role":
-                  //      users.Sort((x, y) => y.Role.CompareTo(x.Role));
-                        break;
+                    //case "Role":
+                    //  users.Sort((x, y) => y.Role.CompareTo(x.Role));
+                    //    break;
                     case "SuperiorId":
-                        users.Sort((x, y) => y.SuperiorId.CompareTo(x.SuperiorId));
+                        users.Sort((x, y) => y.SuperiorId.Value.CompareTo(x.SuperiorId));
+                        break;
+                    case "CreatedUpdate":
+                        users.Sort((x, y) => y.CreatedDate.Value.CompareTo(x.CreatedDate));
+                        break;
+                    case "ModifiedUpdate":
+                        users.Sort((x, y) => y.ModifiedDate.Value.CompareTo(x.ModifiedDate));
                         break;
                 }
             }
@@ -265,8 +288,8 @@ namespace Server.API.Repositories
             {
                 users.Where(u => u.UserId.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
-                                u.Email.Contains(search)) ;
-                               // || u.Role.Contains(search));
+                                u.Email.Contains(search) ||
+                                (u.Roles.SingleOrDefault(i => i.Name.Contains(search)) != null));
             }
             return users;
         }
@@ -285,7 +308,7 @@ namespace Server.API.Repositories
                 Email = user.Email,
                 Avatar = user.Avatar,
                 Password = "",
-                //Role = user.Role,
+                Roles = user.Roles,
                 SuperiorId = user.SuperiorId,
             };
             return _user;

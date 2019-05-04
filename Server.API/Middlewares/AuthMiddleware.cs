@@ -3,7 +3,9 @@ using HotChocolate.Resolvers;
 using JWT;
 using JWT.Builder;
 using JWT.Serializers;
+using Newtonsoft.Json;
 using Server.API.Types;
+using Server.DB.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -32,11 +34,11 @@ namespace Server.API.Middlewares
             }
             try
             {
-                var claims = new JwtBuilder()
-                                                .WithSecret(ConfigurationManager.AppSettings["JWTsecret"])
-                                                .MustVerifySignature()
-                                                .Decode<IDictionary<string, object>>(UserCookie.Value);
-                if (!_roles.Contains(claims["Role"].ToString()))
+                var claims = new JwtBuilder().WithSecret(ConfigurationManager.AppSettings["JWTsecret"])
+                                             .MustVerifySignature()
+                                             .Decode<IDictionary<string, string>>(UserCookie.Value);
+                List<string> userroles = JsonConvert.DeserializeObject<List<string>>(claims["Roles"]);
+                if (!userroles.Intersect(_roles).Any())
                 {
                     throw new QueryException("Access denied.");
                 }
@@ -48,6 +50,10 @@ namespace Server.API.Middlewares
             catch (SignatureVerificationException)
             {
                 throw new QueryException("Token has invalid signature.");
+            }
+            catch (Exception ex)
+            {
+                throw new QueryException(ex.Message);
             }
 
             await _next(context);

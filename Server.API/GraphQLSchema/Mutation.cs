@@ -14,11 +14,14 @@ namespace Server.API.GraphQLSchema
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthRepository _authRepository;
-        public Mutation(IUserRepository userRepository, IAuthRepository authRepository)
+        private readonly IRoleRepository _roleRepository;
+        public Mutation(IUserRepository userRepository, IAuthRepository authRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _authRepository = authRepository ?? throw new ArgumentNullException(nameof(authRepository));
+            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         }
+
         public string Login(string email, string password, IResolverContext context)
         {
             try
@@ -93,6 +96,32 @@ namespace Server.API.GraphQLSchema
             try
             {
                 return _userRepository.UpdateUser(user, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Role CreateRole(Role role, IResolverContext context)
+        {
+            try
+            {
+                return _roleRepository.CreateRole(role, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Role UpdateRole(Role role, IResolverContext context)
+        {
+            try
+            {
+                return _roleRepository.UpdateRole(role, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {

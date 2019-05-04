@@ -11,30 +11,26 @@ namespace Server.DB.Models
     public class Product
     {
         [Key]
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string ProductName { get; set; }
-        [Required]
 
-        public int Price { get; set; }
-        [Required]
+        public float? Price { get; set; }
+
         [Column(TypeName = "varchar(MAX)")]
         public string Description { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(MAX)")]
         public string Image { get; set; }
-        [Required]
 
-        public int CategoryId { get; set; }
-
-        public DateTime CreatedUpdate { get; set; }
-
-        public DateTime ModifiedUpdate { get; set; }
-
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
     }
 }

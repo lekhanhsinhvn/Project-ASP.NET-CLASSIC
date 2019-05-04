@@ -1,5 +1,6 @@
 ﻿using JWT.Algorithms;
 using JWT.Builder;
+using Newtonsoft.Json;
 using Server.DB;
 using Server.DB.Models;
 using System;
@@ -31,12 +32,17 @@ namespace Server.API.Repositories
             {
                 throw new Exception("Incorrect password.");
             }
+            List<string> roles = new List<string>();
+            foreach(Role r in found.Roles)
+            {
+                roles.Add(r.Name);
+            }
             var token = new JwtBuilder()
                   .WithAlgorithm(new HMACSHA256Algorithm())
                   .WithSecret(ConfigurationManager.AppSettings["JWTsecret"])
                   .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(24).ToUnixTimeSeconds())
                   .AddClaim("UserId", found.UserId)
-                  //.AddClaim("Role", found.Role)
+                  .AddClaim("Roles", JsonConvert.SerializeObject(roles))
                   .Build();
             return Task.FromResult(token);
         }

@@ -12,10 +12,13 @@ namespace Server.API.Types
     {
         protected override void Configure(IObjectTypeDescriptor<Mutation> descriptor)
         {
+            // Auth
             descriptor.Field(t => t.Login(default, default, default))
                 .Type<StringType>();
             descriptor.Field(t => t.Logout(default))
                 .Type<StringType>();
+
+            // User
             descriptor.Field(t => t.CreateUser(default, default))
                 .Type<UserType>();
             descriptor.Field(t => t.DeleteUser(default, default))
@@ -23,6 +26,12 @@ namespace Server.API.Types
             descriptor.Field(t => t.UpdateSelf(default, default, default))
                 .Type<UserType>();
             descriptor.Field(t => t.UpdateUser(default, default))
+                .Type<UserType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+
+            // Role
+            descriptor.Field(t => t.CreateRole(default, default))
+                .Type<UserType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.UpdateRole(default, default))
                 .Type<UserType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
         }
     }

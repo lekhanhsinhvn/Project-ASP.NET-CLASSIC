@@ -15,7 +15,8 @@
     <AssemblyName>Server.API</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -364,11 +365,14 @@
     <Compile Include="GraphQLSchema\Query.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\IAuthRepository.cs" />
+    <Compile Include="Repositories\IRoleRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Types\MutationType.cs" />
     <Compile Include="Types\QueryType.cs" />
+    <Compile Include="Types\RoleType.cs" />
     <Compile Include="Types\UserType.cs" />
   </ItemGroup>
   <ItemGroup>

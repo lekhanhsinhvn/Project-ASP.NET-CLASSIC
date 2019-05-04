@@ -23,6 +23,7 @@ namespace Server.API
             services.AddSingleton<ServerContext>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAuthRepository, AuthRepository>();
+            services.AddSingleton<IRoleRepository, RoleRepository>();
 
             services.AddSingleton<Query>();
             services.AddSingleton<Mutation>();
