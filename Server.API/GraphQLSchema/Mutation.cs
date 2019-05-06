@@ -12,14 +12,21 @@ namespace Server.API.GraphQLSchema
 {
     public class Mutation
     {
-        private readonly IUserRepository _userRepository;
         private readonly IAuthRepository _authRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
-        public Mutation(IUserRepository userRepository, IAuthRepository authRepository, IRoleRepository roleRepository)
+        private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IOrderRepository _orderRepository;
+
+        public Mutation(IAuthRepository authRepository, IUserRepository userRepository, IRoleRepository roleRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IOrderRepository orderRepository)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _authRepository = authRepository ?? throw new ArgumentNullException(nameof(authRepository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         }
 
         public string Login(string email, string password, IResolverContext context)
@@ -122,6 +129,136 @@ namespace Server.API.GraphQLSchema
             try
             {
                 return _roleRepository.UpdateRole(role, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Role DeleteRole(int RoleId, IResolverContext context)
+        {
+            try
+            {
+                return _roleRepository.DeleteRole(RoleId, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Product CreateProduct(Product product, IResolverContext context)
+        {
+            try
+            {
+                return _productRepository.CreateProduct(product, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Product UpdateProduct(Product product, IResolverContext context)
+        {
+            try
+            {
+                return _productRepository.UpdateProduct(product, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Product DeleteProduct(int ProductId, IResolverContext context)
+        {
+            try
+            {
+                return _productRepository.DeleteProduct(ProductId, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Category CreateCategory(Category category, IResolverContext context)
+        {
+            try
+            {
+                return _categoryRepository.CreateCategory(category, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Category UpdateCategory(Category category, IResolverContext context)
+        {
+            try
+            {
+                return _categoryRepository.UpdateCategory(category, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Category DeleteCategory(int CategoryId, IResolverContext context)
+        {
+            try
+            {
+                return _categoryRepository.DeleteCategory(CategoryId, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Order CreateOrder(Order order, IResolverContext context)
+        {
+            try
+            {
+                return _orderRepository.CreateOrder(order, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Order UpdateOrder(Order order, IResolverContext context)
+        {
+            try
+            {
+                return _orderRepository.UpdateOrder(order, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public Order DeleteOrder(int OrderId, IResolverContext context)
+        {
+            try
+            {
+                return _orderRepository.DeleteOrder(OrderId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {

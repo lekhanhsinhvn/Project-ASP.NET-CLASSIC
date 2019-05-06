@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Server.API.Repositories
 {
-    interface IProductRepository
+    public interface IProductRepository
     {
         Task<Product> GetProduct(int ProductId, CancellationToken cancellationToken);
 

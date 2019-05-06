@@ -15,6 +15,7 @@ namespace Server.DB.Models
 
         [Required]
         [MaxLength(50)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
 
         public float? Price { get; set; }

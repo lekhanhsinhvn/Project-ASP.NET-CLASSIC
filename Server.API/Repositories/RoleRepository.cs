@@ -78,7 +78,7 @@ namespace Server.API.Repositories
             {
                 throw new Exception("Role doesn't exist.");
             }
-            found.Description = string.IsNullOrWhiteSpace(role.Description) ? found.Description : role.Name;
+            found.Description = string.IsNullOrWhiteSpace(role.Description) ? found.Description : role.Description;
             found.Level = role.Level==null ? role.Level : found.Level;
             found.Users = role.Users;
             found.ModifiedDate = DateTime.Now;
@@ -101,10 +101,10 @@ namespace Server.API.Repositories
                     case "Level":
                         roles.Sort((x, y) => x.Level.Value.CompareTo(y.Level));
                         break;
-                    case "CreatedUpdate":
+                    case "CreatedDate":
                         roles.Sort((x, y) => x.CreatedDate.Value.CompareTo(y.CreatedDate));
                         break;
-                    case "ModifiedUpdate":
+                    case "ModifiedDate":
                         roles.Sort((x, y) => x.ModifiedDate.Value.CompareTo(y.ModifiedDate));
                         break;
                 }
@@ -123,10 +123,10 @@ namespace Server.API.Repositories
                     case "Level":
                         roles.Sort((x, y) => y.Level.Value.CompareTo(x.Level));
                         break;
-                    case "CreatedUpdate":
+                    case "CreatedDate":
                         roles.Sort((x, y) => y.CreatedDate.Value.CompareTo(x.CreatedDate));
                         break;
-                    case "ModifiedUpdate":
+                    case "ModifiedDate":
                         roles.Sort((x, y) => y.ModifiedDate.Value.CompareTo(x.ModifiedDate));
                         break;
                 }

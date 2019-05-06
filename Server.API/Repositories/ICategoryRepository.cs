@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Server.API.Repositories
 {
-    interface ICategoryRepository
+    public interface ICategoryRepository
     {
         Task<Category> GetCategory(int CategoryId, CancellationToken cancellationToken);
 
@@ -16,10 +16,10 @@ namespace Server.API.Repositories
 
         Task<int> GetTotalCountCategory(CancellationToken cancellationToken);
 
-        Task<Category> UpdateCategory(Category Category, CancellationToken cancellationToken);
+        Task<Category> UpdateCategory(Category category, CancellationToken cancellationToken);
 
         Task<Category> DeleteCategory(int CategoryId, CancellationToken cancellationToken);
 
-        Task<Category> CreateCategory(Category Category, CancellationToken cancellationToken);
+        Task<Category> CreateCategory(Category category, CancellationToken cancellationToken);
     }
 }

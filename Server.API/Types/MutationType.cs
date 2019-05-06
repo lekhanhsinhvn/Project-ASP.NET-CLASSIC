@@ -30,9 +30,35 @@ namespace Server.API.Types
 
             // Role
             descriptor.Field(t => t.CreateRole(default, default))
-                .Type<UserType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+                .Type<RoleType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
             descriptor.Field(t => t.UpdateRole(default, default))
-                .Type<UserType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+                .Type<RoleType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.DeleteRole(default, default))
+                .Type<RoleType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+
+            // Product
+            descriptor.Field(t => t.CreateProduct(default, default))
+                .Type<ProductType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.UpdateProduct(default, default))
+                .Type<ProductType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.DeleteProduct(default, default))
+                .Type<ProductType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+
+            // Category
+            descriptor.Field(t => t.CreateCategory(default, default))
+                .Type<CategoryType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.UpdateCategory(default, default))
+                .Type<CategoryType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.DeleteCategory(default, default))
+                .Type<CategoryType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+
+            // Order
+            descriptor.Field(t => t.CreateOrder(default, default))
+                .Type<OrderType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.UpdateOrder(default, default))
+                .Type<OrderType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.DeleteOrder(default, default))
+                .Type<OrderType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
         }
     }
 }

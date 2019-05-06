@@ -109,10 +109,10 @@ namespace Server.API.Repositories
                     case "Quantity":
                         products.Sort((x, y) => x.Quantity.Value.CompareTo(y.Quantity));
                         break;
-                    case "CreatedUpdate":
+                    case "CreatedDate":
                         products.Sort((x, y) => x.CreatedDate.Value.CompareTo(y.CreatedDate));
                         break;
-                    case "ModifiedUpdate":
+                    case "ModifiedDate":
                         products.Sort((x, y) => x.ModifiedDate.Value.CompareTo(y.ModifiedDate));
                         break;
                 }
@@ -137,10 +137,10 @@ namespace Server.API.Repositories
                     case "Quantity":
                         products.Sort((x, y) => y.Quantity.Value.CompareTo(x.Quantity));
                         break;
-                    case "CreatedUpdate":
+                    case "CreatedDate":
                         products.Sort((x, y) => y.CreatedDate.Value.CompareTo(x.CreatedDate));
                         break;
-                    case "ModifiedUpdate":
+                    case "ModifiedDate":
                         products.Sort((x, y) => y.ModifiedDate.Value.CompareTo(x.ModifiedDate));
                         break;
                 }

@@ -12,9 +12,6 @@ namespace Server.DB.Models
     {
         [Key]
         public int? OrderId { get; set; }
-
-        [Required]
-        public int? Quantity { get; set; }
         
         public int? TotalCount { get; set; }
 

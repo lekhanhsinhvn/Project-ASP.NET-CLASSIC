@@ -43,22 +43,101 @@ namespace Server.API.Repositories
 
         public Task<Category> GetCategory(int CategoryId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Category found = _db.Categories.FirstOrDefault(x => x.CategoryId == CategoryId);
+            if (found == null)
+            {
+                throw new Exception("Role doesn't exist.");
+            }
+            return Task.FromResult(found);
         }
 
         public Task<List<Category>> GetCategorys(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (!_db.Categories.Any())
+            {
+                throw new Exception("No Results.");
+            }
+            List<Category> categories = _db.Categories.ToList();
+            categories = FilterCategories(categories, search);
+            categories = SortCategories(categories, sort, asc);
+            categories.Skip(pageNum * maxPerPage);
+            categories.Take(maxPerPage);
+
+            return Task.FromResult(categories);
         }
 
         public Task<int> GetTotalCountCategory(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_db.Categories.Count());
         }
 
-        public Task<Category> UpdateCategory(Category Category, CancellationToken cancellationToken)
+        public Task<Category> UpdateCategory(Category category, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Category found = _db.Categories.SingleOrDefault(i => i.CategoryId == category.CategoryId);
+            if (found != null)
+            {
+                throw new Exception("Role doesn't exist.");
+            }
+            found.Description = string.IsNullOrWhiteSpace(category.Description) ? found.Description : category.Description;
+            found.Products = category.Products;
+            found.ModifiedDate = DateTime.Now;
+            _db.SaveChanges();
+            return Task.FromResult(_db.Categories.SingleOrDefault(i => i.CategoryId == category.CategoryId));
+        }
+
+        private List<Category> SortCategories(List<Category> categories, string sort, bool asc)
+        {
+            if (asc)
+            {
+                switch (sort)
+                {
+                    case "CategoryId":
+                        categories.Sort((x, y) => x.CategoryId.Value.CompareTo(y.CategoryId));
+                        break;
+                    default:
+                        categories.Sort((x, y) => x.Name.CompareTo(y.Name));
+                        break;
+                    case "CreatedDate":
+                        categories.Sort((x, y) => x.CreatedDate.Value.CompareTo(y.CreatedDate));
+                        break;
+                    case "ModifiedDate":
+                        categories.Sort((x, y) => x.ModifiedDate.Value.CompareTo(y.ModifiedDate));
+                        break;
+                }
+
+            }
+            else
+            {
+                switch (sort)
+                {
+                    case "CategoryId":
+                        categories.Sort((x, y) => y.CategoryId.Value.CompareTo(x.CategoryId));
+                        break;
+                    default:
+                        categories.Sort((x, y) => y.Name.CompareTo(x.Name));
+                        break;
+                    case "CreatedDate":
+                        categories.Sort((x, y) => y.CreatedDate.Value.CompareTo(x.CreatedDate));
+                        break;
+                    case "ModifiedDate":
+                        categories.Sort((x, y) => y.ModifiedDate.Value.CompareTo(x.ModifiedDate));
+                        break;
+                }
+            }
+            return categories;
+        }
+
+        private List<Category> FilterCategories(List<Category> categories, string search)
+        {
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                categories.Where(u => u.CategoryId.ToString().Contains(search) ||
+                                u.Name.Contains(search) ||
+                                u.Description.Contains(search) ||
+                                u.CreatedDate.ToString().Contains(search) ||
+                                u.ModifiedDate.ToString().Contains(search));
+            }
+            return categories;
         }
     }
 }

@@ -237,10 +237,10 @@ namespace Server.API.Repositories
                     case "SuperiorId":
                         users.Sort((x, y) => x.SuperiorId.Value.CompareTo(y.SuperiorId));
                         break;
-                    case "CreatedUpdate":
+                    case "CreatedDate":
                         users.Sort((x, y) => x.CreatedDate.Value.CompareTo(y.CreatedDate));
                         break;
-                    case "ModifiedUpdate":
+                    case "ModifiedDate":
                         users.Sort((x, y) => x.ModifiedDate.Value.CompareTo(y.ModifiedDate));
                         break;
                 }
@@ -265,10 +265,10 @@ namespace Server.API.Repositories
                     case "SuperiorId":
                         users.Sort((x, y) => y.SuperiorId.Value.CompareTo(x.SuperiorId));
                         break;
-                    case "CreatedUpdate":
+                    case "CreatedDate":
                         users.Sort((x, y) => y.CreatedDate.Value.CompareTo(x.CreatedDate));
                         break;
-                    case "ModifiedUpdate":
+                    case "ModifiedDate":
                         users.Sort((x, y) => y.ModifiedDate.Value.CompareTo(x.ModifiedDate));
                         break;
                 }

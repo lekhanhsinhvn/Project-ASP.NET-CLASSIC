@@ -14,6 +14,8 @@ namespace Server.DB.Models
         public int? CategoryId { get; set; }
 
         [Required]
+        [StringLength(50)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
 
         [Column(TypeName = "varchar(MAX)")]

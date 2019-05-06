@@ -26,6 +26,7 @@ namespace Server.API
             services.AddSingleton<IRoleRepository, RoleRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
 
             services.AddSingleton<Query>();
             services.AddSingleton<Mutation>();
@@ -42,6 +43,10 @@ namespace Server.API
 
                 c.RegisterType<UserType>();
                 c.RegisterType<RoleType>();
+                c.RegisterType<ProductType>();
+                c.RegisterType<CategoryType>();
+                c.RegisterType<OrderType>();
+
             }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = true });
             services.AddGraphQL(schema);
             return services.BuildServiceProvider();

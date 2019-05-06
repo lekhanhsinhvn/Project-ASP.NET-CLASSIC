@@ -22,6 +22,24 @@ namespace Server.API.Types
                 .Type<UserType>().Name("GetRole");
             descriptor.Field(t => t.GetRoles(default, default, default, default, default, default))
                 .Type<ListType<UserType>>().Name("GetRoles");
+
+            // Product
+            descriptor.Field(t => t.GetProduct(default, default))
+                .Type<UserType>().Name("GetProduct");
+            descriptor.Field(t => t.GetProducts(default, default, default, default, default, default))
+                .Type<ListType<UserType>>().Name("GetProducts");
+
+            // Category
+            descriptor.Field(t => t.GetCategory(default, default))
+                .Type<UserType>().Name("GetCategory");
+            descriptor.Field(t => t.GetCategories(default, default, default, default, default, default))
+                .Type<ListType<UserType>>().Name("GetCategories");
+
+            // Order
+            descriptor.Field(t => t.GetOrder(default, default))
+                .Type<UserType>().Name("GetOrder");
+            descriptor.Field(t => t.GetOrders(default, default, default, default, default, default))
+                .Type<ListType<UserType>>().Name("GetOrders");
         }
     }
 }
