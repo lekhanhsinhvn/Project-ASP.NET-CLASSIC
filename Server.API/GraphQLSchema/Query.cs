@@ -70,11 +70,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Role GetRole(int RoleId, IResolverContext context)
+        public Role GetRole(int roleId, IResolverContext context)
         {
             try
             {
-                return _roleRepository.GetRole(RoleId, context.RequestAborted).Result;
+                return _roleRepository.GetRole(roleId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -113,11 +113,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Product GetProduct(int ProductId, IResolverContext context)
+        public Product GetProduct(int productId, IResolverContext context)
         {
             try
             {
-                return _productRepository.GetProduct(ProductId, context.RequestAborted).Result;
+                return _productRepository.GetProduct(productId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -156,11 +156,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Category GetCategory(int CategoryId, IResolverContext context)
+        public Category GetCategory(int categoryId, IResolverContext context)
         {
             try
             {
-                return _categoryRepository.GetCategory(CategoryId, context.RequestAborted).Result;
+                return _categoryRepository.GetCategory(categoryId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -199,11 +199,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Order GetOrder(int OrderId, IResolverContext context)
+        public Order GetOrder(int orderId, IResolverContext context)
         {
             try
             {
-                return _orderRepository.GetOrder(OrderId, context.RequestAborted).Result;
+                return _orderRepository.GetOrder(orderId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {

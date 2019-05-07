@@ -378,6 +378,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Types\CategoryType.cs" />
     <Compile Include="Types\MutationType.cs" />
+    <Compile Include="Types\OrderDetailType.cs" />
     <Compile Include="Types\OrderType.cs" />
     <Compile Include="Types\ProductType.cs" />
     <Compile Include="Types\QueryType.cs" />

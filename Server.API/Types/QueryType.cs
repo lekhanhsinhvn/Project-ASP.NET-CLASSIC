@@ -19,27 +19,27 @@ namespace Server.API.Types
 
             // Role
             descriptor.Field(t => t.GetRole(default, default))
-                .Type<UserType>().Name("GetRole");
+                .Type<RoleType>().Name("GetRole");
             descriptor.Field(t => t.GetRoles(default, default, default, default, default, default))
-                .Type<ListType<UserType>>().Name("GetRoles");
+                .Type<ListType<RoleType>>().Name("GetRoles");
 
             // Product
             descriptor.Field(t => t.GetProduct(default, default))
-                .Type<UserType>().Name("GetProduct");
+                .Type<ProductType>().Name("GetProduct");
             descriptor.Field(t => t.GetProducts(default, default, default, default, default, default))
-                .Type<ListType<UserType>>().Name("GetProducts");
+                .Type<ListType<ProductType>>().Name("GetProducts");
 
             // Category
             descriptor.Field(t => t.GetCategory(default, default))
-                .Type<UserType>().Name("GetCategory");
+                .Type<CategoryType>().Name("GetCategory");
             descriptor.Field(t => t.GetCategories(default, default, default, default, default, default))
-                .Type<ListType<UserType>>().Name("GetCategories");
+                .Type<ListType<CategoryType>>().Name("GetCategories");
 
             // Order
             descriptor.Field(t => t.GetOrder(default, default))
-                .Type<UserType>().Name("GetOrder");
+                .Type<OrderType>().Name("GetOrder");
             descriptor.Field(t => t.GetOrders(default, default, default, default, default, default))
-                .Type<ListType<UserType>>().Name("GetOrders");
+                .Type<ListType<OrderType>>().Name("GetOrders");
         }
     }
 }

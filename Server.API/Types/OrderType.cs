@@ -12,7 +12,7 @@ namespace Server.API.Types
         protected override void Configure(IObjectTypeDescriptor<Order> descriptor)
         {
             descriptor.Field(t => t.OrderId).Type<IntType>();
-            descriptor.Field(t => t.Products).Type<ListType<ProductType>>();
+            descriptor.Field(t => t.OrderDetails).Type<ListType<OrderDetailType>>();
             descriptor.Field(t => t.TotalCount).Type<IntType>();
             descriptor.Field(t => t.TotalPrice).Type<FloatType>();
             descriptor.Field(t => t.Status).Type<StringType>();

@@ -12,7 +12,9 @@ namespace Server.DB.Models
     {
         [Key]
         public int? OrderId { get; set; }
-        
+
+        public ICollection<OrderDetail> OrderDetails { get; set; }
+
         public int? TotalCount { get; set; }
 
         public float? TotalPrice { get; set; }
@@ -22,8 +24,6 @@ namespace Server.DB.Models
         public virtual User Superior { get; set; }
 
         public virtual User Inferior { get; set; }
-
-        public virtual ICollection<Product> Products { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

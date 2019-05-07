@@ -53,7 +53,7 @@ namespace Server.API.Types
                 .Type<CategoryType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
 
             // Order
-            descriptor.Field(t => t.CreateOrder(default, default))
+            descriptor.Field(t => t.CreateOrder(default, default, default, default))
                 .Type<OrderType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
             descriptor.Field(t => t.UpdateOrder(default, default))
                 .Type<OrderType>().Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));

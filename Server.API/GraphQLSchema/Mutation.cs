@@ -137,11 +137,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Role DeleteRole(int RoleId, IResolverContext context)
+        public Role DeleteRole(int roleId, IResolverContext context)
         {
             try
             {
-                return _roleRepository.DeleteRole(RoleId, context.RequestAborted).Result;
+                return _roleRepository.DeleteRole(roleId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -176,11 +176,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Product DeleteProduct(int ProductId, IResolverContext context)
+        public Product DeleteProduct(int productId, IResolverContext context)
         {
             try
             {
-                return _productRepository.DeleteProduct(ProductId, context.RequestAborted).Result;
+                return _productRepository.DeleteProduct(productId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -215,11 +215,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Category DeleteCategory(int CategoryId, IResolverContext context)
+        public Category DeleteCategory(int categoryId, IResolverContext context)
         {
             try
             {
-                return _categoryRepository.DeleteCategory(CategoryId, context.RequestAborted).Result;
+                return _categoryRepository.DeleteCategory(categoryId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -228,11 +228,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Order CreateOrder(Order order, IResolverContext context)
+        public Order CreateOrder(int inferiorId, int superiorId, Order order, IResolverContext context)
         {
             try
             {
-                return _orderRepository.CreateOrder(order, context.RequestAborted).Result;
+                return _orderRepository.CreateOrder(inferiorId, superiorId, order, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -254,11 +254,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Order DeleteOrder(int OrderId, IResolverContext context)
+        public Order DeleteOrder(int orderId, IResolverContext context)
         {
             try
             {
-                return _orderRepository.DeleteOrder(OrderId, context.RequestAborted).Result;
+                return _orderRepository.DeleteOrder(orderId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
