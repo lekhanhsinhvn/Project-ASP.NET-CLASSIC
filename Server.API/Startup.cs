@@ -46,8 +46,9 @@ namespace Server.API
                 c.RegisterType<ProductType>();
                 c.RegisterType<CategoryType>();
                 c.RegisterType<OrderType>();
+                c.RegisterType<OrderDetailType>();
 
-            }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = true });
+            }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = false });
             services.AddGraphQL(schema);
             return services.BuildServiceProvider();
         }

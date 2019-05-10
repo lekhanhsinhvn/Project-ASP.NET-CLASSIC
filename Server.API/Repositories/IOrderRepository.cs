@@ -20,6 +20,6 @@ namespace Server.API.Repositories
 
         Task<Order> DeleteOrder(int OrderId, CancellationToken cancellationToken);
 
-        Task<Order> CreateOrder(Order order, CancellationToken cancellationToken);
+        Task<Order> CreateOrder(int InferiorId,int SuperiorId, Order order, CancellationToken cancellationToken);
     }
 }

@@ -1,10 +1,13 @@
 ﻿using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Resolvers;
+using JWT;
+using JWT.Builder;
 using Server.API.Repositories;
 using Server.DB.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -27,6 +30,39 @@ namespace Server.API.GraphQLSchema
             _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         }
+
+        public User GetSelf(IResolverContext context)
+        {
+            HttpCookie UserCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+            if (UserCookie == null)
+            {
+                context.ReportError("No token found.");
+            }
+            else
+            {
+                try
+                {
+                    var claims = new JwtBuilder().WithSecret(ConfigurationManager.AppSettings["JWTsecret"])
+                                                 .MustVerifySignature()
+                                                 .Decode<IDictionary<string, string>>(UserCookie.Value);
+                    return _userRepository.GetUser(int.Parse(claims["UserId"]), context.RequestAborted).Result;
+                }
+                catch (TokenExpiredException)
+                {
+                    context.ReportError("Token has expired.");
+                }
+                catch (SignatureVerificationException)
+                {
+                    context.ReportError("Token has invalid signature.");
+                }
+                catch (Exception ex)
+                {
+                    context.ReportError(ex.Message);
+                }
+            }
+            return null;
+        }
+
         public User GetUser(int userId, IResolverContext context)
         {
             try
@@ -70,11 +106,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Role GetRole(int RoleId, IResolverContext context)
+        public Role GetRole(int roleId, IResolverContext context)
         {
             try
             {
-                return _roleRepository.GetRole(RoleId, context.RequestAborted).Result;
+                return _roleRepository.GetRole(roleId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -113,11 +149,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Product GetProduct(int ProductId, IResolverContext context)
+        public Product GetProduct(int productId, IResolverContext context)
         {
             try
             {
-                return _productRepository.GetProduct(ProductId, context.RequestAborted).Result;
+                return _productRepository.GetProduct(productId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -156,11 +192,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Category GetCategory(int CategoryId, IResolverContext context)
+        public Category GetCategory(int categoryId, IResolverContext context)
         {
             try
             {
-                return _categoryRepository.GetCategory(CategoryId, context.RequestAborted).Result;
+                return _categoryRepository.GetCategory(categoryId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -199,11 +235,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Order GetOrder(int OrderId, IResolverContext context)
+        public Order GetOrder(int orderId, IResolverContext context)
         {
             try
             {
-                return _orderRepository.GetOrder(OrderId, context.RequestAborted).Result;
+                return _orderRepository.GetOrder(orderId, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {

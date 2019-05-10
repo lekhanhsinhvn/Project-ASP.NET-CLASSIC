@@ -17,17 +17,41 @@ namespace Server.API.Repositories
             _db = db;
         }
 
-        public Task<Order> CreateOrder(Order order, CancellationToken cancellationToken)
+        public Task<Order> CreateOrder(int InferiorId, int SuperiorId, Order order, CancellationToken cancellationToken)
         {
-            order.TotalCount = order.Products.Count;
-            order.TotalPrice = 0;
-            foreach(Product p in order.Products)
+            order.Inferior = _db.Users.FirstOrDefault(x => x.UserId == InferiorId);
+            order.Superior = _db.Users.FirstOrDefault(x => x.UserId == SuperiorId);
+            if(order.Inferior == null || order.Superior == null)
             {
-                order.TotalPrice += p.Price;
+                throw new Exception("Order not valid");
             }
+            order.TotalCount = 0;
+            order.TotalPrice = 0;
+            foreach (OrderDetail d in order.OrderDetails)
+            {
+                Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                if (foundProduct == null)
+                {
+                    throw new Exception("Product not valid");
+                }
+                if (d.Quantity > foundProduct.Quantity)
+                {
+                    throw new Exception("Product" + foundProduct.Name + "out of stock");
+                }
+                d.Product = foundProduct;
+                d.UnitPrice = foundProduct.Price.Value;
+                order.TotalCount += d.Quantity;
+                order.TotalPrice += d.UnitPrice * d.Quantity;
+            }
+            order.Status = "Ongoing";
             order.CreatedDate = DateTime.Now;
             order.ModifiedDate = DateTime.Now;
             _db.Orders.Add(order);
+            foreach (OrderDetail d in order.OrderDetails)
+            {
+                Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                foundProduct.Quantity -= d.Quantity;
+            }
             _db.SaveChanges();
             return Task.FromResult(order);
         }
@@ -76,16 +100,43 @@ namespace Server.API.Repositories
         public Task<Order> UpdateOrder(Order order, CancellationToken cancellationToken)
         {
             var found = _db.Orders.SingleOrDefault(i => i.OrderId == order.OrderId);
-            if (found != null)
+            if (found == null)
             {
                 throw new Exception("Order doesn't exist.");
             }
-            found.Products = order.Products;
-            found.TotalCount = order.Products.Count;
-            foreach (Product p in order.Products)
+
+            // reset
+            order.TotalCount = 0;
+            order.TotalPrice = 0;
+            foreach (OrderDetail d in found.OrderDetails)
             {
-                order.TotalPrice += p.Price;
+                Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                foundProduct.Quantity += d.Quantity;
             }
+
+            foreach (OrderDetail d in order.OrderDetails)
+            {
+                Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                if (foundProduct == null)
+                {
+                    throw new Exception("Product not valid");
+                }
+                if (d.Quantity > foundProduct.Quantity)
+                {
+                    throw new Exception("Product" + foundProduct.Name + "out of stock");
+                }
+                d.Product = foundProduct;
+                d.UnitPrice = foundProduct.Price.Value;
+                order.TotalCount += d.Quantity;
+                order.TotalPrice += d.UnitPrice * d.Quantity;
+            }
+            foreach (OrderDetail d in order.OrderDetails)
+            {
+                Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                foundProduct.Quantity -= d.Quantity;
+            }
+            found.Status = string.IsNullOrWhiteSpace(order.Status) ? found.Status : order.Status;
+            found.OrderDetails = order.OrderDetails;
             found.ModifiedDate = DateTime.Now;
             _db.SaveChanges();
             return Task.FromResult(_db.Orders.SingleOrDefault(i => i.OrderId == order.OrderId));

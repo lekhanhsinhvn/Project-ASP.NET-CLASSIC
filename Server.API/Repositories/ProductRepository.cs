@@ -76,7 +76,7 @@ namespace Server.API.Repositories
             var found = _db.Products.SingleOrDefault(i => i.ProductId == product.ProductId);
             if (found != null)
             {
-                throw new Exception("Role doesn't exist.");
+                throw new Exception("Product doesn't exist.");
             }
             found.Description = string.IsNullOrWhiteSpace(product.Description) ? found.Description : product.Name;
             found.Image = string.IsNullOrWhiteSpace(product.Image) ? found.Image : product.Name;

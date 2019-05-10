@@ -7,13 +7,13 @@ namespace Server.DB.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class MakeNameUnique : IMigrationMetadata
+    public sealed partial class ReCreateDatabase : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MakeNameUnique));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ReCreateDatabase));
         
         string IMigrationMetadata.Id
         {
-            get { return "201905051434576_MakeNameUnique"; }
+            get { return "201905070652419_ReCreateDatabase"; }
         }
         
         string IMigrationMetadata.Source

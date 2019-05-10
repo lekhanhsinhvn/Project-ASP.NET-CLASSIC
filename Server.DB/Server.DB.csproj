@@ -48,22 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbInitalize.cs" />
-    <Compile Include="Migrations\201905040711166_CreateDatabase.cs" />
-    <Compile Include="Migrations\201905040711166_CreateDatabase.Designer.cs">
-      <DependentUpon>201905040711166_CreateDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905051434576_MakeNameUnique.cs" />
-    <Compile Include="Migrations\201905051434576_MakeNameUnique.Designer.cs">
-      <DependentUpon>201905051434576_MakeNameUnique.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905051551523_RemoveQuanityfromOrder.cs" />
-    <Compile Include="Migrations\201905051551523_RemoveQuanityfromOrder.Designer.cs">
-      <DependentUpon>201905051551523_RemoveQuanityfromOrder.cs</DependentUpon>
+    <Compile Include="Migrations\201905070652419_ReCreateDatabase.cs" />
+    <Compile Include="Migrations\201905070652419_ReCreateDatabase.Designer.cs">
+      <DependentUpon>201905070652419_ReCreateDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
@@ -75,14 +67,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905040711166_CreateDatabase.resx">
-      <DependentUpon>201905040711166_CreateDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905051434576_MakeNameUnique.resx">
-      <DependentUpon>201905051434576_MakeNameUnique.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905051551523_RemoveQuanityfromOrder.resx">
-      <DependentUpon>201905051551523_RemoveQuanityfromOrder.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905070652419_ReCreateDatabase.resx">
+      <DependentUpon>201905070652419_ReCreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

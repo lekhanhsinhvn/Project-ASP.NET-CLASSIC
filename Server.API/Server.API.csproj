@@ -378,6 +378,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Types\CategoryType.cs" />
     <Compile Include="Types\MutationType.cs" />
+    <Compile Include="Types\OrderDetailType.cs" />
     <Compile Include="Types\OrderType.cs" />
     <Compile Include="Types\ProductType.cs" />
     <Compile Include="Types\QueryType.cs" />
@@ -420,12 +421,9 @@
           <DevelopmentServerPort>56143</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:3001/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost:3001/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://api.localhost</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
