@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbInitalize.cs" />
     <Compile Include="Migrations\201905040711166_CreateDatabase.cs" />
     <Compile Include="Migrations\201905040711166_CreateDatabase.Designer.cs">
       <DependentUpon>201905040711166_CreateDatabase.cs</DependentUpon>
