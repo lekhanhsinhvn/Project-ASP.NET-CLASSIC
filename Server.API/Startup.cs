@@ -48,7 +48,7 @@ namespace Server.API
                 c.RegisterType<OrderType>();
                 c.RegisterType<OrderDetailType>();
 
-            }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = true });
+            }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = false });
             services.AddGraphQL(schema);
             return services.BuildServiceProvider();
         }
