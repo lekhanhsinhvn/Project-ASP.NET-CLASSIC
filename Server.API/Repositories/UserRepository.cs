@@ -1,8 +1,11 @@
-﻿using Server.DB;
+﻿using Client;
+using Server.DB;
 using Server.DB.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,9 +16,11 @@ namespace Server.API.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly ServerContext _db;
-        public UserRepository(ServerContext db)
+        private readonly IFileHandler _fileHandler;
+        public UserRepository(ServerContext db, IFileHandler fileHandler)
         {
             _db = db;
+            _fileHandler = fileHandler;
         }
 
         /// <summary>
@@ -138,7 +143,7 @@ namespace Server.API.Repositories
         /// <param name="newPassword"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<User> UpdateSelf(User user, string newPassword, CancellationToken cancellationToken)
+        public Task<User> UpdateSelf(User user, string base64String, string newPassword, CancellationToken cancellationToken)
         {
             if (ValidateUser(user))
             {
@@ -152,7 +157,15 @@ namespace Server.API.Repositories
                     throw new Exception("Incorrect password.");
                 }
                 found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
-                found.Avatar = string.IsNullOrWhiteSpace(user.Avatar) ? found.Avatar : user.Avatar;
+
+                if (!string.IsNullOrWhiteSpace(base64String))
+                {
+                    user.Avatar = DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + "_" + user.Name + ".png";
+                    _fileHandler.ImageSave(base64String, user.Avatar);
+                    _fileHandler.ImageRemove(found.Avatar);
+                    found.Avatar = user.Avatar;
+                }
+
                 if (!string.IsNullOrWhiteSpace(newPassword))
                 {
                     found.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newPassword, hashType: BCrypt.Net.HashType.SHA384);
@@ -169,7 +182,7 @@ namespace Server.API.Repositories
         /// <param name="user"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<User> UpdateUser(User user, CancellationToken cancellationToken)
+        public Task<User> UpdateUser(User user, string base64String, CancellationToken cancellationToken)
         {
             // bypass validate password
             user.Password = "12345";
@@ -183,8 +196,16 @@ namespace Server.API.Repositories
                 }
 
                 found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
-                found.Avatar = string.IsNullOrWhiteSpace(user.Avatar) ? found.Avatar : user.Avatar;
-                found.Roles = user.Roles;
+
+                if (!string.IsNullOrWhiteSpace(base64String))
+                {
+                    user.Avatar = DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + "_" + user.Name + ".png";
+                    _fileHandler.ImageSave(base64String, user.Avatar);
+                    _fileHandler.ImageRemove(found.Avatar);
+                    found.Avatar = user.Avatar;
+                }
+
+                found.Roles = (user.Roles == null) ? found.Roles : user.Roles;
                 found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null) ? found.SuperiorId : user.SuperiorId;
                 user.ModifiedDate = DateTime.Now;
                 _db.SaveChanges();

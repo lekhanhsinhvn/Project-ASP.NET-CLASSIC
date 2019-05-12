@@ -14,11 +14,11 @@ namespace Server.API.Repositories
 
         Task<int> GetTotalCountUser(CancellationToken cancellationToken);
 
-        Task<User> UpdateUser(User user, CancellationToken cancellationToken);
+        Task<User> UpdateUser(User user, string base64String, CancellationToken cancellationToken);
 
         Task<User> DeleteUser(int UserId, CancellationToken cancellationToken);
 
-        Task<User> UpdateSelf(User user, string newPassword, CancellationToken cancellationToken);
+        Task<User> UpdateSelf(User user, string base64String, string newPassword, CancellationToken cancellationToken);
 
         Task<User> CreateUser(User user, CancellationToken cancellationToken);
 

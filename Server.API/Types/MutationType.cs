@@ -23,10 +23,10 @@ namespace Server.API.Types
                 .Type<UserType>().Name("createUser");
             descriptor.Field(t => t.DeleteUser(default, default))
                 .Type<UserType>().Name("deleteUser").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
-            descriptor.Field(t => t.UpdateSelf(default, default, default))
+            descriptor.Field(t => t.UpdateSelf(default, default, default, default))
                 .Type<UserType>().Name("updateSelf");
-            descriptor.Field(t => t.UpdateUser(default, default))
-                .Type<UserType>().Name("updateUser").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.UpdateUser(default, default, default))
+                .Type<UserType>().Name("updateUser");
 
             // Role
             descriptor.Field(t => t.CreateRole(default, default))

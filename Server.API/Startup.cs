@@ -9,6 +9,7 @@ using Server.DB;
 using Server.API.Repositories;
 using HotChocolate.Execution.Configuration;
 using Server.API.GraphQLSchema;
+using Client;
 
 [assembly: OwinStartup(typeof(Server.API.Startup))]
 
@@ -27,6 +28,7 @@ namespace Server.API
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IFileHandler, FileHandler>();
 
             services.AddSingleton<Query>();
             services.AddSingleton<Mutation>();
@@ -48,7 +50,7 @@ namespace Server.API
                 c.RegisterType<OrderType>();
                 c.RegisterType<OrderDetailType>();
 
-            }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = false });
+            }).MakeExecutable(new QueryExecutionOptions { IncludeExceptionDetails = true });
             services.AddGraphQL(schema);
             return services.BuildServiceProvider();
         }

@@ -1,10 +1,13 @@
-﻿using HotChocolate;
+﻿using Client;
+using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Resolvers;
 using Server.API.Repositories;
 using Server.DB.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -85,11 +88,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public User UpdateSelf(User user, string newPassword, IResolverContext context)
+        public User UpdateSelf(User user, string base64String, string newPassword, IResolverContext context)
         {
             try
             {
-                return _userRepository.UpdateSelf(user, newPassword, context.RequestAborted).Result;
+                return _userRepository.UpdateSelf(user, base64String, newPassword, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -98,11 +101,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public User UpdateUser(User user, IResolverContext context)
+        public User UpdateUser(User user, string base64String, IResolverContext context)
         {
             try
             {
-                return _userRepository.UpdateUser(user, context.RequestAborted).Result;
+                return _userRepository.UpdateUser(user, base64String, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {

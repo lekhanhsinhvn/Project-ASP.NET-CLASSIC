@@ -22,7 +22,7 @@ class SidebarMenuNode extends React.Component {
 
   renderButton() {
     let button;
-    const { node } = this.props;
+    const { node, reload } = this.props;
     if (node.path) {
       button = (
         <Link to={node.path} className="nav-link">
@@ -32,7 +32,7 @@ class SidebarMenuNode extends React.Component {
       );
     } else {
       button = (
-        <button type="button" className="btn btn-link nav-link">
+        <button type="button" className="btn btn-link nav-link" onClick={() => { setTimeout(() => { reload(); }, 600); }}>
           <i className={`nav-icon ${node.icon}`} />
           <p>
             {node.name}
@@ -45,11 +45,11 @@ class SidebarMenuNode extends React.Component {
   }
 
   renderChildren() {
-    const { node } = this.props;
+    const { node, reload } = this.props;
     let childrenRendered;
     if (getChildren(node).length >= 1) {
       childrenRendered = getChildren(node).map((child, index) => (
-        <SidebarMenuNode key={child.id || index} node={child} />
+        <SidebarMenuNode key={child.id || index} node={child} reload={reload} />
       ));
       childrenRendered = (<ul className="nav nav-treeview">{childrenRendered}</ul>);
     }
@@ -74,5 +74,6 @@ SidebarMenuNode.propTypes = {
     class: PropTypes.string,
     children: PropTypes.array,
   }).isRequired,
+  reload: PropTypes.func.isRequired,
 };
 export default SidebarMenuNode;

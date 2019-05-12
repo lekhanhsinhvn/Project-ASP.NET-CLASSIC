@@ -63,6 +63,38 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
+        public User GetSuperior(IResolverContext context)
+        {
+            HttpCookie UserCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+            if (UserCookie == null)
+            {
+                context.ReportError("No token found.");
+            }
+            else
+            {
+                try
+                {
+                    var claims = new JwtBuilder().WithSecret(ConfigurationManager.AppSettings["JWTsecret"])
+                                                 .MustVerifySignature()
+                                                 .Decode<IDictionary<string, string>>(UserCookie.Value);
+                    User user = _userRepository.GetUser(int.Parse(claims["UserId"]), context.RequestAborted).Result;
+                    return _userRepository.GetUser(user.SuperiorId.Value, context.RequestAborted).Result;
+                }
+                catch (TokenExpiredException)
+                {
+                    context.ReportError("Token has expired.");
+                }
+                catch (SignatureVerificationException)
+                {
+                    context.ReportError("Token has invalid signature.");
+                }
+                catch (Exception ex)
+                {
+                    context.ReportError(ex.Message);
+                }
+            }
+            return null;
+        }
         public User GetUser(int userId, IResolverContext context)
         {
             try

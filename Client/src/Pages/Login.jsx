@@ -3,14 +3,20 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import { css } from '@emotion/core';
+import { BounceLoader } from 'react-spinners';
 
+const override = css`
+    display: block;
+    margin: 0 auto;
+`;
 const LOGIN_QUERY = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password)
   }
 `;
 
-class LoginFrom extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,10 +35,11 @@ class LoginFrom extends React.Component {
   }
 
   render() {
+    const { setLoaded } = this.props;
     const { email, password } = this.state;
-    const { getUser } = this.props;
+
     return (
-      <Mutation mutation={LOGIN_QUERY} onCompleted={() => { getUser(); }}>
+      <Mutation mutation={LOGIN_QUERY} errorPolicy="ignore" onCompleted={() => { setLoaded(false); }}>
         {(login, { loading, error }) => (
           <div className="login-page">
             <div className="login-box">
@@ -93,12 +100,12 @@ class LoginFrom extends React.Component {
                     <div className="col-4">
                       <button type="submit" id="login-btn" className="btn btn-primary btn-block btn-flat ">
                         {loading ? (
-                          <div className="lds-ring">
-                            <div />
-                            <div />
-                            <div />
-                            <div />
-                          </div>
+                          <BounceLoader
+                            css={override}
+                            sizeUnit="px"
+                            size={24}
+                            color="#fff"
+                          />
                         ) : 'Sign In'}
 
                       </button>
@@ -117,7 +124,7 @@ class LoginFrom extends React.Component {
   }
 }
 
-LoginFrom.propTypes = {
-  getUser: PropTypes.func.isRequired,
+Login.propTypes = {
+  setLoaded: PropTypes.func.isRequired,
 };
-export default LoginFrom;
+export default Login;

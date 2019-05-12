@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ sidebarToggle }) => (
+import LogoutBtn from './LogoutBtn';
+
+const Navbar = ({ sidebarToggle, setLoaded }) => (
   <div className="main-header navbar navbar-expand bg-white navbar-light border-bottom">
     <ul className="navbar-nav">
       <li className="nav-item">
@@ -14,10 +16,16 @@ const Navbar = ({ sidebarToggle }) => (
         <Link to="/" className="nav-link">Dashboard</Link>
       </li>
     </ul>
+    <ul className="navbar-nav ml-auto">
+      <li className="nav-item">
+        <LogoutBtn setLoaded={setLoaded} />
+      </li>
+    </ul>
   </div>
 );
 
 Navbar.propTypes = {
   sidebarToggle: PropTypes.func.isRequired,
+  setLoaded: PropTypes.func.isRequired,
 };
 export default Navbar;

@@ -28,39 +28,4 @@ body{
   white-space: nowrap;
 }
 
-// loading
-#login-btn .lds-ring {
-  margin: auto;
-  position: relative;
-  width: 24px;
-  height: 24px;
-}
-#login-btn .lds-ring div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  margin: 3px;
-  border: 3px solid #cef;
-  border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #cef transparent transparent transparent;
-}
-#login-btn .lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
-}
-#login-btn .lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
-}
-#login-btn .lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes lds-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+

@@ -15,6 +15,8 @@ namespace Server.API.Types
                 .Type<UserType>().Name("getUser");
             descriptor.Field(t => t.GetSelf(default))
                 .Type<UserType>().Name("getSelf");
+            descriptor.Field(t => t.GetSuperior(default))
+                .Type<UserType>().Name("getSuperior");
             descriptor.Field(t => t.GetUsers(default, default, default, default, default, default))
                 .Type<ListType<UserType>>().Name("getUsers")
                                             .Use((services, next) => new AuthMiddleware(next, new string[] { "Employee", "Admin" }));

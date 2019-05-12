@@ -399,6 +399,10 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Client\Client.csproj">
+      <Project>{2aca9586-2a2a-4846-99c3-16d17b6bbfe7}</Project>
+      <Name>Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Server.DB\Server.DB.csproj">
       <Project>{6fcccda4-4683-45f5-8cc0-b2825a5c7d87}</Project>
       <Name>Server.DB</Name>

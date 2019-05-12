@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SidebarMenuNode from './SidebarMenuNode';
 import Treeview from '../js/Treeview';
 
@@ -16,15 +17,15 @@ const data = [
     children: [
       {
         id: '2-1',
-        path: '/me',
-        name: 'Me',
-        icon: 'fas fa-user',
+        path: '/superior',
+        name: 'Superior',
+        icon: 'far fa-user',
       },
       {
         id: '2-2',
         path: '/users',
         name: 'Users List',
-        icon: 'fas fa-user',
+        icon: 'far fa-user',
       },
     ],
   },
@@ -44,11 +45,13 @@ class SidebarMenu extends React.Component {
   }
 
   render() {
+    const { reload } = this.props;
     const { nodes } = this.state;
     const nodesRendered = nodes.map((node, index) => (
       <SidebarMenuNode
         key={node.id || index}
         node={node}
+        reload={reload}
       />
     ));
     return (
@@ -60,5 +63,7 @@ class SidebarMenu extends React.Component {
     );
   }
 }
-
+SidebarMenu.propTypes = {
+  reload: PropTypes.func.isRequired,
+};
 export default SidebarMenu;

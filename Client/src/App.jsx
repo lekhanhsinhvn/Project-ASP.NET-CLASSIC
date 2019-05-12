@@ -1,14 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, Switch, Redirect,
+} from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import LoginForm from './Components/LoginForm';
-import Sidebar from './Components/Sidebar';
-import Navbar from './Components/Navbar';
+import Main from './Pages/Main';
+import Login from './Pages/Login';
 
-const client = new ApolloClient({
+let client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
   credentials: 'include',
 });
@@ -32,21 +33,18 @@ const GET_SELF = gql`
       }
   }
 `;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
-      sidebarOpen: true,
       user: null,
+      loaded: false,
     };
     // This binding is necessary to make `this` work in the callback
-    this.sidebarToggle = this.sidebarToggle.bind(this);
-
-    this.renderAdminApp = this.renderAdminApp.bind(this);
 
     this.setUser = this.setUser.bind(this);
-
+    this.setLoaded = this.setLoaded.bind(this);
     this.getUser = this.getUser.bind(this);
   }
 
@@ -54,50 +52,77 @@ class App extends React.Component {
     this.getUser();
   }
 
+  componentDidUpdate() {
+    const { loaded } = this.state;
+    if (!loaded) {
+      this.getUser();
+    }
+  }
+
   getUser() {
-    client.query({ query: GET_SELF })
-      .then(response => this.setUser(response.data.getSelf)).finally(() => { this.setLoaded(); });
+    client = new ApolloClient({
+      uri: 'http://localhost:3001/graphql',
+      credentials: 'include',
+    });
+    client.query({ query: GET_SELF, errorPolicy: 'ignore' })
+      .then(response => this.setUser(response.data.getSelf));
+  }
+
+  setLoaded(data) {
+    this.setState(() => (
+      { loaded: data }
+    ));
   }
 
   setUser(data) {
     this.setState(() => (
-      { user: data }
+      { user: data, loaded: true }
     ));
-  }
-
-  setLoaded() {
-    this.setState(() => (
-      { loaded: true }
-    ));
-  }
-
-  sidebarToggle() {
-    this.setState(prevState => (
-      { sidebarOpen: !prevState.sidebarOpen }
-    ));
-  }
-
-
-  renderAdminApp() {
-    const { sidebarOpen, user } = this.state;
-    return (
-      <div className={`sidebar-mini ${sidebarOpen ? 'sidebar-open' : 'sidebar-collapse'}`}>
-        <Navbar sidebarToggle={this.sidebarToggle} />
-        <Sidebar sidebarOpen={sidebarOpen} user={user} />
-      </div>
-    );
   }
 
   render() {
     const { user, loaded } = this.state;
-
     return (
       <ApolloProvider client={client}>
         <Router>
           {loaded ? (
-            <div>
-              {user ? this.renderAdminApp() : (<LoginForm getUser={this.getUser} />)}
-            </div>
+            <Switch>
+              <Route
+                exact
+                path="/login"
+                render={props => (!user ? (<Login {...props} setLoaded={this.setLoaded} />) : (
+                  <Redirect
+                    to="/"
+                  />
+                ))}
+              />
+              <Route
+                exact
+                path="/register"
+                render={props => (!user ? (<Login {...props} setLoaded={this.setLoaded} />) : (
+                  <Redirect
+                    to="/"
+                  />
+                ))}
+              />
+              <Route
+                path="/"
+                render={props => (user ? (
+                  <Main
+                    {...props}
+                    user={user}
+                    setLoaded={this.setLoaded}
+                  />
+                ) : (
+                  <Redirect
+                    to={{
+                      pathname: '/login',
+                      state: { from: props.location },
+                    }}
+                  />
+                ))}
+              />
+            </Switch>
           ) : ''}
         </Router>
       </ApolloProvider>
