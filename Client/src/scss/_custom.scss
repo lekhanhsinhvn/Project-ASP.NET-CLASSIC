@@ -1,31 +1,50 @@
-// fix button to a
 button.nav-link {
-    width: 100%;
-    display: block;
-    padding: .5rem 1rem;
-
-    p, .nav-icon {
-      float: left;
-    }
+  width: 100%;
+  display: block;
+  padding: .5rem 1rem;
+  p, .nav-icon {
+    float: left;
+  }
 }
-.brand-text{
+
+.brand-text {
   opacity: 1 !important;
 }
-html,
-body{
+
+html, body {
   background: #e9ecef;
 }
-.login-page{
+
+.login-page {
   position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
 }
 
-.user-panel, .user-panel .info {
+.user-panel {
   overflow: unset;
   white-space: nowrap;
+  .info {
+    overflow: unset;
+    white-space: nowrap;
+  }
 }
 
-
+.sidebarToggle {
+  display: none;
+  width: 32px !important;
+  position: absolute;
+  top: 9px;
+  left: 12px;
+  color: #C2C7D0;
+}
+.sidebarToggle:hover{
+  color: #ffffff;
+}
+@include media-breakpoint-down(md) {
+  .sidebarToggle {
+    display: block;
+  }
+}

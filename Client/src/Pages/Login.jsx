@@ -35,11 +35,11 @@ class Login extends React.Component {
   }
 
   render() {
-    const { setLoaded } = this.props;
+    const { getUser } = this.props;
     const { email, password } = this.state;
 
     return (
-      <Mutation mutation={LOGIN_QUERY} errorPolicy="ignore" onCompleted={() => { setLoaded(false); }}>
+      <Mutation mutation={LOGIN_QUERY} errorPolicy="ignore" onCompleted={() => { getUser(); }}>
         {(login, { loading, error }) => (
           <div className="login-page">
             <div className="login-box">
@@ -125,6 +125,6 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  setLoaded: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
 };
 export default Login;

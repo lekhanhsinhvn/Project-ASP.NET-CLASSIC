@@ -7,7 +7,29 @@ import { Query } from 'react-apollo';
 import Sidebar from '../Components/Sidebar';
 import Navbar from '../Components/Navbar';
 import UserDetail from './UserDetail';
+import ErrorPage from './ErrorPage';
 
+const GET_SELF = gql`
+  {
+    getSelf {
+      userId
+      name
+      email
+      password
+      avatar
+      roles{
+        roleId
+        name
+        level
+        createdDate
+        modifiedDate
+      }
+      superiorId
+      createdDate
+      modifiedDate
+      }
+  }
+`;
 const GET_SUPERIOR = gql`
   {
     getSuperior {
@@ -24,6 +46,8 @@ const GET_SUPERIOR = gql`
         modifiedDate
       }
       superiorId
+      createdDate
+      modifiedDate
       }
   }
 `;
@@ -45,12 +69,12 @@ class Main extends React.Component {
   }
 
   render() {
-    const { user, setLoaded } = this.props;
+    const { user, getUser } = this.props;
     const { sidebarOpen } = this.state;
     return (
       <div className={`sidebar-mini ${sidebarOpen ? 'sidebar-open' : 'sidebar-collapse'}`}>
-        <Navbar sidebarToggle={this.sidebarToggle} setLoaded={setLoaded} />
-        <Sidebar sidebarOpen={sidebarOpen} user={user} />
+        <Navbar sidebarToggle={this.sidebarToggle} getUser={getUser} />
+        <Sidebar sidebarToggle={this.sidebarToggle} sidebarOpen={sidebarOpen} user={user} />
         <div className="content-wrapper">
           <Switch>
             <Route
@@ -59,11 +83,27 @@ class Main extends React.Component {
               render={() => (
                 <Query query={GET_SUPERIOR}>
                   {({ loading, error, data }) => {
-                    if (loading) return 'Loading...';
-                    if (error) return `Error! ${error.message}`;
-
+                    if (loading) return '';
+                    if (error) return (<ErrorPage code="300" message="You don't have a Superior" />);
                     return (
-                      <UserDetail user={data.getSuperior} />
+                      <UserDetail edit={false} user={user} header="Superior" dataUser={data && data.getSuperior} />
+                    );
+                  }}
+                </Query>
+              )}
+            />
+            <Route
+              exact
+              path="/me"
+              render={() => (
+                <Query query={GET_SELF}>
+                  {({
+                    loading, error, data,
+                  }) => {
+                    if (loading) return 'Loading...';
+                    if (error) return (<ErrorPage code="300" message={error.message} />);
+                    return (
+                      <UserDetail edit user={user} dataUser={data && data.getSelf} header="Me" getUser={getUser} />
                     );
                   }}
                 </Query>
@@ -86,6 +126,6 @@ Main.propTypes = {
       name: PropTypes.string,
     })),
   }).isRequired,
-  setLoaded: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
 };
 export default Main;

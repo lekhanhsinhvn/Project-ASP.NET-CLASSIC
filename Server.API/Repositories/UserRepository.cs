@@ -145,16 +145,13 @@ namespace Server.API.Repositories
         /// <returns></returns>
         public Task<User> UpdateSelf(User user, string base64String, string newPassword, CancellationToken cancellationToken)
         {
+            user.Password = "12345";
             if (ValidateUser(user))
             {
                 var found = _db.Users.SingleOrDefault(i => i.UserId == user.UserId);
-                if (found != null)
+                if (found == null)
                 {
                     throw new Exception("User doesn't exist.");
-                }
-                if (!BCrypt.Net.BCrypt.EnhancedVerify(user.Password, found.Password, hashType: BCrypt.Net.HashType.SHA384))
-                {
-                    throw new Exception("Incorrect password.");
                 }
                 found.Name = string.IsNullOrWhiteSpace(user.Name) ? found.Name : user.Name;
 
@@ -333,6 +330,10 @@ namespace Server.API.Repositories
                 Password = "",
                 Roles = user.Roles,
                 SuperiorId = user.SuperiorId,
+                CreatedDate = user.CreatedDate,
+                ModifiedDate = user.ModifiedDate,
+                InferiorOrders = user.InferiorOrders,
+                SuperiorOrders = user.SuperiorOrders,
             };
             return _user;
         }

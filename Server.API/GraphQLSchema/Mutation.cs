@@ -1,14 +1,12 @@
-﻿using Client;
-using HotChocolate;
-using HotChocolate.Execution;
-using HotChocolate.Resolvers;
+﻿using HotChocolate.Resolvers;
+using JWT;
+using JWT.Builder;
 using Server.API.Repositories;
 using Server.DB.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
+using System.Configuration;
+using System.Net;
 using System.Web;
 
 namespace Server.API.GraphQLSchema

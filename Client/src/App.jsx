@@ -52,31 +52,27 @@ class App extends React.Component {
     this.getUser();
   }
 
-  componentDidUpdate() {
-    const { loaded } = this.state;
-    if (!loaded) {
-      this.getUser();
-    }
-  }
-
   getUser() {
     client = new ApolloClient({
       uri: 'http://localhost:3001/graphql',
       credentials: 'include',
     });
     client.query({ query: GET_SELF, errorPolicy: 'ignore' })
-      .then(response => this.setUser(response.data.getSelf));
-  }
-
-  setLoaded(data) {
-    this.setState(() => (
-      { loaded: data }
-    ));
+      .then((response) => {
+        if (response.errors) this.setLoaded(false);
+        if (response.data) this.setUser(response.data.getSelf);
+      });
   }
 
   setUser(data) {
     this.setState(() => (
       { user: data, loaded: true }
+    ));
+  }
+
+  setLoaded(data) {
+    this.setState(() => (
+      { loaded: data }
     ));
   }
 
@@ -90,7 +86,7 @@ class App extends React.Component {
               <Route
                 exact
                 path="/login"
-                render={props => (!user ? (<Login {...props} setLoaded={this.setLoaded} />) : (
+                render={props => (!user ? (<Login {...props} getUser={this.getUser} />) : (
                   <Redirect
                     to="/"
                   />
@@ -99,7 +95,7 @@ class App extends React.Component {
               <Route
                 exact
                 path="/register"
-                render={props => (!user ? (<Login {...props} setLoaded={this.setLoaded} />) : (
+                render={props => (!user ? (<Login {...props} getUser={this.getUser} />) : (
                   <Redirect
                     to="/"
                   />
@@ -111,7 +107,7 @@ class App extends React.Component {
                   <Main
                     {...props}
                     user={user}
-                    setLoaded={this.setLoaded}
+                    getUser={this.getUser}
                   />
                 ) : (
                   <Redirect

@@ -22,8 +22,11 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    const { sidebarOpen, user } = this.props; return (
+    const { sidebarToggle, sidebarOpen, user } = this.props; return (
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
+        <button type="button" className="btn btn-link sidebarToggle" onClick={sidebarToggle}>
+          <i className="fas fa-bars" />
+        </button>
         <SidebarBrand sidebarOpen={sidebarOpen} />
         <ReactResizeDetector handleWidth handleHeight>
           {() => (
@@ -53,6 +56,7 @@ class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
   sidebarOpen: PropTypes.bool.isRequired,
+  sidebarToggle: PropTypes.func.isRequired,
   user: PropTypes.shape({
     userId: PropTypes.number,
     name: PropTypes.string,

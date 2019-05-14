@@ -74,7 +74,7 @@ namespace Server.API.Repositories
         public Task<Product> UpdateProduct(Product product, CancellationToken cancellationToken)
         {
             var found = _db.Products.SingleOrDefault(i => i.ProductId == product.ProductId);
-            if (found != null)
+            if (found == null)
             {
                 throw new Exception("Product doesn't exist.");
             }

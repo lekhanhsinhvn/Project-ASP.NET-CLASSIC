@@ -74,7 +74,7 @@ namespace Server.API.Repositories
         public Task<Role> UpdateRole(Role role, CancellationToken cancellationToken)
         {
             var found = _db.Roles.SingleOrDefault(i => i.RoleId == role.RoleId);
-            if (found != null)
+            if (found == null)
             {
                 throw new Exception("Role doesn't exist.");
             }

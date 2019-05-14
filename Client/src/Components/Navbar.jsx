@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import LogoutBtn from './LogoutBtn';
 
-const Navbar = ({ sidebarToggle, setLoaded }) => (
+const Navbar = ({ sidebarToggle, getUser }) => (
   <div className="main-header navbar navbar-expand bg-white navbar-light border-bottom">
     <ul className="navbar-nav">
       <li className="nav-item">
@@ -18,7 +18,7 @@ const Navbar = ({ sidebarToggle, setLoaded }) => (
     </ul>
     <ul className="navbar-nav ml-auto">
       <li className="nav-item">
-        <LogoutBtn setLoaded={setLoaded} />
+        <LogoutBtn getUser={getUser} />
       </li>
     </ul>
   </div>
@@ -26,6 +26,6 @@ const Navbar = ({ sidebarToggle, setLoaded }) => (
 
 Navbar.propTypes = {
   sidebarToggle: PropTypes.func.isRequired,
-  setLoaded: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
 };
 export default Navbar;
