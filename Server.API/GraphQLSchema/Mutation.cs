@@ -164,11 +164,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Product UpdateProduct(Product product, IResolverContext context)
+        public Product UpdateProduct(Product product, string base64String, IResolverContext context)
         {
             try
             {
-                return _productRepository.UpdateProduct(product, context.RequestAborted).Result;
+                return _productRepository.UpdateProduct(product, base64String, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {

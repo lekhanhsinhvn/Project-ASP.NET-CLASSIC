@@ -16,7 +16,7 @@ namespace Server.API.Repositories
 
         Task<int> GetTotalCountProduct(CancellationToken cancellationToken);
 
-        Task<Product> UpdateProduct(Product product, CancellationToken cancellationToken);
+        Task<Product> UpdateProduct(Product product, string base64String, CancellationToken cancellationToken);
 
         Task<Product> DeleteProduct(int ProductId, CancellationToken cancellationToken);
 

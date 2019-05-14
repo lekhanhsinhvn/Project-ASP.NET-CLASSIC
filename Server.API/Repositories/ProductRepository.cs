@@ -1,4 +1,5 @@
-﻿using Server.DB;
+﻿using Client;
+using Server.DB;
 using Server.DB.Models;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,11 @@ namespace Server.API.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly ServerContext _db;
-        public ProductRepository(ServerContext db)
+        private readonly IFileHandler _fileHandler;
+        public ProductRepository(ServerContext db, IFileHandler fileHandler)
         {
             _db = db;
+            _fileHandler = fileHandler;
         }
 
         public Task<Product> CreateProduct(Product product, CancellationToken cancellationToken)
@@ -71,7 +74,7 @@ namespace Server.API.Repositories
             return Task.FromResult(_db.Products.Count());
         }
 
-        public Task<Product> UpdateProduct(Product product, CancellationToken cancellationToken)
+        public Task<Product> UpdateProduct(Product product, string base64String, CancellationToken cancellationToken)
         {
             var found = _db.Products.SingleOrDefault(i => i.ProductId == product.ProductId);
             if (found == null)
@@ -79,7 +82,15 @@ namespace Server.API.Repositories
                 throw new Exception("Product doesn't exist.");
             }
             found.Description = string.IsNullOrWhiteSpace(product.Description) ? found.Description : product.Name;
-            found.Image = string.IsNullOrWhiteSpace(product.Image) ? found.Image : product.Name;
+
+            if (!string.IsNullOrWhiteSpace(base64String))
+            {
+                product.Image = DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + "_" + product.Name + ".png";
+                _fileHandler.ImageSave(base64String, product.Image);
+                _fileHandler.ImageRemove(found.Image);
+                found.Image = product.Image;
+            }
+
             found.Price = product.Price == null ? found.Price : product.Price;
             found.Quantity = product.Quantity == null ? found.Quantity : product.Quantity;
             found.Categories = product.Categories;

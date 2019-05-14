@@ -39,7 +39,7 @@ namespace Server.API.Types
             // Product
             descriptor.Field(t => t.CreateProduct(default, default))
                 .Type<ProductType>().Name("createProduct").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
-            descriptor.Field(t => t.UpdateProduct(default, default))
+            descriptor.Field(t => t.UpdateProduct(default, default, default))
                 .Type<ProductType>().Name("updateProduct").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
             descriptor.Field(t => t.DeleteProduct(default, default))
                 .Type<ProductType>().Name("deleteProduct").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
