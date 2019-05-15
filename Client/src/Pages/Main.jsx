@@ -2,55 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
 import Sidebar from '../Components/Sidebar';
 import Navbar from '../Components/Navbar';
-import UserDetail from './UserDetail';
-import ErrorPage from './ErrorPage';
-
-const GET_SELF = gql`
-  {
-    getSelf {
-      userId
-      name
-      email
-      password
-      avatar
-      roles{
-        roleId
-        name
-        level
-        createdDate
-        modifiedDate
-      }
-      superiorId
-      createdDate
-      modifiedDate
-      }
-  }
-`;
-const GET_SUPERIOR = gql`
-  {
-    getSuperior {
-      userId
-      name
-      email
-      password
-      avatar
-      roles{
-        roleId
-        name
-        level
-        createdDate
-        modifiedDate
-      }
-      superiorId
-      createdDate
-      modifiedDate
-      }
-  }
-`;
+import UsersPage from './UsersPage';
 
 class Main extends React.Component {
   constructor(props) {
@@ -69,44 +23,18 @@ class Main extends React.Component {
   }
 
   render() {
-    const { user, getUser } = this.props;
+    const { self, getSelf } = this.props;
     const { sidebarOpen } = this.state;
     return (
       <div className={`sidebar-mini ${sidebarOpen ? 'sidebar-open' : 'sidebar-collapse'}`}>
-        <Navbar sidebarToggle={this.sidebarToggle} getUser={getUser} />
-        <Sidebar sidebarToggle={this.sidebarToggle} sidebarOpen={sidebarOpen} user={user} />
+        <Navbar sidebarToggle={this.sidebarToggle} getSelf={getSelf} />
+        <Sidebar sidebarToggle={this.sidebarToggle} sidebarOpen={sidebarOpen} self={self} />
         <div className="content-wrapper">
           <Switch>
             <Route
-              exact
-              path="/superior"
+              path="/users"
               render={() => (
-                <Query query={GET_SUPERIOR}>
-                  {({ loading, error, data }) => {
-                    if (loading) return '';
-                    if (error) return (<ErrorPage code="300" message="You don't have a Superior" />);
-                    return (
-                      <UserDetail edit={false} user={user} header="Superior" dataUser={data && data.getSuperior} />
-                    );
-                  }}
-                </Query>
-              )}
-            />
-            <Route
-              exact
-              path="/me"
-              render={() => (
-                <Query query={GET_SELF}>
-                  {({
-                    loading, error, data,
-                  }) => {
-                    if (loading) return 'Loading...';
-                    if (error) return (<ErrorPage code="300" message={error.message} />);
-                    return (
-                      <UserDetail edit user={user} dataUser={data && data.getSelf} header="Me" getUser={getUser} />
-                    );
-                  }}
-                </Query>
+                <UsersPage self={self} getSelf={getSelf} />
               )}
             />
           </Switch>
@@ -117,7 +45,7 @@ class Main extends React.Component {
 }
 
 Main.propTypes = {
-  user: PropTypes.shape({
+  self: PropTypes.shape({
     userId: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,
@@ -126,6 +54,6 @@ Main.propTypes = {
       name: PropTypes.string,
     })),
   }).isRequired,
-  getUser: PropTypes.func.isRequired,
+  getSelf: PropTypes.func.isRequired,
 };
 export default Main;

@@ -63,8 +63,8 @@ namespace Server.API.Repositories
             List<Product> products = _db.Products.ToList();
             products = FilterProducts(products, search);
             products = SortProducts(products, sort, asc);
-            products.Skip(pageNum * maxPerPage);
-            products.Take(maxPerPage);
+            products = products.Skip(pageNum * maxPerPage).ToList();
+            products = products.Take(maxPerPage).ToList();
 
             return Task.FromResult(products);
         }
@@ -163,13 +163,13 @@ namespace Server.API.Repositories
         {
             if (!string.IsNullOrWhiteSpace(search))
             {
-                products.Where(u => u.ProductId.ToString().Contains(search) ||
+                return products.Where(u => u.ProductId.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
                                 u.Description.Contains(search) ||
                                 u.Price.ToString().Contains(search) ||
                                 u.Quantity.ToString().Contains(search) ||
                                 u.CreatedDate.ToString().Contains(search)||
-                                u.ModifiedDate.ToString().Contains(search));
+                                u.ModifiedDate.ToString().Contains(search)).ToList();
             }
             return products;
         }

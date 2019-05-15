@@ -24,7 +24,7 @@ namespace Server.API.Types
             descriptor.Field(t => t.DeleteUser(default, default))
                 .Type<UserType>().Name("deleteUser").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
             descriptor.Field(t => t.UpdateUser(default, default, default))
-                .Type<UserType>().Name("updateUser");
+                .Type<UserType>().Name("updateUser").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
             descriptor.Field(t => t.UpdateSelf(default, default, default, default))
                 .Type<UserType>().Name("updateSelf");
 

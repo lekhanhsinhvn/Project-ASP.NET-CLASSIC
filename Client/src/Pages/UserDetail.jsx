@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ContentHeader from '../Components/ContentHeader';
+import UserFormSelf from '../Components/UserFormSelf';
 import UserForm from '../Components/UserForm';
 
 const UserDetail = ({
-  user, dataUser, header, getUser, edit,
+  self, dataUser, header, getSelf, edit, QUERY,
 }) => (
   <div style={{ minHeight: '511px' }}>
     <ContentHeader header={header} />
@@ -43,7 +44,8 @@ const UserDetail = ({
           <div className="col-md-9">
             <div className="card">
               <div className="card-body">
-                <UserForm edit={edit} user={user} dataUser={dataUser} getUser={getUser} />
+                {QUERY === 'USER' && <UserForm edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} />}
+                {QUERY === 'SELF' && <UserFormSelf edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} />}
               </div>
             </div>
           </div>
@@ -54,7 +56,7 @@ const UserDetail = ({
 );
 
 UserDetail.propTypes = {
-  user: PropTypes.shape({
+  self: PropTypes.shape({
     userId: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,
@@ -77,8 +79,9 @@ UserDetail.propTypes = {
     modifiedDate: PropTypes.string,
   }).isRequired,
   header: PropTypes.string.isRequired,
-  getUser: PropTypes.func.isRequired,
+  getSelf: PropTypes.func.isRequired,
   edit: PropTypes.bool.isRequired,
+  QUERY: PropTypes.string.isRequired,
 };
 
 export default UserDetail;

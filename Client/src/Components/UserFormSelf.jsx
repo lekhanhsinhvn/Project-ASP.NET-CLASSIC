@@ -2,17 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
-import { Redirect } from 'react-router-dom';
 import { css } from '@emotion/core';
 import { BounceLoader } from 'react-spinners';
 import Select from 'react-select';
 import _ from 'lodash';
-import ApolloClient from 'apollo-boost';
-
-const client = new ApolloClient({
-  uri: 'http://localhost:3001/graphql',
-  credentials: 'include',
-});
 
 const override = css`
     display: block;
@@ -28,28 +21,9 @@ const GET_ROLES = gql`
     }
   }
 `;
-const UPDATEUSER_QUERY = gql`
-  mutation UpdateUser($user: UserInput, $base64String: String!) {
-    updateUser(user: $user,, base64String:$base64String){
-      userId
-      name
-      email
-      password
-      avatar
-      roles{
-        roleId
-        name
-        level
-        createdDate
-        modifiedDate
-      }
-      superiorId
-      }
-    }
-`;
-const DELETEUSER_QUERY = gql`
-  mutation DeleteUser($userId:Int!) {
-    deleteUser(userId: $userId){
+const UPDATESELF_QUERY = gql`
+  mutation UpdateSelf($user: UserInput, $newPassword: String!, $base64String: String!) {
+    updateSelf(user: $user, newPassword: $newPassword, base64String:$base64String){
       userId
       name
       email
@@ -76,15 +50,15 @@ function getBase64(file) {
   });
 }
 
-class UserDetail extends React.Component {
+class UserDetailSelf extends React.Component {
   constructor(props) {
     super(props);
     const { dataUser } = this.props;
     this.state = {
       editable: false,
       dataUser,
+      newPassword: '',
       base64String: '',
-      redirect: null,
     };
     // This binding is necessary to make `this` work in the callback
     this.editableToggle = this.editableToggle.bind(this);
@@ -92,23 +66,6 @@ class UserDetail extends React.Component {
     this.userChange = this.userChange.bind(this);
     this.imgChange = this.imgChange.bind(this);
     this.roleChange = this.roleChange.bind(this);
-  }
-
-  componentDidUpdate() {
-    const { redirect } = this.state;
-    if (redirect != null) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ redirect: '/users' });
-    }
-  }
-
-  deleteUser() {
-    const { dataUser } = this.props;
-    client.mutate({
-      mutation: DELETEUSER_QUERY,
-      variables: { userId: parseInt(dataUser.userId, 10) },
-      errorPolicy: 'ignore',
-    }).then(() => this.setState({ redirect: '/users' }));
   }
 
   editableToggle() {
@@ -160,23 +117,19 @@ class UserDetail extends React.Component {
 
   render() {
     const {
-      editable, dataUser, base64String, redirect,
+      editable, dataUser, newPassword, base64String,
     } = this.state;
     const {
       getSelf, self, edit,
     } = this.props;
-    if (redirect != null) {
-      return (<Redirect to="/users" />);
-    }
     return (
-      <Mutation mutation={UPDATEUSER_QUERY} errorPolicy="ignore" onCompleted={() => { getSelf(); }}>
-        {(updateUser, { loading, error }) => (
+      <Mutation mutation={UPDATESELF_QUERY} errorPolicy="ignore" onCompleted={() => { getSelf(); }}>
+        {(updateSelf, { loading, error }) => (
           <form
             className="card"
             onSubmit={(e) => {
               e.preventDefault();
-              dataUser.superiorId = parseInt(dataUser.superiorId, 10);
-              updateUser({ variables: { user: dataUser, base64String } });
+              updateSelf({ variables: { user: dataUser, newPassword, base64String } });
             }}
           >
             <div className="form-group">
@@ -209,23 +162,6 @@ class UserDetail extends React.Component {
                     onChange={this.userChange}
                     readOnly
                     value={dataUser.email}
-                  />
-                </div>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="superiorId" style={{ width: '100%' }}>
-                <div className="col-sm-3 control-label">SuperiorId</div>
-                <div className="col-sm-10">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="superiorId"
-                    name="superiorId"
-                    placeholder="SuperiorId"
-                    onChange={this.userChange}
-                    readOnly={!editable}
-                    value={dataUser.superiorId}
                   />
                 </div>
               </label>
@@ -264,7 +200,7 @@ class UserDetail extends React.Component {
               }}
             </Query>
             {
-              (edit && (_.find(self.roles, { name: 'Admin' }) !== undefined)) ? (
+              edit ? (
                 <div>
                   {editable ? (
                     <div>
@@ -283,17 +219,31 @@ class UserDetail extends React.Component {
                           </div>
                         </label>
                       </div>
+                      {self.userId === dataUser.userId ? (
+                        <div className="form-group">
+                          <label htmlFor="newPassword" style={{ width: '100%' }}>
+                            <div className="col-sm-3 control-label">New Password</div>
+                            <div className="col-sm-10">
+                              <input
+                                type="password"
+                                className="form-control"
+                                id="newPassword"
+                                name="newPassword"
+                                placeholder="Password"
+                                onChange={this.commonChange}
+                                readOnly={!editable}
+                              />
+                            </div>
+                          </label>
+                        </div>
+                      ) : ''}
                       <br />
                       {error && error.graphQLErrors.map(({ message }, i) => (
                         <span className="text-danger" key={i.toString()}>{message}</span>
                       ))}
                       <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                          <button
-                            type="submit"
-                            id="login-btn"
-                            className="btn btn-primary"
-                          >
+                          <button type="submit" id="login-btn" className="btn btn-primary">
                             {loading ? (
                               <BounceLoader
                                 css={override}
@@ -303,15 +253,6 @@ class UserDetail extends React.Component {
                               />
                             ) : 'Submit'}
                           </button>
-                          {self.userId !== dataUser.userId ? (
-                            <button
-                              type="button"
-                              className="btn btn-danger"
-                              onClick={() => this.deleteUser()}
-                            >
-                              {'Delete'}
-                            </button>
-                          ) : ''}
                         </div>
                       </div>
                     </div>
@@ -329,7 +270,8 @@ class UserDetail extends React.Component {
                     </div>
                   )}
                 </div>
-              ) : ''}
+              ) : ''
+            }
           </form>
         )}
       </Mutation>
@@ -337,7 +279,7 @@ class UserDetail extends React.Component {
   }
 }
 
-UserDetail.propTypes = {
+UserDetailSelf.propTypes = {
   self: PropTypes.shape({
     userId: PropTypes.number,
     name: PropTypes.string,
@@ -355,10 +297,9 @@ UserDetail.propTypes = {
     roles: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string,
     })),
-    superiorId: PropTypes.number,
   }).isRequired,
   getSelf: PropTypes.func.isRequired,
   edit: PropTypes.bool.isRequired,
 };
 
-export default UserDetail;
+export default UserDetailSelf;

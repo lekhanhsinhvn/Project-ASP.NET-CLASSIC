@@ -23,16 +23,16 @@ class SidebarMenuNode extends React.Component {
   renderButton() {
     let button;
     const { node, reload } = this.props;
-    if (node.path) {
+    if (getChildren(node).length < 1) {
       button = (
-        <Link to={node.path} className="nav-link">
+        <Link to={node.path} className={`nav-link ${(window.location.pathname === node.path && node.path !== '/') || (window.location.pathname === '/' && node.path === '/') ? 'active' : ''}`}>
           <i className={`nav-icon ${node.icon}`} />
           <p>{node.name}</p>
         </Link>
       );
     } else {
       button = (
-        <button type="button" className="btn btn-link nav-link" onClick={() => { setTimeout(() => { reload(); }, 600); }}>
+        <button type="button" className={`btn btn-link nav-link ${(window.location.pathname.startsWith(node.path) && node.path !== '/') || (window.location.pathname === '/' && node.path === '/') ? 'active' : ''}`} onClick={() => { setTimeout(() => { reload(); }, 600); }}>
           <i className={`nav-icon ${node.icon}`} />
           <p>
             {node.name}

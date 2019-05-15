@@ -8,16 +8,17 @@ const data = [
     id: '1',
     path: '/',
     name: 'Dashboard',
-    icon: 'fas fa-user',
+    icon: 'fas fa-tachometer-alt',
   },
   {
     id: '2',
+    path: '/users',
     name: 'Users',
     icon: 'fas fa-user',
     children: [
       {
         id: '2-1',
-        path: '/superior',
+        path: '/users/superior',
         name: 'Superior',
         icon: 'far fa-user',
       },
@@ -26,6 +27,25 @@ const data = [
         path: '/users',
         name: 'Users List',
         icon: 'far fa-user',
+      },
+    ],
+  }, {
+    id: '3',
+    path: '/products',
+    name: 'Products',
+    icon: 'fas fa-cubes',
+    children: [
+      {
+        id: '2-1',
+        path: '/products',
+        name: 'Products List',
+        icon: 'fas fa-cubes',
+      },
+      {
+        id: '2-2',
+        path: '/products/create',
+        name: 'Create Product',
+        icon: 'fas fa-cubes',
       },
     ],
   },

@@ -86,8 +86,8 @@ namespace Server.API.Repositories
             List<Order> orders = _db.Orders.ToList();
             orders = FilterOrders(orders, search);
             orders = SortOrders(orders, sort, asc);
-            orders.Skip(pageNum * maxPerPage);
-            orders.Take(maxPerPage);
+            orders = orders.Skip(pageNum * maxPerPage).ToList();
+            orders = orders.Take(maxPerPage).ToList();
 
             return Task.FromResult(orders);
         }
@@ -206,7 +206,7 @@ namespace Server.API.Repositories
         {
             if (!string.IsNullOrWhiteSpace(search))
             {
-                orders.Where(u => u.OrderId.ToString().Contains(search) ||
+                return orders.Where(u => u.OrderId.ToString().Contains(search) ||
                                 u.Inferior.UserId.ToString().Contains(search) ||
                                 u.Inferior.Name.Contains(search) ||
                                 u.Inferior.Email.Contains(search) ||
@@ -218,7 +218,7 @@ namespace Server.API.Repositories
                                 u.TotalCount.Value.ToString().Contains(search) ||
                                 u.TotalPrice.Value.ToString().Contains(search) ||
                                 u.CreatedDate.ToString().Contains(search) ||
-                                u.ModifiedDate.ToString().Contains(search));
+                                u.ModifiedDate.ToString().Contains(search)).ToList();
             }
             return orders;
         }

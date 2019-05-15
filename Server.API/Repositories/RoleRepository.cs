@@ -60,8 +60,8 @@ namespace Server.API.Repositories
             List<Role> roles = _db.Roles.ToList();
             roles = FilterRoles(roles, search);
             roles = SortRoles(roles, sort, asc);
-            roles.Skip(pageNum * maxPerPage);
-            roles.Take(maxPerPage);
+            roles = roles.Skip(pageNum * maxPerPage).ToList();
+            roles = roles.Take(maxPerPage).ToList();
 
             return Task.FromResult(roles);
         }
@@ -138,12 +138,12 @@ namespace Server.API.Repositories
         {
             if (!string.IsNullOrWhiteSpace(search))
             {
-                roles.Where(u => u.RoleId.ToString().Contains(search) ||
+                return roles.Where(u => u.RoleId.ToString().Contains(search) ||
                                 u.Level.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
                                 u.Description.Contains(search) ||
                                 u.CreatedDate.ToString().Contains(search) ||
-                                u.ModifiedDate.ToString().Contains(search));
+                                u.ModifiedDate.ToString().Contains(search)).ToList();
             }
             return roles;
         }

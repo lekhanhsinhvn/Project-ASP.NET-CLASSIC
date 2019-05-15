@@ -88,15 +88,35 @@ namespace Server.API.GraphQLSchema
 
         public User UpdateSelf(User user, string base64String, string newPassword, IResolverContext context)
         {
-            try
+            // Would like to do this for extra protection, but same reason in AuthMiddleware
+
+            //HttpCookie UserCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+            //if (UserCookie == null)
+            //{
+            //    context.ReportError("No token found.");
+            //}
+            //else
             {
-                return _userRepository.UpdateSelf(user, base64String, newPassword, context.RequestAborted).Result;
-            }
-            catch (Exception ex)
-            {
-                context.ReportError(ex.Message);
-            }
-            return null;
+                try
+                {
+                    //var claims = new JwtBuilder().WithSecret(ConfigurationManager.AppSettings["JWTsecret"])
+                    //                                 .MustVerifySignature()
+                    //                                 .Decode<IDictionary<string, string>>(UserCookie.Value);
+                    //if(int.Parse(claims["UserId"])!=user.UserId)
+                    //{
+                    // context.ReportError("Invaild User");
+                    //}
+                    //else
+                    //{
+                        return _userRepository.UpdateSelf(user, base64String, newPassword, context.RequestAborted).Result;
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    context.ReportError(ex.Message);
+                }
+            //}
+            return null;}
         }
 
         public User UpdateUser(User user, string base64String, IResolverContext context)

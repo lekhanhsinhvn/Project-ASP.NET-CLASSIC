@@ -7,6 +7,9 @@ button.nav-link {
   }
 }
 
+.nav-pills .nav-link{
+  color: #C2C7D0;
+}
 .brand-text {
   opacity: 1 !important;
 }
@@ -47,4 +50,68 @@ html, body {
   .sidebarToggle {
     display: block;
   }
+}
+
+table.dataTable {
+  clear: both;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+  max-width: none !important;
+  border-collapse: separate !important;
+}
+div.dataTables_info {
+  padding-top: 0.85em;
+  white-space: nowrap;
+}
+
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+  margin: 2px 0;
+}
+
+div.dataTables_paginate ul.pagination {
+  margin: 2px 0;
+  white-space: nowrap;
+  justify-content: flex-end;
+}
+
+.page-item.active .page-link{
+  z-index: 1;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.page-link:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+select.form-control-sm:not([size]):not([multiple]) {
+  height: calc(1.8125rem + 2px);
+}
+
+div.dataTables_length select {
+  width: 75px;
+  display: inline-block;
+}
+
+div.dataTables_filter {
+  text-align: right;
+}
+div.dataTables_filter input {
+  margin-left: 0.5em;
+  display: inline-block;
+  width: auto;
 }

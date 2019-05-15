@@ -35,11 +35,11 @@ class Login extends React.Component {
   }
 
   render() {
-    const { getUser } = this.props;
+    const { getSelf } = this.props;
     const { email, password } = this.state;
 
     return (
-      <Mutation mutation={LOGIN_QUERY} errorPolicy="ignore" onCompleted={() => { getUser(); }}>
+      <Mutation mutation={LOGIN_QUERY} errorPolicy="none" onCompleted={() => { getSelf(); }}>
         {(login, { loading, error }) => (
           <div className="login-page">
             <div className="login-box">
@@ -67,6 +67,7 @@ class Login extends React.Component {
                       id="email"
                       name="email"
                       placeholder="Email"
+                      required
                       onChange={this.commonChange}
                     />
                   </div>
@@ -82,15 +83,13 @@ class Login extends React.Component {
                       id="password"
                       name="password"
                       placeholder="Password"
+                      required
                       onChange={this.commonChange}
                     />
                   </div>
                   <div className="row">
                     <div className="col-8">
-                      {/* <div className="form-check">
-                      <input className="form-check-input" type="checkbox" />
-                      <div className="form-check-label">Remember Me</div>
-                    </div> */}
+                      <Link to="/register">Register</Link>
                       <div>
                         {error && error.graphQLErrors.map(({ message }, i) => (
                           <span className="text-danger" key={i.toString()}>{message}</span>
@@ -125,6 +124,6 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  getUser: PropTypes.func.isRequired,
+  getSelf: PropTypes.func.isRequired,
 };
 export default Login;

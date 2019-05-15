@@ -8,6 +8,7 @@ import gql from 'graphql-tag';
 
 import Main from './Pages/Main';
 import Login from './Pages/Login';
+import Register from './Pages/Register';
 
 let client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
@@ -34,50 +35,60 @@ const GET_SELF = gql`
   }
 `;
 
+const clearStore = () => {
+  client = new ApolloClient({
+    uri: 'http://localhost:3001/graphql',
+    credentials: 'include',
+  });
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
+      self: null,
       loaded: false,
     };
     // This binding is necessary to make `this` work in the callback
 
-    this.setUser = this.setUser.bind(this);
+    this.setSelf = this.setSelf.bind(this);
     this.setLoaded = this.setLoaded.bind(this);
-    this.getUser = this.getUser.bind(this);
+    this.getSelf = this.getSelf.bind(this);
   }
 
   componentDidMount() {
-    this.getUser();
+    this.getSelf();
   }
 
-  getUser() {
-    client = new ApolloClient({
-      uri: 'http://localhost:3001/graphql',
-      credentials: 'include',
-    });
+  getSelf() {
+    clearStore();
     client.query({ query: GET_SELF, errorPolicy: 'ignore' })
       .then((response) => {
-        if (response.errors) this.setLoaded(false);
-        if (response.data) this.setUser(response.data.getSelf);
+        if (response.data) this.setSelf(response.data.getSelf);
+        this.setLoaded(true);
       });
   }
 
-  setUser(data) {
-    this.setState(() => (
-      { user: data, loaded: true }
-    ));
+  setSelf(data) {
+    const { self } = this.state;
+    if (self !== data) {
+      this.setState(() => (
+        { self: data, loaded: true }
+      ));
+    }
   }
 
   setLoaded(data) {
-    this.setState(() => (
-      { loaded: data }
-    ));
+    const { loaded } = this.state;
+    if (loaded !== data) {
+      this.setState(() => (
+        { loaded: data }
+      ));
+    }
   }
 
   render() {
-    const { user, loaded } = this.state;
+    const { self, loaded } = this.state;
     return (
       <ApolloProvider client={client}>
         <Router>
@@ -86,7 +97,7 @@ class App extends React.Component {
               <Route
                 exact
                 path="/login"
-                render={props => (!user ? (<Login {...props} getUser={this.getUser} />) : (
+                render={props => (!self ? (<Login {...props} getSelf={this.getSelf} />) : (
                   <Redirect
                     to="/"
                   />
@@ -95,7 +106,7 @@ class App extends React.Component {
               <Route
                 exact
                 path="/register"
-                render={props => (!user ? (<Login {...props} getUser={this.getUser} />) : (
+                render={props => (!self ? (<Register {...props} />) : (
                   <Redirect
                     to="/"
                   />
@@ -103,11 +114,11 @@ class App extends React.Component {
               />
               <Route
                 path="/"
-                render={props => (user ? (
+                render={props => (self ? (
                   <Main
                     {...props}
-                    user={user}
-                    getUser={this.getUser}
+                    self={self}
+                    getSelf={this.getSelf}
                   />
                 ) : (
                   <Redirect

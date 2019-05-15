@@ -52,15 +52,15 @@ namespace Server.API.Repositories
         /// <returns></returns>
         public Task<List<User>> GetUsers(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
         {
-            if (!_db.Users.Any())
-            {
-                throw new Exception("No Results.");
-            }
             List<User> users = _db.Users.ToList();
             users = FilterUsers(users, search);
             users = SortUsers(users, sort, asc);
-            users.Skip(pageNum * maxPerPage);
-            users.Take(maxPerPage);
+            users = users.Skip(pageNum * maxPerPage).ToList();
+            users = users.Take(maxPerPage).ToList();
+            if (!users.Any())
+            {
+                throw new Exception("No Results.");
+            }
             
             return Task.FromResult(removePasswordfromList(users));
         }
@@ -72,7 +72,8 @@ namespace Server.API.Repositories
         /// <returns></returns>
         public Task<int> GetTotalCountUser(CancellationToken cancellationToken)
         {
-            return Task.FromResult(_db.Users.Count());
+            int count = _db.Users.Count();
+            return Task.FromResult(count);
         }
 
         /// <summary>
@@ -129,11 +130,12 @@ namespace Server.API.Repositories
         public Task<User> DeleteUser(int UserId, CancellationToken cancellationToken)
         {
             User user = _db.Users.FirstOrDefault(x => x.UserId == UserId);
-            if (user != null)
+            if (user == null)
             {
-                _db.Users.Remove(user);
-                _db.SaveChanges();
+                throw new Exception("User doesn't exist.");
             }
+            _db.Users.Remove(user);
+            _db.SaveChanges();
             return Task.FromResult(user);
         }
 
@@ -202,10 +204,20 @@ namespace Server.API.Repositories
                     _fileHandler.ImageRemove(found.Avatar);
                     found.Avatar = user.Avatar;
                 }
-
-                found.Roles = (user.Roles == null) ? found.Roles : user.Roles;
+                if(user.Roles != null)
+                {
+                    found.Roles.Clear();
+                    foreach(Role role in user.Roles)
+                    {
+                        Role r = _db.Roles.SingleOrDefault(i => i.RoleId == role.RoleId);
+                        if(r!=null)
+                        {
+                            found.Roles.Add(r);
+                        }
+                    }
+                }
                 found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null) ? found.SuperiorId : user.SuperiorId;
-                user.ModifiedDate = DateTime.Now;
+                found.ModifiedDate = DateTime.Now;
                 _db.SaveChanges();
             }
             return Task.FromResult(removePassword(_db.Users.SingleOrDefault(i => i.Email == user.Email)));
@@ -237,59 +249,62 @@ namespace Server.API.Repositories
         /// <returns></returns>
         private List<User> SortUsers(List<User> users, string sort, bool asc)
         {
-            if (asc)
+            if (users != null)
             {
-                switch (sort)
+                if (asc)
                 {
-                    case "UserId":
-                        users.Sort((x, y) => x.UserId.Value.CompareTo(y.UserId));
-                        break;
-                    default:
-                        users.Sort((x, y) => x.Name.CompareTo(y.Name));
-                        break;
-                    case "Email":
-                        users.Sort((x, y) => x.Email.CompareTo(y.Email));
-                        break;
-                    //case "Role":
-                    //    users.Sort((x, y) => x.Roles.CompareTo(y.Roles));
-                    //    break;
-                    case "SuperiorId":
-                        users.Sort((x, y) => x.SuperiorId.Value.CompareTo(y.SuperiorId));
-                        break;
-                    case "CreatedDate":
-                        users.Sort((x, y) => x.CreatedDate.Value.CompareTo(y.CreatedDate));
-                        break;
-                    case "ModifiedDate":
-                        users.Sort((x, y) => x.ModifiedDate.Value.CompareTo(y.ModifiedDate));
-                        break;
-                }
+                    switch (sort)
+                    {
+                        case "UserId":
+                            users.Sort((x, y) => x.UserId.Value.CompareTo(y.UserId));
+                            break;
+                        default:
+                            users.Sort((x, y) => x.Name.CompareTo(y.Name));
+                            break;
+                        case "Email":
+                            users.Sort((x, y) => x.Email.CompareTo(y.Email));
+                            break;
+                        //case "Role":
+                        //    users.Sort((x, y) => x.Roles.CompareTo(y.Roles));
+                        //    break;
+                        case "SuperiorId":
+                            users.Sort((x, y) => x.SuperiorId.Value.CompareTo(y.SuperiorId));
+                            break;
+                        case "CreatedDate":
+                            users.Sort((x, y) => x.CreatedDate.Value.CompareTo(y.CreatedDate));
+                            break;
+                        case "ModifiedDate":
+                            users.Sort((x, y) => x.ModifiedDate.Value.CompareTo(y.ModifiedDate));
+                            break;
+                    }
 
-            }
-            else
-            {
-                switch (sort)
+                }
+                else
                 {
-                    case "UserId":
-                        users.Sort((x, y) => y.UserId.Value.CompareTo(x.UserId));
-                        break;
-                    default:
-                        users.Sort((x, y) => y.Name.CompareTo(x.Name));
-                        break;
-                    case "Email":
-                        users.Sort((x, y) => y.Email.CompareTo(x.Email));
-                        break;
-                    //case "Role":
-                    //  users.Sort((x, y) => y.Role.CompareTo(x.Role));
-                    //    break;
-                    case "SuperiorId":
-                        users.Sort((x, y) => y.SuperiorId.Value.CompareTo(x.SuperiorId));
-                        break;
-                    case "CreatedDate":
-                        users.Sort((x, y) => y.CreatedDate.Value.CompareTo(x.CreatedDate));
-                        break;
-                    case "ModifiedDate":
-                        users.Sort((x, y) => y.ModifiedDate.Value.CompareTo(x.ModifiedDate));
-                        break;
+                    switch (sort)
+                    {
+                        case "UserId":
+                            users.Sort((x, y) => y.UserId.Value.CompareTo(x.UserId));
+                            break;
+                        default:
+                            users.Sort((x, y) => y.Name.CompareTo(x.Name));
+                            break;
+                        case "Email":
+                            users.Sort((x, y) => y.Email.CompareTo(x.Email));
+                            break;
+                        //case "Role":
+                        //  users.Sort((x, y) => y.Role.CompareTo(x.Role));
+                        //    break;
+                        case "SuperiorId":
+                            users.Sort((x, y) => y.SuperiorId.Value.CompareTo(x.SuperiorId));
+                            break;
+                        case "CreatedDate":
+                            users.Sort((x, y) => y.CreatedDate.Value.CompareTo(x.CreatedDate));
+                            break;
+                        case "ModifiedDate":
+                            users.Sort((x, y) => y.ModifiedDate.Value.CompareTo(x.ModifiedDate));
+                            break;
+                    }
                 }
             }
             return users;
@@ -305,12 +320,12 @@ namespace Server.API.Repositories
         {
             if (!string.IsNullOrWhiteSpace(search))
             {
-                users.Where(u => u.UserId.ToString().Contains(search) ||
-                                u.Name.Contains(search) ||
-                                u.Email.Contains(search) ||
-                                (u.Roles.SingleOrDefault(i => i.Name.Contains(search)) != null) ||
-                                u.CreatedDate.ToString().Contains(search) ||
-                                u.ModifiedDate.ToString().Contains(search));
+                 return users.Where(u => u.UserId.ToString().Contains(search) ||
+                                   u.Name.Contains(search) ||
+                                   u.Email.Contains(search) ||
+                                   (u.Roles.SingleOrDefault(i => i.Name.Contains(search)) != null) ||
+                                   u.CreatedDate.ToString().Contains(search) ||
+                                   u.ModifiedDate.ToString().Contains(search)).ToList();
             }
             return users;
         }

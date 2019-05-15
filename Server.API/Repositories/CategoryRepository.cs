@@ -60,8 +60,8 @@ namespace Server.API.Repositories
             List<Category> categories = _db.Categories.ToList();
             categories = FilterCategories(categories, search);
             categories = SortCategories(categories, sort, asc);
-            categories.Skip(pageNum * maxPerPage);
-            categories.Take(maxPerPage);
+            categories = categories.Skip(pageNum * maxPerPage).ToList();
+            categories = categories.Take(maxPerPage).ToList();
 
             return Task.FromResult(categories);
         }
@@ -131,11 +131,11 @@ namespace Server.API.Repositories
         {
             if (!string.IsNullOrWhiteSpace(search))
             {
-                categories.Where(u => u.CategoryId.ToString().Contains(search) ||
+                return categories.Where(u => u.CategoryId.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
                                 u.Description.Contains(search) ||
                                 u.CreatedDate.ToString().Contains(search) ||
-                                u.ModifiedDate.ToString().Contains(search));
+                                u.ModifiedDate.ToString().Contains(search)).ToList();
             }
             return categories;
         }

@@ -19,7 +19,8 @@ module.exports = {
   plugins: [
     'react', 'graphql',
   ],
-  rules: {
+  rules:
+    {
     "graphql/template-strings": ['error', {
       // Import default settings for your GraphQL client. Supported values:
       // 'apollo', 'relay', 'lokka', 'fraql', 'literal'
@@ -35,6 +36,8 @@ module.exports = {
       // schemaString: printSchema(schema),
 
       // tagName is gql by default
-    }]
-  },
+      }],
+    "jsx-a11y/label-has-for": "none",
+    "jsx-a11y/label-has-associated-control": "none"
+    },
 };

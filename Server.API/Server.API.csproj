@@ -61,37 +61,37 @@
       <HintPath>..\packages\GreenDonut.2.0.0\lib\netstandard1.3\GreenDonut.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.Abstractions, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.Abstractions.9.0.0-preview.19\lib\net461\HotChocolate.Abstractions.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.Abstractions.9.0.0-preview.29\lib\net461\HotChocolate.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.AspNetClassic, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.AspNetClassic.9.0.0-preview.18\lib\net461\HotChocolate.AspNetClassic.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.AspNetClassic.9.0.0-preview.29\lib\net461\HotChocolate.AspNetClassic.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.AspNetClassic.Authorization, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.AspNetClassic.Authorization.9.0.0-preview.18\lib\net461\HotChocolate.AspNetClassic.Authorization.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.AspNetClassic.Authorization.9.0.0-preview.29\lib\net461\HotChocolate.AspNetClassic.Authorization.dll</HintPath>
     </Reference>
-    <Reference Include="HotChocolate.AspNetClassic.GraphiQL, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.AspNetClassic.GraphiQL.0.8.2\lib\net461\HotChocolate.AspNetClassic.GraphiQL.dll</HintPath>
+    <Reference Include="HotChocolate.AspNetClassic.GraphiQL, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HotChocolate.AspNetClassic.GraphiQL.9.0.0-preview.29\lib\net461\HotChocolate.AspNetClassic.GraphiQL.dll</HintPath>
     </Reference>
-    <Reference Include="HotChocolate.AspNetClassic.Playground, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.AspNetClassic.Playground.0.8.2\lib\net461\HotChocolate.AspNetClassic.Playground.dll</HintPath>
+    <Reference Include="HotChocolate.AspNetClassic.Playground, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HotChocolate.AspNetClassic.Playground.9.0.0-preview.29\lib\net461\HotChocolate.AspNetClassic.Playground.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.Core, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.9.0.0-preview.18\lib\net461\HotChocolate.Core.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.9.0.0-preview.29\lib\net461\HotChocolate.Core.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.Language, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.Language.9.0.0-preview.19\lib\net461\HotChocolate.Language.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.Language.9.0.0-preview.29\lib\net461\HotChocolate.Language.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.Runtime, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.Runtime.9.0.0-preview.19\lib\net461\HotChocolate.Runtime.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.Runtime.9.0.0-preview.29\lib\net461\HotChocolate.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.Subscriptions, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.Subscriptions.9.0.0-preview.19\lib\net461\HotChocolate.Subscriptions.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.Subscriptions.9.0.0-preview.29\lib\net461\HotChocolate.Subscriptions.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.Types, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.Types.9.0.0-preview.19\lib\net461\HotChocolate.Types.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.Types.9.0.0-preview.29\lib\net461\HotChocolate.Types.dll</HintPath>
     </Reference>
     <Reference Include="HotChocolate.Utilities, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotChocolate.Utilities.9.0.0-preview.19\lib\net461\HotChocolate.Utilities.dll</HintPath>
+      <HintPath>..\packages\HotChocolate.Utilities.9.0.0-preview.29\lib\net461\HotChocolate.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="JWT, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\JWT.5.0.1\lib\net46\JWT.dll</HintPath>

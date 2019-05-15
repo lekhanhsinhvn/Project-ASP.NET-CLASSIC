@@ -9,9 +9,9 @@ const LOGOUT_QUERY = gql`
   }
 `;
 
-const LogoutBtn = ({ getUser }) => (
+const LogoutBtn = ({ getSelf }) => (
   <div>
-    <Mutation mutation={LOGOUT_QUERY} onCompleted={() => { getUser(); }}>
+    <Mutation mutation={LOGOUT_QUERY} onCompleted={() => { getSelf(); }}>
       {logout => (
         <button
           type="button"
@@ -25,7 +25,7 @@ const LogoutBtn = ({ getUser }) => (
   </div>
 );
 LogoutBtn.propTypes = {
-  getUser: PropTypes.func.isRequired,
+  getSelf: PropTypes.func.isRequired,
 };
 
 export default LogoutBtn;

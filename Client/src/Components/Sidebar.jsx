@@ -22,7 +22,8 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    const { sidebarToggle, sidebarOpen, user } = this.props; return (
+    const { sidebarToggle, sidebarOpen, self } = this.props;
+    return (
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
         <button type="button" className="btn btn-link sidebarToggle" onClick={sidebarToggle}>
           <i className="fas fa-bars" />
@@ -33,13 +34,13 @@ class Sidebar extends React.Component {
             <div className="sidebar">
               <Scrollbars>
                 <div>
-                  <Link to="/me" className="user-panel mt-3 mb-3 d-flex">
+                  <Link to="/users/me" className="user-panel mt-3 mb-3 d-flex">
                     <div style={{ margin: 'auto', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                       <div className="image" style={{ float: 'none' }}>
-                        <img src={`/images/${user && user.avatar}`} className="img-circle elevation-2" alt="User" />
+                        <img src={`/images/${self && self.avatar}`} className="img-circle elevation-2" alt="User" />
                       </div>
                       <div className="info">
-                        <p className="d-block" style={{ marginLeft: '5px' }}>{user && user.name}</p>
+                        <p className="d-block" style={{ marginLeft: '5px' }}>{self && self.name}</p>
                       </div>
                     </div>
                   </Link>
@@ -57,7 +58,7 @@ class Sidebar extends React.Component {
 Sidebar.propTypes = {
   sidebarOpen: PropTypes.bool.isRequired,
   sidebarToggle: PropTypes.func.isRequired,
-  user: PropTypes.shape({
+  self: PropTypes.shape({
     userId: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,

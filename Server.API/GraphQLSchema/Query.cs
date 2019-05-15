@@ -134,6 +134,19 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
+        public int GetTotalCountUser(IResolverContext context)
+        {
+            try
+            {
+                return _userRepository.GetTotalCountUser(context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return 0;
+        }
+
         public Role GetRole(int roleId, IResolverContext context)
         {
             try
@@ -175,6 +188,11 @@ namespace Server.API.GraphQLSchema
                 context.ReportError(ex.Message);
             }
             return null;
+        }
+
+        public int GetTotalCountRole(IResolverContext context)
+        {
+            return _roleRepository.GetTotalCountRole(context.RequestAborted).Result;
         }
 
         public Product GetProduct(int productId, IResolverContext context)
@@ -220,6 +238,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
+        public int GetTotalCountProduct(IResolverContext context)
+        {
+            return _productRepository.GetTotalCountProduct(context.RequestAborted).Result;
+        }
+
         public Category GetCategory(int categoryId, IResolverContext context)
         {
             try
@@ -263,6 +286,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
+        public int GetTotalCountCategory(IResolverContext context)
+        {
+            return _categoryRepository.GetTotalCountCategory(context.RequestAborted).Result;
+        }
+
         public Order GetOrder(int orderId, IResolverContext context)
         {
             try
@@ -304,6 +332,11 @@ namespace Server.API.GraphQLSchema
                 context.ReportError(ex.Message);
             }
             return null;
+        }
+
+        public int GetTotalCountOrder(IResolverContext context)
+        {
+            return _orderRepository.GetTotalCountOrder(context.RequestAborted).Result;
         }
     }
 }
