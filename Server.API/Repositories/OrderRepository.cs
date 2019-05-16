@@ -78,15 +78,16 @@ namespace Server.API.Repositories
 
         public Task<List<Order>> GetOrders(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
         {
-            if (!_db.Orders.Any())
-            {
-                throw new Exception("No Results.");
-            }
+            
             List<Order> orders = _db.Orders.ToList();
             orders = FilterOrders(orders, search);
             orders = SortOrders(orders, sort, asc);
             orders = orders.Skip(pageNum * maxPerPage).ToList();
             orders = orders.Take(maxPerPage).ToList();
+            if (!_db.Orders.Any())
+            {
+                throw new Exception("No Results.");
+            }
 
             return Task.FromResult(orders);
         }

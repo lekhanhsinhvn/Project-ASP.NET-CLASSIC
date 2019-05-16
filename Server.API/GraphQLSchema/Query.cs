@@ -192,7 +192,15 @@ namespace Server.API.GraphQLSchema
 
         public int GetTotalCountRole(IResolverContext context)
         {
-            return _roleRepository.GetTotalCountRole(context.RequestAborted).Result;
+            try
+            {
+                return _roleRepository.GetTotalCountRole(context.RequestAborted).Result;
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return 0;
         }
 
         public Product GetProduct(int productId, IResolverContext context)
@@ -240,7 +248,14 @@ namespace Server.API.GraphQLSchema
 
         public int GetTotalCountProduct(IResolverContext context)
         {
-            return _productRepository.GetTotalCountProduct(context.RequestAborted).Result;
+            try
+            {
+                return _productRepository.GetTotalCountProduct(context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+            }
+            return 0;
         }
 
         public Category GetCategory(int categoryId, IResolverContext context)
@@ -288,7 +303,15 @@ namespace Server.API.GraphQLSchema
 
         public int GetTotalCountCategory(IResolverContext context)
         {
-            return _categoryRepository.GetTotalCountCategory(context.RequestAborted).Result;
+            try
+            {
+                return _categoryRepository.GetTotalCountCategory(context.RequestAborted).Result;
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return 0;
         }
 
         public Order GetOrder(int orderId, IResolverContext context)
@@ -336,7 +359,15 @@ namespace Server.API.GraphQLSchema
 
         public int GetTotalCountOrder(IResolverContext context)
         {
-            return _orderRepository.GetTotalCountOrder(context.RequestAborted).Result;
+            try
+            {
+                return _orderRepository.GetTotalCountOrder(context.RequestAborted).Result;
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return 0;
         }
     }
 }

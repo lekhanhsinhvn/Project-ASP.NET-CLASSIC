@@ -207,12 +207,12 @@ namespace Server.API.Repositories
                 if(user.Roles != null)
                 {
                     found.Roles.Clear();
-                    foreach(Role role in user.Roles)
+                    foreach(Role r in user.Roles)
                     {
-                        Role r = _db.Roles.SingleOrDefault(i => i.RoleId == role.RoleId);
-                        if(r!=null)
+                        Role role = _db.Roles.SingleOrDefault(i => i.RoleId == r.RoleId);
+                        if(role != null)
                         {
-                            found.Roles.Add(r);
+                            found.Roles.Add(role);
                         }
                     }
                 }

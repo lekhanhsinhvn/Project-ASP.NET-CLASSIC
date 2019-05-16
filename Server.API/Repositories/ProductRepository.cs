@@ -55,16 +55,16 @@ namespace Server.API.Repositories
 
         public Task<List<Product>> GetProducts(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
         {
-            if (!_db.Products.Any())
-            {
-                throw new Exception("No Results.");
-            }
+            
             List<Product> products = _db.Products.ToList();
             products = FilterProducts(products, search);
             products = SortProducts(products, sort, asc);
             products = products.Skip(pageNum * maxPerPage).ToList();
             products = products.Take(maxPerPage).ToList();
-
+            if (!products.Any())
+            {
+                throw new Exception("No Results.");
+            }
             return Task.FromResult(products);
         }
 
@@ -92,7 +92,18 @@ namespace Server.API.Repositories
 
             found.Price = product.Price == null ? found.Price : product.Price;
             found.Quantity = product.Quantity == null ? found.Quantity : product.Quantity;
-            found.Categories = product.Categories;
+            if (product.Categories != null)
+            {
+                found.Categories.Clear();
+                foreach (Category c in product.Categories)
+                {
+                    Category category = _db.Categories.SingleOrDefault(i => i.CategoryId == c.CategoryId);
+                    if (category != null)
+                    {
+                        found.Categories.Add(category);
+                    }
+                }
+            }
             found.ModifiedDate = DateTime.Now;
             _db.SaveChanges();
             return Task.FromResult(_db.Products.SingleOrDefault(i => i.ProductId == product.ProductId));
@@ -164,7 +175,7 @@ namespace Server.API.Repositories
             {
                 return products.Where(u => u.ProductId.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
-                                u.Description.Contains(search) ||
+                                //u.Description.Contains(search) ||
                                 u.Price.ToString().Contains(search) ||
                                 u.Quantity.ToString().Contains(search) ||
                                 u.CreatedDate.ToString().Contains(search)||

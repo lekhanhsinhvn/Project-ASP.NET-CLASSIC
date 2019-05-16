@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import Sidebar from '../Components/Sidebar';
 import Navbar from '../Components/Navbar';
 import UsersPage from './UsersPage';
+import ProductsPage from './ProductsPage';
 
 class Main extends React.Component {
   constructor(props) {
@@ -35,6 +36,12 @@ class Main extends React.Component {
               path="/users"
               render={() => (
                 <UsersPage self={self} getSelf={getSelf} />
+              )}
+            />
+            <Route
+              path="/products"
+              render={() => (
+                <ProductsPage self={self} />
               )}
             />
           </Switch>

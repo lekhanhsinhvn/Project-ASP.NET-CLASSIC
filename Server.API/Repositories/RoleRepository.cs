@@ -52,16 +52,16 @@ namespace Server.API.Repositories
 
         public Task<List<Role>> GetRoles(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
         {
-            if (!_db.Roles.Any())
-            {
-                throw new Exception("No Results.");
-            }
+            
             List<Role> roles = _db.Roles.ToList();
             roles = FilterRoles(roles, search);
             roles = SortRoles(roles, sort, asc);
             roles = roles.Skip(pageNum * maxPerPage).ToList();
             roles = roles.Take(maxPerPage).ToList();
-
+            if (!roles.Any())
+            {
+                throw new Exception("No Results.");
+            }
             return Task.FromResult(roles);
         }
 

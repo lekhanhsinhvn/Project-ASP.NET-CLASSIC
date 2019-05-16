@@ -22,12 +22,18 @@ const UserDetail = ({
                 <h3 className="profile-username text-center">{dataUser && dataUser.name}</h3>
                 <ul className="list-group list-group-unbordered mb-3">
                   <li className="list-group-item">
-                    <b>Name</b>
-                    <div className="float-right">{dataUser && dataUser.name}</div>
-                  </li>
-                  <li className="list-group-item">
                     <b>Email</b>
                     <div className="float-right">{dataUser && dataUser.email}</div>
+                  </li>
+                  <li className="list-group-item">
+                    <b>Roles</b>
+                    <div className="float-right">
+                      {dataUser.roles.map((role, index) => (
+                        <React.Fragment key={role.roleId || index}>
+                          {`${role.name}, `}
+                        </React.Fragment>
+                      ))}
+                    </div>
                   </li>
                   <li className="list-group-item">
                     <b>Created</b>
@@ -62,7 +68,9 @@ UserDetail.propTypes = {
     email: PropTypes.string,
     avatar: PropTypes.string,
     roles: PropTypes.arrayOf(PropTypes.shape({
+      roleId: PropTypes.number,
       name: PropTypes.string,
+      level: PropTypes.number,
     })),
     createdDate: PropTypes.string,
     modifiedDate: PropTypes.string,
@@ -73,7 +81,9 @@ UserDetail.propTypes = {
     email: PropTypes.string,
     avatar: PropTypes.string,
     roles: PropTypes.arrayOf(PropTypes.shape({
+      roleId: PropTypes.number,
       name: PropTypes.string,
+      level: PropTypes.number,
     })),
     createdDate: PropTypes.string,
     modifiedDate: PropTypes.string,

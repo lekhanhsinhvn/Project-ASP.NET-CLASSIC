@@ -30,7 +30,6 @@ query GetUser($userId:Int!){
     userId
     name
     email
-    password
     avatar
     roles{
       roleId
@@ -51,7 +50,6 @@ const GET_SELF = gql`
       userId
       name
       email
-      password
       avatar
       roles{
         roleId
@@ -72,7 +70,6 @@ const GET_SUPERIOR = gql`
       userId
       name
       email
-      password
       avatar
       roles{
         roleId
@@ -173,7 +170,10 @@ class UsersPage extends React.Component {
           exact
           path="/users"
           render={props => (
-            <UserList {...props} header="Users List" />
+            <UserList
+              {...props}
+              header="Users List"
+            />
           )}
         />
       </Switch>
@@ -187,7 +187,9 @@ UsersPage.propTypes = {
     email: PropTypes.string,
     avatar: PropTypes.string,
     roles: PropTypes.arrayOf(PropTypes.shape({
+      roleId: PropTypes.number,
       name: PropTypes.string,
+      level: PropTypes.number,
     })),
   }).isRequired,
   getSelf: PropTypes.func.isRequired,

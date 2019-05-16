@@ -52,16 +52,16 @@ namespace Server.API.Repositories
 
         public Task<List<Category>> GetCategorys(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
         {
-            if (!_db.Categories.Any())
-            {
-                throw new Exception("No Results.");
-            }
+            
             List<Category> categories = _db.Categories.ToList();
             categories = FilterCategories(categories, search);
             categories = SortCategories(categories, sort, asc);
             categories = categories.Skip(pageNum * maxPerPage).ToList();
             categories = categories.Take(maxPerPage).ToList();
-
+            if (!_db.Categories.Any())
+            {
+                throw new Exception("No Results.");
+            }
             return Task.FromResult(categories);
         }
 
