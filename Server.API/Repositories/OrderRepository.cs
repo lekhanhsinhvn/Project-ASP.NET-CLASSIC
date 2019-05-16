@@ -11,10 +11,9 @@ namespace Server.API.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly ServerContext _db;
-        public OrderRepository(ServerContext db)
+        private readonly ServerContext _db = new ServerContext();
+        public OrderRepository()
         {
-            _db = db;
         }
 
         public Task<Order> CreateOrder(int InferiorId, int SuperiorId, Order order, CancellationToken cancellationToken)

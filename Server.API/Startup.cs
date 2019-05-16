@@ -21,7 +21,8 @@ namespace Server.API
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<ServerContext>();
+            //services.AddSingleton<ServerContext>();
+
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAuthRepository, AuthRepository>();
             services.AddSingleton<IRoleRepository, RoleRepository>();

@@ -15,10 +15,9 @@ namespace Server.API.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly ServerContext _db;
-        public AuthRepository(ServerContext db)
+        private readonly ServerContext _db = new ServerContext();
+        public AuthRepository()
         {
-            _db = db;
         }
 
         public Task<string> Login(string email, string password, CancellationToken cancellationToken)

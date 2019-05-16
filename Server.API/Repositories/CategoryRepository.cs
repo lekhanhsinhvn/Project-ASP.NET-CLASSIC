@@ -11,10 +11,9 @@ namespace Server.API.Repositories
 {
     public class CategoryRepository :ICategoryRepository
     {
-        private readonly ServerContext _db;
-        public CategoryRepository(ServerContext db)
+        private readonly ServerContext _db = new ServerContext();
+        public CategoryRepository()
         {
-            _db = db;
         }
 
         public Task<Category> CreateCategory(Category category, CancellationToken cancellationToken)

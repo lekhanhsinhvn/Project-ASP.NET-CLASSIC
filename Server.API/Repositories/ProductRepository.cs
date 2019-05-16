@@ -12,11 +12,10 @@ namespace Server.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ServerContext _db;
+        private readonly ServerContext _db = new ServerContext();
         private readonly IFileHandler _fileHandler;
-        public ProductRepository(ServerContext db, IFileHandler fileHandler)
+        public ProductRepository(IFileHandler fileHandler)
         {
-            _db = db;
             _fileHandler = fileHandler;
         }
 

@@ -7,7 +7,6 @@ namespace Server.DB
     {
         public ServerContext() : base("name=connstring")
         {
-            //Database.SetInitializer(new DbInitalize());
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

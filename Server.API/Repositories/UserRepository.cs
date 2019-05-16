@@ -16,11 +16,10 @@ namespace Server.API.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ServerContext _db;
+        private readonly ServerContext _db= new ServerContext();
         private readonly IFileHandler _fileHandler;
-        public UserRepository(ServerContext db, IFileHandler fileHandler)
+        public UserRepository(IFileHandler fileHandler)
         {
-            _db = db;
             _fileHandler = fileHandler;
         }
 
@@ -72,7 +71,8 @@ namespace Server.API.Repositories
         /// <returns></returns>
         public Task<int> GetTotalCountUser(CancellationToken cancellationToken)
         {
-            int count = _db.Users.Count();
+            List<User> users = _db.Users.ToList();
+            int count = users.Count();
             return Task.FromResult(count);
         }
 

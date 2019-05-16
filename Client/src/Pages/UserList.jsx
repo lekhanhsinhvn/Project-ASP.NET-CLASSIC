@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import ApolloClient from 'apollo-boost';
+import _ from 'lodash';
 
 import ContentHeader from '../Components/ContentHeader';
 
@@ -52,10 +53,16 @@ const GET_USERS = gql`
 let sortting = 'Name';
 let asccing = true;
 
-const client = new ApolloClient({
+let client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
   credentials: 'include',
 });
+const clearStore = () => {
+  client = new ApolloClient({
+    uri: 'http://localhost:3001/graphql',
+    credentials: 'include',
+  });
+};
 
 class UserList extends React.Component {
   constructor(props) {
@@ -79,7 +86,6 @@ class UserList extends React.Component {
     this.getUsers({
       pageNum, maxPerPage, search, sort, asc,
     });
-    this.getTotalCountUser();
   }
 
   componentDidUpdate() {
@@ -91,7 +97,6 @@ class UserList extends React.Component {
     this.getUsers({
       pageNum, maxPerPage, search, sort, asc,
     });
-    this.getTotalCountUser();
   }
 
   onPush({
@@ -103,10 +108,11 @@ class UserList extends React.Component {
 
   setUsers(data) {
     const { users } = this.state;
-    if (data !== users) {
+    if (!_.isEqual(users, data)) {
       this.setState(() => (
         { users: data }
       ));
+      this.getTotalCountUser();
     }
   }
 
@@ -122,6 +128,7 @@ class UserList extends React.Component {
   getUsers({
     pageNum, maxPerPage, search, sort, asc,
   }) {
+    clearStore();
     client.query({
       query: GET_USERS,
       variables: {
@@ -130,7 +137,9 @@ class UserList extends React.Component {
       errorPolicy: 'ignore',
     })
       .then((response) => {
-        if (response.data) this.setUsers(response.data.getUsers);
+        if (response.data !== null) {
+          this.setUsers(response.data.getUsers);
+        }
       });
   }
 
@@ -300,7 +309,7 @@ class UserList extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {users.map((user, index) => (
+                        {users && users.map((user, index) => (
                           <tr
                             key={user.userId || index}
                           >
