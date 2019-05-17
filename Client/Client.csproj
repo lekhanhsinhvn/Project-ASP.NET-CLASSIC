@@ -67,8 +67,41 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="public\images\ba-lo.jpg" />
+    <Content Include="public\images\bang-dinh.jpg" />
+    <Content Include="public\images\bia-cong.jpg" />
+    <Content Include="public\images\bia-hop.jpg" />
+    <Content Include="public\images\bia-lo-a4.jpg" />
+    <Content Include="public\images\but-bi-den.jpg" />
+    <Content Include="public\images\but-bi-xanh.jpg" />
+    <Content Include="public\images\but-chi-kim-bam.jpg" />
+    <Content Include="public\images\but-may.jpg" />
+    <Content Include="public\images\but-viet-bang.jpg" />
+    <Content Include="public\images\but-xoa.jpg" />
+    <Content Include="public\images\but_chi_khuc.jpg" />
+    <Content Include="public\images\cap-3-day.JPG" />
+    <Content Include="public\images\cap-sach.jpg" />
+    <Content Include="public\images\cap-trinh-ky.JPG" />
+    <Content Include="public\images\compa.jpg" />
     <Content Include="public\images\default.png" />
     <Content Include="public\favicon.ico" />
+    <Content Include="public\images\GI-A0.jpg" />
+    <Content Include="public\images\giay-a1.jpg" />
+    <Content Include="public\images\giay-a2.jpg" />
+    <Content Include="public\images\giay-a3.jpg" />
+    <Content Include="public\images\giay-a4.jpg" />
+    <Content Include="public\images\giay-nho.jpg" />
+    <Content Include="public\images\kep-buom.jpg" />
+    <Content Include="public\images\kim-bam.jpg" />
+    <Content Include="public\images\muc-viet-bang.jpg" />
+    <Content Include="public\images\muc-viet-but.jpg" />
+    <Content Include="public\images\phong-bi.jpg" />
+    <Content Include="public\images\ruot-but-chi-bam.jpg" />
+    <Content Include="public\images\so-bia-da.jpg" />
+    <Content Include="public\images\so-tay.jpg" />
+    <Content Include="public\images\thuoc-ke.jpg" />
+    <Content Include="public\images\vo-ke-ngang.jpg" />
+    <Content Include="public\images\vo-o-ly.png" />
     <Content Include="public\index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
