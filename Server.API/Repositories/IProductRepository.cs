@@ -20,6 +20,6 @@ namespace Server.API.Repositories
 
         Task<Product> DeleteProduct(int ProductId, CancellationToken cancellationToken);
 
-        Task<Product> CreateProduct(Product product, CancellationToken cancellationToken);
+        Task<Product> CreateProduct(Product product, string base64String, CancellationToken cancellationToken);
     }
 }

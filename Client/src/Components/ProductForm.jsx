@@ -157,8 +157,7 @@ class ProductForm extends React.Component {
             className="card"
             onSubmit={(e) => {
               e.preventDefault();
-              updateProduct({ variables: { product: dataProduct, base64String } })
-                .then(() => this.editableToggle());
+              updateProduct({ variables: { product: dataProduct, base64String } });
             }}
           >
             <div className="form-group">
@@ -172,7 +171,7 @@ class ProductForm extends React.Component {
                     name="name"
                     placeholder="Name"
                     onChange={this.productChange}
-                    readOnly={!editable}
+                    readOnly
                     value={dataProduct.name}
                   />
                 </div>
@@ -182,8 +181,7 @@ class ProductForm extends React.Component {
               <label htmlFor="description" style={{ width: '100%' }}>
                 <div className="col-sm-3 control-label">Description</div>
                 <div className="col-sm-10">
-                  <input
-                    type="text"
+                  <textarea
                     className="form-control"
                     id="description"
                     name="description"
@@ -244,6 +242,7 @@ class ProductForm extends React.Component {
                     placeholder="Price"
                     onChange={this.productChange}
                     readOnly={!editable}
+                    required
                     value={dataProduct.price}
                   />
                 </div>
@@ -261,6 +260,7 @@ class ProductForm extends React.Component {
                     placeholder="Quantity"
                     onChange={this.productChange}
                     readOnly={!editable}
+                    required
                     value={dataProduct.quantity}
                   />
                 </div>
@@ -358,5 +358,6 @@ ProductForm.propTypes = {
   history: PropTypes.object.isRequired,
   refetch: PropTypes.func.isRequired,
 };
+
 
 export default ProductForm;

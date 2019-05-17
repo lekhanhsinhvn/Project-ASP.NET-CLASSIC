@@ -171,11 +171,11 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public Product CreateProduct(Product product, IResolverContext context)
+        public Product CreateProduct(Product product,string base64String, IResolverContext context)
         {
             try
             {
-                return _productRepository.CreateProduct(product, context.RequestAborted).Result;
+                return _productRepository.CreateProduct(product, base64String, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {

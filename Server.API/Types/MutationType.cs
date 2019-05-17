@@ -37,7 +37,7 @@ namespace Server.API.Types
                 .Type<RoleType>().Name("deleteRole").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
 
             // Product
-            descriptor.Field(t => t.CreateProduct(default, default))
+            descriptor.Field(t => t.CreateProduct(default, default, default))
                 .Type<ProductType>().Name("createProduct").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
             descriptor.Field(t => t.UpdateProduct(default, default, default))
                 .Type<ProductType>().Name("updateProduct").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));

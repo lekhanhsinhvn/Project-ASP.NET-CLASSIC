@@ -8,6 +8,7 @@ import _ from 'lodash';
 import ErrorPage from './ErrorPage';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
+import ProductCreate from './ProductCreate';
 
 const getUrlParameter = function getUrlParameter(sParam) {
   const sPageURL = window.location.search.substring(1);
@@ -78,6 +79,16 @@ class ProductsPage extends React.Component {
                 );
               }}
             </Query>
+          )}
+        />
+        <Route
+          exact
+          path="/products/create"
+          render={props => (
+            <ProductCreate
+              {...props}
+              header="Create Product"
+            />
           )}
         />
         <Route

@@ -195,6 +195,7 @@ class UserForm extends React.Component {
                     placeholder="Name"
                     onChange={this.userChange}
                     readOnly={!editable}
+                    required
                     value={dataUser.name}
                   />
                 </div>

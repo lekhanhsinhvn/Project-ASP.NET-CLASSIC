@@ -19,11 +19,29 @@ namespace Server.API.Repositories
             _fileHandler = fileHandler;
         }
 
-        public Task<Product> CreateProduct(Product product, CancellationToken cancellationToken)
+        public Task<Product> CreateProduct(Product product,string base64String, CancellationToken cancellationToken)
         {
             if (_db.Products.SingleOrDefault(i => i.Name == product.Name) != null)
             {
                 throw new Exception("Already have that product");
+            }
+            ICollection<Category> categories=new List<Category>();
+            if (product.Categories != null)
+            {
+                foreach (Category c in product.Categories)
+                {
+                    Category category = _db.Categories.SingleOrDefault(i => i.CategoryId == c.CategoryId);
+                    if (category != null)
+                    {
+                        categories.Add(category);
+                    }
+                }
+            }
+            product.Categories = categories;
+            if (!string.IsNullOrWhiteSpace(base64String))
+            {
+                product.Image = DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + "_" + product.Name + ".png";
+                _fileHandler.ImageSave(base64String, product.Image);
             }
             product.CreatedDate = DateTime.Now;
             product.ModifiedDate = DateTime.Now;
@@ -94,9 +112,9 @@ namespace Server.API.Repositories
 
             found.Price = product.Price == null ? found.Price : product.Price;
             found.Quantity = product.Quantity == null ? found.Quantity : product.Quantity;
+            found.Categories.Clear();
             if (product.Categories != null)
             {
-                found.Categories.Clear();
                 foreach (Category c in product.Categories)
                 {
                     Category category = _db.Categories.SingleOrDefault(i => i.CategoryId == c.CategoryId);
