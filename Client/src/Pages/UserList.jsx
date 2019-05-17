@@ -72,7 +72,7 @@ class UserList extends React.Component {
       users: null,
       totalCountUser: 0,
     };
-    this.onPush = this.onPush.bind(this);
+    this.redirect = this.redirect.bind(this);
     this.setUsers = this.setUsers.bind(this);
   }
 
@@ -96,13 +96,6 @@ class UserList extends React.Component {
     this.getUsers({
       pageNum, maxPerPage, search, sort, asc,
     });
-  }
-
-  onPush({
-    pageNum, maxPerPage, search, sort, asc,
-  }) {
-    const { history } = this.props;
-    history.push(`/users?pageNum=${pageNum}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`);
   }
 
   setUsers(users, totalCountUser) {
@@ -142,6 +135,13 @@ class UserList extends React.Component {
       });
   }
 
+  redirect({
+    pageNum, maxPerPage, search, sort, asc,
+  }) {
+    const { history } = this.props;
+    history.push(`/users?pageNum=${pageNum}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`);
+  }
+
   render() {
     const { header } = this.props;
     const { users, totalCountUser } = this.state;
@@ -167,7 +167,7 @@ class UserList extends React.Component {
                           id="maxPerPage"
                           name="maxPerPage"
                           className="form-control form-control-sm"
-                          onChange={event => this.onPush({
+                          onChange={event => this.redirect({
                             pageNum: 0, maxPerPage: event.target.value, search, sort, asc,
                           })}
                         >
@@ -189,7 +189,7 @@ class UserList extends React.Component {
                           className="form-control form-control-sm"
                           placeholder="Search"
                           value={getUrlParameter('search') !== null ? getUrlParameter('search') : ''}
-                          onChange={event => this.onPush({
+                          onChange={event => this.redirect({
                             pageNum, maxPerPage, search: event.target.value, sort, asc,
                           })}
                         />
@@ -207,7 +207,7 @@ class UserList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'UserId' ? !asccing : true;
                               sortting = 'UserId';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -222,7 +222,7 @@ class UserList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'Name' ? !asccing : true;
                               sortting = 'Name';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -237,7 +237,7 @@ class UserList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'Email' ? !asccing : true;
                               sortting = 'Email';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -253,7 +253,7 @@ class UserList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'SuperiorId' ? !asccing : true;
                               sortting = 'SuperiorId';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -269,7 +269,7 @@ class UserList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'CreatedDate' ? !asccing : true;
                               sortting = 'CreatedDate';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -285,7 +285,7 @@ class UserList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'ModifiedDate' ? !asccing : true;
                               sortting = 'ModifiedDate';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}

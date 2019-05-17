@@ -72,7 +72,7 @@ class ProductList extends React.Component {
       products: null,
       totalCountProduct: 0,
     };
-    this.onPush = this.onPush.bind(this);
+    this.redirect = this.redirect.bind(this);
     this.setProducts = this.setProducts.bind(this);
   }
 
@@ -96,13 +96,6 @@ class ProductList extends React.Component {
     this.getProducts({
       pageNum, maxPerPage, search, sort, asc,
     });
-  }
-
-  onPush({
-    pageNum, maxPerPage, search, sort, asc,
-  }) {
-    const { history } = this.props;
-    history.push(`/products?pageNum=${pageNum}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`);
   }
 
   setProducts(products, totalCountProduct) {
@@ -142,6 +135,13 @@ class ProductList extends React.Component {
       });
   }
 
+  redirect({
+    pageNum, maxPerPage, search, sort, asc,
+  }) {
+    const { history } = this.props;
+    history.push(`/products?pageNum=${pageNum}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`);
+  }
+
   render() {
     const { header } = this.props;
     const { products, totalCountProduct } = this.state;
@@ -167,7 +167,7 @@ class ProductList extends React.Component {
                           id="maxPerPage"
                           name="maxPerPage"
                           className="form-control form-control-sm"
-                          onChange={event => this.onPush({
+                          onChange={event => this.redirect({
                             pageNum: 0, maxPerPage: event.target.value, search, sort, asc,
                           })}
                         >
@@ -189,7 +189,7 @@ class ProductList extends React.Component {
                           className="form-control form-control-sm"
                           placeholder="Search"
                           value={getUrlParameter('search') !== null ? getUrlParameter('search') : ''}
-                          onChange={event => this.onPush({
+                          onChange={event => this.redirect({
                             pageNum, maxPerPage, search: event.target.value, sort, asc,
                           })}
                         />
@@ -207,7 +207,7 @@ class ProductList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'ProductId' ? !asccing : true;
                               sortting = 'ProductId';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -222,7 +222,7 @@ class ProductList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'Name' ? !asccing : true;
                               sortting = 'Name';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -237,7 +237,7 @@ class ProductList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'Price' ? !asccing : true;
                               sortting = 'Price';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -253,7 +253,7 @@ class ProductList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'Quantity' ? !asccing : true;
                               sortting = 'Quantity';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -269,7 +269,7 @@ class ProductList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'CreatedDate' ? !asccing : true;
                               sortting = 'CreatedDate';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
@@ -285,7 +285,7 @@ class ProductList extends React.Component {
                             onClick={() => {
                               asccing = sortting === 'ModifiedDate' ? !asccing : true;
                               sortting = 'ModifiedDate';
-                              this.onPush({
+                              this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}

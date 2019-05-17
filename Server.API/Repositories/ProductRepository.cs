@@ -35,11 +35,13 @@ namespace Server.API.Repositories
         public Task<Product> DeleteProduct(int ProductId, CancellationToken cancellationToken)
         {
             Product found = _db.Products.FirstOrDefault(x => x.ProductId == ProductId);
-            if (found != null)
+            if (found == null)
             {
-                _db.Products.Remove(found);
-                _db.SaveChanges();
+                throw new Exception("Product doesn't exist.");
             }
+            _fileHandler.ImageRemove(found.Image);
+            _db.Products.Remove(found);
+            _db.SaveChanges();
             return Task.FromResult(found);
         }
 

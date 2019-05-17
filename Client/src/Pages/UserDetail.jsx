@@ -6,7 +6,7 @@ import UserFormSelf from '../Components/UserFormSelf';
 import UserForm from '../Components/UserForm';
 
 const UserDetail = ({
-  self, dataUser, header, getSelf, edit, QUERY,
+  self, dataUser, header, getSelf, edit, QUERY, refetch,
 }) => (
   <div style={{ minHeight: '511px' }}>
     <ContentHeader header={header} />
@@ -50,7 +50,7 @@ const UserDetail = ({
           <div className="col-md-9">
             <div className="card">
               <div className="card-body">
-                {QUERY === 'USER' && <UserForm edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} />}
+                {QUERY === 'USER' && <UserForm edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} refetch={refetch} />}
                 {QUERY === 'SELF' && <UserFormSelf edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} />}
               </div>
             </div>
@@ -92,6 +92,7 @@ UserDetail.propTypes = {
   getSelf: PropTypes.func.isRequired,
   edit: PropTypes.bool.isRequired,
   QUERY: PropTypes.string.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default UserDetail;

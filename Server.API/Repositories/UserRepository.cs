@@ -129,14 +129,15 @@ namespace Server.API.Repositories
         /// <returns></returns>
         public Task<User> DeleteUser(int UserId, CancellationToken cancellationToken)
         {
-            User user = _db.Users.FirstOrDefault(x => x.UserId == UserId);
-            if (user == null)
+            User found = _db.Users.FirstOrDefault(x => x.UserId == UserId);
+            if (found == null)
             {
                 throw new Exception("User doesn't exist.");
             }
-            _db.Users.Remove(user);
+            _fileHandler.ImageRemove(found.Avatar);
+            _db.Users.Remove(found);
             _db.SaveChanges();
-            return Task.FromResult(user);
+            return Task.FromResult(found);
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ const GET_ROLES = gql`
 `;
 const UPDATEUSER_QUERY = gql`
   mutation UpdateUser($user: UserInput, $base64String: String!) {
-    updateUser(user: $user,, base64String:$base64String){
+    updateUser(user: $user, base64String:$base64String){
       userId
       name
       email
@@ -44,8 +44,8 @@ const UPDATEUSER_QUERY = gql`
         modifiedDate
       }
       superiorId
-      }
     }
+  }
 `;
 const DELETEUSER_QUERY = gql`
   mutation DeleteUser($userId:Int!) {
@@ -76,7 +76,7 @@ function getBase64(file) {
   });
 }
 
-class UserDetail extends React.Component {
+class UserForm extends React.Component {
   constructor(props) {
     super(props);
     const { dataUser } = this.props;
@@ -92,14 +92,7 @@ class UserDetail extends React.Component {
     this.userChange = this.userChange.bind(this);
     this.imgChange = this.imgChange.bind(this);
     this.roleChange = this.roleChange.bind(this);
-  }
-
-  componentDidUpdate() {
-    const { redirect } = this.state;
-    if (redirect != null) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ redirect: '/users' });
-    }
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   deleteUser() {
@@ -163,13 +156,24 @@ class UserDetail extends React.Component {
       editable, dataUser, base64String, redirect,
     } = this.state;
     const {
-      getSelf, self, edit,
+      getSelf, self, edit, refetch,
     } = this.props;
     if (redirect != null) {
       return (<Redirect to="/users" />);
     }
     return (
-      <Mutation mutation={UPDATEUSER_QUERY} errorPolicy="ignore" onCompleted={() => { getSelf(); }}>
+      <Mutation
+        mutation={UPDATEUSER_QUERY}
+        errorPolicy="ignore"
+        onCompleted={() => {
+          if (dataUser.userId === self.userId) {
+            getSelf();
+          } else {
+            refetch();
+            this.editableToggle();
+          }
+        }}
+      >
         {(updateUser, { loading, error }) => (
           <form
             className="card"
@@ -265,9 +269,9 @@ class UserDetail extends React.Component {
             </Query>
             {
               (edit && (_.find(self.roles, { name: 'Admin' }) !== undefined)) ? (
-                <div>
+                <React.Fragment>
                   {editable ? (
-                    <div>
+                    <React.Fragment>
                       <div className="form-group">
                         <label htmlFor="avatar" style={{ width: '100%' }}>
                           <div className="col-sm-3 control-label">New Avatar</div>
@@ -314,7 +318,7 @@ class UserDetail extends React.Component {
                           ) : ''}
                         </div>
                       </div>
-                    </div>
+                    </React.Fragment>
                   ) : (
                     <div className="form-group">
                       <div className="col-sm-offset-2 col-sm-10">
@@ -328,7 +332,7 @@ class UserDetail extends React.Component {
                       </div>
                     </div>
                   )}
-                </div>
+                </React.Fragment>
               ) : ''}
           </form>
         )}
@@ -337,7 +341,7 @@ class UserDetail extends React.Component {
   }
 }
 
-UserDetail.propTypes = {
+UserForm.propTypes = {
   self: PropTypes.shape({
     userId: PropTypes.number,
     name: PropTypes.string,
@@ -359,6 +363,7 @@ UserDetail.propTypes = {
   }).isRequired,
   getSelf: PropTypes.func.isRequired,
   edit: PropTypes.bool.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
-export default UserDetail;
+export default UserForm;

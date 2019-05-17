@@ -62,13 +62,16 @@ class ProductsPage extends React.Component {
           path="/products/detail"
           render={props => (
             <Query query={GET_PRODUCT} variables={{ productId: getUrlParameter('ProductId') }}>
-              {({ loading, error, data }) => {
+              {({
+                loading, error, data, refetch,
+              }) => {
                 if (loading) return '';
                 if (error) return (<ErrorPage code="300" message={error.message} />);
                 return (
                   <ProductDetail
                     {...props}
                     header={data.getProduct.name}
+                    refetch={refetch}
                     edit={edit}
                     dataProduct={data.getProduct}
                   />

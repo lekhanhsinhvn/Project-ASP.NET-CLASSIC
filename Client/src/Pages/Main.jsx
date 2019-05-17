@@ -41,7 +41,7 @@ class Main extends React.Component {
             <Route
               path="/products"
               render={() => (
-                <ProductsPage self={self} />
+                <ProductsPage self={self} getSelf={getSelf} />
               )}
             />
           </Switch>

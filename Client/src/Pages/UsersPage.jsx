@@ -100,7 +100,9 @@ class UsersPage extends React.Component {
           path="/users/detail"
           render={props => (
             <Query query={GET_USER} variables={{ userId: getUrlParameter('UserId') }}>
-              {({ loading, error, data }) => {
+              {({
+                loading, error, data, refetch,
+              }) => {
                 if (loading) return '';
                 if (error) return (<ErrorPage code="300" message={error.message} />);
                 return (
@@ -112,6 +114,7 @@ class UsersPage extends React.Component {
                     header={data && data.getUser.name}
                     dataUser={data && data.getUser}
                     getSelf={getSelf}
+                    refetch={refetch}
                     setReload={this.setReload}
                   />
                 );
@@ -172,6 +175,7 @@ class UsersPage extends React.Component {
           render={props => (
             <UserList
               {...props}
+              getSelf={getSelf}
               header="Users List"
             />
           )}
