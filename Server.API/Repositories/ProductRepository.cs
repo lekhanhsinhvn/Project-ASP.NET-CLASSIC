@@ -196,6 +196,7 @@ namespace Server.API.Repositories
                 return products.Where(u => u.ProductId.ToString().Contains(search) ||
                                 u.Name.Contains(search) ||
                                 //u.Description.Contains(search) ||
+                                (u.Categories.SingleOrDefault(i => i.Name.Contains(search)) != null) ||
                                 u.Price.ToString().Contains(search) ||
                                 u.Quantity.ToString().Contains(search) ||
                                 u.CreatedDate.ToString().Contains(search)||

@@ -29,7 +29,8 @@ const data = [
         icon: 'far fa-user',
       },
     ],
-  }, {
+  },
+  {
     id: '3',
     path: '/products',
     name: 'Products',
@@ -38,7 +39,7 @@ const data = [
       {
         id: '2-1',
         path: '/products',
-        name: 'Products List',
+        name: 'Product List',
         icon: 'fas fa-cubes',
       },
       {
@@ -46,6 +47,26 @@ const data = [
         path: '/products/create',
         name: 'Create Product',
         icon: 'fas fa-cubes',
+      },
+    ],
+  },
+  {
+    id: '4',
+    path: '/categories',
+    name: 'Categories',
+    icon: 'fas fa-list',
+    children: [
+      {
+        id: '4-1',
+        path: '/categories',
+        name: 'Category List',
+        icon: 'fas fa-list',
+      },
+      {
+        id: '4-2',
+        path: '/categories/create',
+        name: 'Create Category',
+        icon: 'fas fa-list',
       },
     ],
   },

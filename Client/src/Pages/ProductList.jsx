@@ -74,6 +74,7 @@ class ProductList extends React.Component {
     };
     this.redirect = this.redirect.bind(this);
     this.setProducts = this.setProducts.bind(this);
+    this.getProducts = this.getProducts.bind(this);
   }
 
   componentDidMount() {
@@ -99,7 +100,7 @@ class ProductList extends React.Component {
   }
 
   setProducts(products, totalCountProduct) {
-    const { products1 } = this.state;
+    const { products: products1 } = this.state;
     if (!_.isEqual(products1, products)) {
       this.setState(() => (
         { products, totalCountProduct }

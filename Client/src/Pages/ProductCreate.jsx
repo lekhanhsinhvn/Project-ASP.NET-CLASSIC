@@ -129,7 +129,6 @@ class ProductCreate extends React.Component {
                   className="card"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    console.log(dataProduct);
                     createProduct({ variables: { product: dataProduct, base64String } });
                   }}
                 >

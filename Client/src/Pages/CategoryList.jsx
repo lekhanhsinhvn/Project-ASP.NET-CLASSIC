@@ -23,29 +23,19 @@ const getUrlParameter = function getUrlParameter(sParam) {
   return null;
 };
 
-const GET_TOTALCOUNTUSER = gql`
+const GET_TOTALCOUNTCATEGORY = gql`
   {
-    getTotalCountUser
+    getTotalCountCategory
   }
 `;
-const GET_USERS = gql`
-  query GetUsers($pageNum: Int, $maxPerPage: Int, $search: String, $sort: String, $asc: Boolean){
-    getUsers(pageNum: $pageNum, maxPerPage: $maxPerPage, search: $search, sort: $sort, asc: $asc) {
-      userId
+const GET_CATEGORIES = gql`
+  query GetCategories($pageNum: Int, $maxPerPage: Int, $search: String, $sort: String, $asc: Boolean){
+    getCategories(pageNum: $pageNum, maxPerPage: $maxPerPage, search: $search, sort: $sort, asc: $asc) {
+      categoryId
       name
-      email
-      password
-      avatar
-      roles{
-        roleId
-        name
-        level
-        createdDate
-        modifiedDate
-      }
-      superiorId
+      description
       createdDate
-      modifiedDate
+      modifiedDate 
       }
   }
 `;
@@ -64,17 +54,17 @@ const clearStore = () => {
   });
 };
 
-class UserList extends React.Component {
+class CategoryList extends React.Component {
   constructor(props) {
     super(props);
     // This binding is necessary to make `this` work in the callback
     this.state = {
-      users: null,
-      totalCountUser: 0,
+      categories: null,
+      totalCountCategory: 0,
     };
     this.redirect = this.redirect.bind(this);
-    this.setUsers = this.setUsers.bind(this);
-    this.getUsers = this.getUsers.bind(this);
+    this.setCategories = this.setCategories.bind(this);
+    this.getCategories = this.getCategories.bind(this);
   }
 
   componentDidMount() {
@@ -83,7 +73,7 @@ class UserList extends React.Component {
     const search = getUrlParameter('search') !== null ? getUrlParameter('search') : '';
     const sort = getUrlParameter('sort') !== null ? getUrlParameter('sort') : '';
     const asc = getUrlParameter('asc') !== null ? getUrlParameter('asc') : true;
-    this.getUsers({
+    this.getCategories({
       pageNum, maxPerPage, search, sort, asc,
     });
   }
@@ -94,43 +84,43 @@ class UserList extends React.Component {
     const search = getUrlParameter('search') !== null ? getUrlParameter('search') : '';
     const sort = getUrlParameter('sort') !== null ? getUrlParameter('sort') : '';
     const asc = getUrlParameter('asc') !== null ? getUrlParameter('asc') : true;
-    this.getUsers({
+    this.getCategories({
       pageNum, maxPerPage, search, sort, asc,
     });
   }
 
-  setUsers(users, totalCountUser) {
-    const { users: users1 } = this.state;
-    if (!_.isEqual(users1, users)) {
+  setCategories(categories, totalCountCategory) {
+    const { categories: categories1 } = this.state;
+    if (!_.isEqual(categories1, categories)) {
       this.setState(() => (
-        { users, totalCountUser }
+        { categories, totalCountCategory }
       ));
     }
   }
 
-  getUsers({
+  getCategories({
     pageNum, maxPerPage, search, sort, asc,
   }) {
-    const { users } = this.state;
-    let dataUsers;
-    let dataTotalCountUser;
+    const { categories } = this.state;
+    let dataCategories;
+    let dataTotalCountCategory;
     clearStore();
     client.query({
-      query: GET_USERS,
+      query: GET_CATEGORIES,
       variables: {
         pageNum, maxPerPage, search, sort, asc,
       },
       errorPolicy: 'ignore',
     })
       .then((response) => {
-        dataUsers = response.data.getUsers;
-        if (!_.isEqual(users, dataUsers)) {
+        dataCategories = response.data.getCategories;
+        if (!_.isEqual(categories, dataCategories)) {
           client.query({
-            query: GET_TOTALCOUNTUSER,
+            query: GET_TOTALCOUNTCATEGORY,
             errorPolicy: 'ignore',
           }).then((response1 = response) => {
-            dataTotalCountUser = response1.data.getTotalCountUser;
-            this.setUsers(dataUsers, dataTotalCountUser);
+            dataTotalCountCategory = response1.data.getTotalCountProduct;
+            this.setCategories(dataCategories, dataTotalCountCategory);
           });
         }
       });
@@ -140,12 +130,12 @@ class UserList extends React.Component {
     pageNum, maxPerPage, search, sort, asc,
   }) {
     const { history } = this.props;
-    history.push(`/users?pageNum=${pageNum}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`);
+    history.push(`/categories?pageNum=${pageNum}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`);
   }
 
   render() {
     const { header } = this.props;
-    const { users, totalCountUser } = this.state;
+    const { categories, totalCountCategory } = this.state;
     const pageNum = getUrlParameter('pageNum') !== null ? parseInt(getUrlParameter('pageNum'), 10) : 0;
     const maxPerPage = getUrlParameter('maxPerPage') !== null ? parseInt(getUrlParameter('maxPerPage'), 10) : 10;
     const search = getUrlParameter('search') !== null ? getUrlParameter('search') : '';
@@ -198,7 +188,7 @@ class UserList extends React.Component {
                     </div>
                   </div>
                 </div>
-                {users !== null ? (
+                {categories !== null ? (
                   <React.Fragment>
                     <table className="table dataTable table-bordered table-hover">
                       <thead>
@@ -206,15 +196,15 @@ class UserList extends React.Component {
                           <th
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
-                              asccing = sortting === 'UserId' ? !asccing : true;
-                              sortting = 'UserId';
+                              asccing = sortting === 'CategoryId' ? !asccing : true;
+                              sortting = 'CategoryId';
                               this.redirect({
                                 pageNum, maxPerPage, search, sort: sortting, asc: asccing,
                               });
                             }}
                           >
-                            {'UserId'}
-                            {sortting === 'UserId'
+                            {'CategoryId'}
+                            {sortting === 'CategoryId'
                               ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
                               : ''}
                           </th>
@@ -233,38 +223,7 @@ class UserList extends React.Component {
                               ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
                               : ''}
                           </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'Email' ? !asccing : true;
-                              sortting = 'Email';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'Email'}
-                            {sortting === 'Email'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th>Roles</th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'SuperiorId' ? !asccing : true;
-                              sortting = 'SuperiorId';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'SuperiorId'}
-                            {sortting === 'SuperiorId'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-
-                          </th>
+                          <th>Description</th>
                           <th
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
@@ -299,42 +258,28 @@ class UserList extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {users && users.map((user, index) => (
+                        {categories && categories.map((category, index) => (
                           <tr
-                            key={user.userId || index}
+                            key={category.categoryId || index}
                           >
-                            <td>{user.userId}</td>
+                            <td>{category.categoryId}</td>
                             <td>
-                              <Link to={`/users/detail?UserId=${user.userId}`}>
-                                {user.name}
+                              <Link to={`/categories/detail?CategoryId=${category.categoryId}`}>
+                                {category.name}
                               </Link>
                             </td>
-                            <td>{user.email}</td>
-                            <td>
-                              {user.roles.map((role, index1 = index) => (
-                                <React.Fragment key={role.roleId || index1}>
-                                  {`${role.name}, `}
-                                </React.Fragment>
-                              ))}
-                            </td>
-                            <td>
-                              {user.superiorId !== 0 && user.superiorId !== 1000 ? (
-                                <Link to={`/users/detail?UserId=${user.superiorId}`}>
-                                  {user.superiorId}
-                                </Link>
-                              ) : user.superiorId}
-                            </td>
-                            <td>{user.createdDate}</td>
-                            <td>{user.modifiedDate}</td>
+                            <td>{category.price}</td>
+                            <td>{category.createdDate}</td>
+                            <td>{category.modifiedDate}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
-                    {totalCountUser !== null ? (
+                    {totalCountCategory !== null ? (
                       <div className="row">
                         <div className="col-sm-12 col-md-5">
                           <div className="dataTables_info">
-                            {`Showing ${pageNum * maxPerPage + 1} to ${((pageNum + 1) * maxPerPage > totalCountUser) ? totalCountUser : (pageNum + 1) * maxPerPage} of ${totalCountUser} entries`}
+                            {`Showing ${pageNum * maxPerPage + 1} to ${((pageNum + 1) * maxPerPage > totalCountCategory) ? totalCountCategory : (pageNum + 1) * maxPerPage} of ${totalCountCategory} entries`}
                           </div>
                         </div>
                         <div className="col-sm-12 col-md-7">
@@ -342,35 +287,35 @@ class UserList extends React.Component {
                             <ul className="pagination">
                               <li className={`paginate_button page-item ${pageNum - 1 >= 0 ? '' : 'disabled'}`}>
                                 {pageNum - 1 >= 0
-                                  ? (<Link className="page-link" to={`/users?pageNum=${pageNum - 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>Previous</Link>)
+                                  ? (<Link className="page-link" to={`/categories?pageNum=${pageNum - 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>Previous</Link>)
                                   : (<div className="page-link">Previous</div>)}
                               </li>
                               <li className="paginate_button page-item">
                                 {pageNum - 2 >= 0
-                                  ? (<Link className="page-link" to={`/users?pageNum=${pageNum - 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum - 2}</Link>)
+                                  ? (<Link className="page-link" to={`/categories?pageNum=${pageNum - 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum - 2}</Link>)
                                   : ''}
                               </li>
                               <li className="paginate_button page-item">
                                 {pageNum - 1 >= 0
-                                  ? (<Link className="page-link" to={`/users?pageNum=${pageNum - 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum - 1}</Link>)
+                                  ? (<Link className="page-link" to={`/categories?pageNum=${pageNum - 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum - 1}</Link>)
                                   : ''}
                               </li>
                               <li className="paginate_button page-item active disabled">
                                 <div className="page-link">{pageNum}</div>
                               </li>
                               <li className="paginate_button page-item">
-                                {(pageNum + 1) * maxPerPage < totalCountUser
-                                  ? (<Link className="page-link" to={`/users?pageNum=${pageNum + 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 1}</Link>)
+                                {(pageNum + 1) * maxPerPage < totalCountCategory
+                                  ? (<Link className="page-link" to={`/categories?pageNum=${pageNum + 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 1}</Link>)
                                   : ''}
                               </li>
                               <li className="paginate_button page-item">
-                                {(pageNum + 2) * maxPerPage < totalCountUser
-                                  ? (<Link className="page-link" to={`/users?pageNum=${pageNum + 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 2}</Link>)
+                                {(pageNum + 2) * maxPerPage < totalCountCategory
+                                  ? (<Link className="page-link" to={`/categories?pageNum=${pageNum + 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 2}</Link>)
                                   : ''}
                               </li>
-                              <li className={`paginate_button page-item ${(pageNum + 1) * maxPerPage < totalCountUser ? '' : 'disabled'}`}>
-                                {(pageNum + 1) * maxPerPage < totalCountUser
-                                  ? (<Link className="page-link" to={`/users?pageNum=${pageNum + 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>Next</Link>)
+                              <li className={`paginate_button page-item ${(pageNum + 1) * maxPerPage < totalCountCategory ? '' : 'disabled'}`}>
+                                {(pageNum + 1) * maxPerPage < totalCountCategory
+                                  ? (<Link className="page-link" to={`/categories?pageNum=${pageNum + 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>Next</Link>)
                                   : (<div className="page-link">Next</div>)}
                               </li>
                             </ul>
@@ -389,10 +334,10 @@ class UserList extends React.Component {
   }
 }
 
-UserList.propTypes = {
+CategoryList.propTypes = {
   header: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
 };
 
-export default UserList;
+export default CategoryList;

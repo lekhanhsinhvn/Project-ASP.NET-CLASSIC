@@ -188,7 +188,7 @@ class ProductForm extends React.Component {
                     placeholder="Description"
                     onChange={this.productChange}
                     readOnly={!editable}
-                    value={dataProduct.description !== null ? dataProduct.description : ''}
+                    value={dataProduct.description}
                   />
                 </div>
               </label>

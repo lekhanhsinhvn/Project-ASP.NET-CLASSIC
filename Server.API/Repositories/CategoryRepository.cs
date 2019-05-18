@@ -73,9 +73,9 @@ namespace Server.API.Repositories
         public Task<Category> UpdateCategory(Category category, CancellationToken cancellationToken)
         {
             Category found = _db.Categories.SingleOrDefault(i => i.CategoryId == category.CategoryId);
-            if (found != null)
+            if (found == null)
             {
-                throw new Exception("Role doesn't exist.");
+                throw new Exception("Category doesn't exist.");
             }
             found.Description = string.IsNullOrWhiteSpace(category.Description) ? found.Description : category.Description;
             found.Products = category.Products;

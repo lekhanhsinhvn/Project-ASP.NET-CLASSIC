@@ -6,6 +6,7 @@ import Sidebar from '../Components/Sidebar';
 import Navbar from '../Components/Navbar';
 import UsersPage from './UsersPage';
 import ProductsPage from './ProductsPage';
+import CategoriesPage from './CategoriesPage';
 
 class Main extends React.Component {
   constructor(props) {
@@ -42,6 +43,12 @@ class Main extends React.Component {
               path="/products"
               render={() => (
                 <ProductsPage self={self} getSelf={getSelf} />
+              )}
+            />
+            <Route
+              path="/categories"
+              render={() => (
+                <CategoriesPage self={self} getSelf={getSelf} />
               )}
             />
           </Switch>
