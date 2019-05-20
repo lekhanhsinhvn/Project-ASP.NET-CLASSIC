@@ -12,6 +12,8 @@ namespace Server.API.Repositories
     {
         Task<Order> GetOrder(int OrderId, CancellationToken cancellationToken);
 
+        Task<List<Order>> GetSelfOrdersWithStatus(int UserId, string status, CancellationToken requestAborted);
+
         Task<List<Order>> GetOrders(int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken);
 
         Task<int> GetTotalCountOrder(CancellationToken cancellationToken);

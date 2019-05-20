@@ -49,6 +49,8 @@ namespace Server.API.Types
             // Order
             descriptor.Field(t => t.GetOrder(default, default))
                 .Type<OrderType>().Name("getOrder");
+            descriptor.Field(t => t.GetSelfOrdersWithStatus(default, default, default))
+                .Type<ListType<OrderType>>().Name("getSelfOrdersWithStatus");
             descriptor.Field(t => t.GetOrders(default, default, default, default, default, default))
                 .Type<ListType<OrderType>>().Name("getOrders");
             descriptor.Field(t => t.GetTotalCountOrder(default))

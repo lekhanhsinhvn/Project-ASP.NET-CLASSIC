@@ -6,6 +6,7 @@ import ApolloClient from 'apollo-boost';
 import _ from 'lodash';
 
 import ContentHeader from '../Components/ContentHeader';
+import AddtoOrder from '../Components/AddtoOrder';
 
 const getUrlParameter = function getUrlParameter(sParam) {
   const sPageURL = window.location.search.substring(1);
@@ -144,7 +145,7 @@ class ProductList extends React.Component {
   }
 
   render() {
-    const { header } = this.props;
+    const { header, self } = this.props;
     const { products, totalCountProduct } = this.state;
     const pageNum = getUrlParameter('pageNum') !== null ? parseInt(getUrlParameter('pageNum'), 10) : 0;
     const maxPerPage = getUrlParameter('maxPerPage') !== null ? parseInt(getUrlParameter('maxPerPage'), 10) : 10;
@@ -200,130 +201,146 @@ class ProductList extends React.Component {
                 </div>
                 {products !== null ? (
                   <React.Fragment>
-                    <table className="table dataTable table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'ProductId' ? !asccing : true;
-                              sortting = 'ProductId';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'ProductId'}
-                            {sortting === 'ProductId'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'Name' ? !asccing : true;
-                              sortting = 'Name';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'Name'}
-                            {sortting === 'Name'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'Price' ? !asccing : true;
-                              sortting = 'Price';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'Price'}
-                            {sortting === 'Price'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th>Categories</th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'Quantity' ? !asccing : true;
-                              sortting = 'Quantity';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'Quantity'}
-                            {sortting === 'Quantity'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
+                    <div style={{ overflowX: 'auto' }}>
+                      <table className="table dataTable table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'ProductId' ? !asccing : true;
+                                sortting = 'ProductId';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'ProductId'}
+                              {sortting === 'ProductId'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'Name' ? !asccing : true;
+                                sortting = 'Name';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'Name'}
+                              {sortting === 'Name'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th>Image</th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'Price' ? !asccing : true;
+                                sortting = 'Price';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'Price'}
+                              {sortting === 'Price'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th>Categories</th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'Quantity' ? !asccing : true;
+                                sortting = 'Quantity';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'Quantity'}
+                              {sortting === 'Quantity'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
 
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'CreatedDate' ? !asccing : true;
-                              sortting = 'CreatedDate';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'CreatedDate'}
-                            {sortting === 'CreatedDate'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'CreatedDate' ? !asccing : true;
+                                sortting = 'CreatedDate';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'CreatedDate'}
+                              {sortting === 'CreatedDate'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
 
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'ModifiedDate' ? !asccing : true;
-                              sortting = 'ModifiedDate';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'ModifiedDate'}
-                            {sortting === 'ModifiedDate'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {products && products.map((product, index) => (
-                          <tr
-                            key={product.productId || index}
-                          >
-                            <td>{product.productId}</td>
-                            <td>
-                              <Link to={`/products/detail?ProductId=${product.productId}`}>
-                                {product.name}
-                              </Link>
-                            </td>
-                            <td>{product.price}</td>
-                            <td>
-                              {product.categories.map((category, index1 = index) => (
-                                <React.Fragment key={category.categoryId || index1}>
-                                  {`${category.name}, `}
-                                </React.Fragment>
-                              ))}
-                            </td>
-                            <td>{product.quantity}</td>
-                            <td>{product.createdDate}</td>
-                            <td>{product.modifiedDate}</td>
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'ModifiedDate' ? !asccing : true;
+                                sortting = 'ModifiedDate';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'ModifiedDate'}
+                              {sortting === 'ModifiedDate'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th />
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {products && products.map((product, index) => (
+                            <tr
+                              key={product.productId || index}
+                            >
+                              <td>{product.productId}</td>
+                              <td>
+                                <Link to={`/products/detail?ProductId=${product.productId}`}>
+                                  {product.name}
+                                </Link>
+                              </td>
+                              <td>
+                                <Link to={`/products/detail?ProductId=${product.productId}`}>
+                                  <img style={{ width: '100px' }} className="img-fluid" src={`/images/${product.image}`} alt="Product" />
+                                </Link>
+                              </td>
+                              <td>{product.price}</td>
+                              <td>
+                                {product.categories.map((category, index1 = index) => (
+                                  <React.Fragment key={category.categoryId || index1}>
+                                    {`${category.name}, `}
+                                  </React.Fragment>
+                                ))}
+                              </td>
+                              <td>{product.quantity}</td>
+                              <td>{product.createdDate}</td>
+                              <td>{product.modifiedDate}</td>
+                              <td>
+                                <AddtoOrder
+                                  self={self}
+                                  dataProduct={product}
+                                  refresh={() => this.componentDidUpdate()}
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                     {totalCountProduct !== null ? (
                       <div className="row">
                         <div className="col-sm-12 col-md-5">
@@ -384,6 +401,15 @@ class ProductList extends React.Component {
 }
 
 ProductList.propTypes = {
+  self: PropTypes.shape({
+    userId: PropTypes.number,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    avatar: PropTypes.string,
+    roles: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+    })),
+  }).isRequired,
   header: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,

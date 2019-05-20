@@ -11,9 +11,10 @@ namespace Server.API.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
-        private readonly ServerContext _db = new ServerContext();
-        public RoleRepository()
+        private readonly ServerContext _db;
+        public RoleRepository(ServerContext db)
         {
+            _db = db;
         }
 
         public Task<Role> CreateRole(Role role, CancellationToken cancellationToken)

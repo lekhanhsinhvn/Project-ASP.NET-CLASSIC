@@ -190,91 +190,93 @@ class CategoryList extends React.Component {
                 </div>
                 {categories !== null ? (
                   <React.Fragment>
-                    <table className="table dataTable table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'CategoryId' ? !asccing : true;
-                              sortting = 'CategoryId';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'CategoryId'}
-                            {sortting === 'CategoryId'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'Name' ? !asccing : true;
-                              sortting = 'Name';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'Name'}
-                            {sortting === 'Name'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th>Description</th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'CreatedDate' ? !asccing : true;
-                              sortting = 'CreatedDate';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'CreatedDate'}
-                            {sortting === 'CreatedDate'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
+                    <div style={{ overflowX: 'auto' }}>
+                      <table className="table dataTable table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'CategoryId' ? !asccing : true;
+                                sortting = 'CategoryId';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'CategoryId'}
+                              {sortting === 'CategoryId'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'Name' ? !asccing : true;
+                                sortting = 'Name';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'Name'}
+                              {sortting === 'Name'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th>Description</th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'CreatedDate' ? !asccing : true;
+                                sortting = 'CreatedDate';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'CreatedDate'}
+                              {sortting === 'CreatedDate'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
 
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'ModifiedDate' ? !asccing : true;
-                              sortting = 'ModifiedDate';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'ModifiedDate'}
-                            {sortting === 'ModifiedDate'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {categories && categories.map((category, index) => (
-                          <tr
-                            key={category.categoryId || index}
-                          >
-                            <td>{category.categoryId}</td>
-                            <td>
-                              <Link to={`/categories/detail?CategoryId=${category.categoryId}`}>
-                                {category.name}
-                              </Link>
-                            </td>
-                            <td>{category.price}</td>
-                            <td>{category.createdDate}</td>
-                            <td>{category.modifiedDate}</td>
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'ModifiedDate' ? !asccing : true;
+                                sortting = 'ModifiedDate';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'ModifiedDate'}
+                              {sortting === 'ModifiedDate'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {categories && categories.map((category, index) => (
+                            <tr
+                              key={category.categoryId || index}
+                            >
+                              <td>{category.categoryId}</td>
+                              <td>
+                                <Link to={`/categories/detail?CategoryId=${category.categoryId}`}>
+                                  {category.name}
+                                </Link>
+                              </td>
+                              <td>{category.price}</td>
+                              <td>{category.createdDate}</td>
+                              <td>{category.modifiedDate}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                     {totalCountCategory !== null ? (
                       <div className="row">
                         <div className="col-sm-12 col-md-5">

@@ -157,6 +157,8 @@ class ProductForm extends React.Component {
             className="card"
             onSubmit={(e) => {
               e.preventDefault();
+              dataProduct.quantity = parseInt(dataProduct.quantity, 10);
+              dataProduct.price = parseInt(dataProduct.price, 10);
               updateProduct({ variables: { product: dataProduct, base64String } });
             }}
           >
@@ -188,7 +190,7 @@ class ProductForm extends React.Component {
                     placeholder="Description"
                     onChange={this.productChange}
                     readOnly={!editable}
-                    value={dataProduct.description}
+                    value={dataProduct.description !== null ? dataProduct.description : ''}
                   />
                 </div>
               </label>

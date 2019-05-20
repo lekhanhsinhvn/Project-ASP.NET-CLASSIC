@@ -54,11 +54,11 @@ namespace Server.API.Types
 
             // Order
             descriptor.Field(t => t.CreateOrder(default, default, default, default))
-                .Type<OrderType>().Name("createOrder").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+                .Type<OrderType>().Name("createOrder");
             descriptor.Field(t => t.UpdateOrder(default, default))
-                .Type<OrderType>().Name("updateOrder").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+                .Type<OrderType>().Name("updateOrder");
             descriptor.Field(t => t.DeleteOrder(default, default))
-                .Type<OrderType>().Name("deleteOrder").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+                .Type<OrderType>().Name("deleteOrder");
         }
     }
 }

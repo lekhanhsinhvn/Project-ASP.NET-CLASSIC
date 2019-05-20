@@ -13,7 +13,7 @@ namespace Server.DB.Models
         [Key]
         public int? OrderId { get; set; }
 
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
         public int? TotalCount { get; set; }
 

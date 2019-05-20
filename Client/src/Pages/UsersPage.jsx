@@ -127,7 +127,9 @@ class UsersPage extends React.Component {
           path="/users/superior"
           render={props => (
             <Query query={GET_SUPERIOR}>
-              {({ loading, error, data }) => {
+              {({
+                loading, error, data, refetch,
+              }) => {
                 if (loading) return '';
                 if (error) return (<ErrorPage code="300" message="You don't have a Superior" />);
                 return (
@@ -136,6 +138,8 @@ class UsersPage extends React.Component {
                     QUERY="SELF"
                     edit={false}
                     self={self}
+                    getSelf={getSelf}
+                    refetch={refetch}
                     header="Superior"
                     dataUser={data && data.getSuperior}
                   />

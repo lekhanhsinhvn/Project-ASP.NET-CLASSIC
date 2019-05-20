@@ -12,10 +12,11 @@ namespace Server.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ServerContext _db = new ServerContext();
+        private readonly ServerContext _db;
         private readonly IFileHandler _fileHandler;
-        public ProductRepository(IFileHandler fileHandler)
+        public ProductRepository(IFileHandler fileHandler, ServerContext db)
         {
+            _db = db;
             _fileHandler = fileHandler;
         }
 
@@ -25,7 +26,11 @@ namespace Server.API.Repositories
             {
                 throw new Exception("Already have that product");
             }
-            ICollection<Category> categories=new List<Category>();
+            if (product.Quantity < 0 || product.Price < 0)
+            {
+                throw new Exception("Product invalid");
+            }
+                ICollection<Category> categories=new List<Category>();
             if (product.Categories != null)
             {
                 foreach (Category c in product.Categories)
@@ -100,6 +105,10 @@ namespace Server.API.Repositories
             {
                 throw new Exception("Product doesn't exist.");
             }
+            if (product.Quantity < 0 || product.Price < 0)
+            {
+                throw new Exception("Product invalid");
+            }
             found.Description = string.IsNullOrWhiteSpace(product.Description) ? found.Description : product.Name;
 
             if (!string.IsNullOrWhiteSpace(base64String))
@@ -110,8 +119,8 @@ namespace Server.API.Repositories
                 found.Image = product.Image;
             }
 
-            found.Price = product.Price == null ? found.Price : product.Price;
-            found.Quantity = product.Quantity == null ? found.Quantity : product.Quantity;
+            found.Price = (product.Price == null && product.Price < 0) ? found.Price : product.Price;
+            found.Quantity = (product.Quantity == null && product.Quantity < 0) ? found.Quantity : product.Quantity;
             found.Categories.Clear();
             if (product.Categories != null)
             {

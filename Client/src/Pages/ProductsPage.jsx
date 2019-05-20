@@ -73,6 +73,7 @@ class ProductsPage extends React.Component {
                     {...props}
                     header={data.getProduct.name}
                     refetch={refetch}
+                    self={self}
                     edit={edit}
                     dataProduct={data.getProduct}
                   />
@@ -97,6 +98,7 @@ class ProductsPage extends React.Component {
           render={props => (
             <ProductList
               {...props}
+              self={self}
               header="Product List"
             />
           )}

@@ -326,6 +326,23 @@ namespace Server.API.GraphQLSchema
             }
             return null;
         }
+
+        public List<Order> GetSelfOrdersWithStatus(int? userId,string status, IResolverContext context)
+        {
+            if (userId == null)
+            {
+                userId = 0;
+            }
+            try
+            {
+                return _orderRepository.GetSelfOrdersWithStatus(userId.Value, status, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
         public List<Order> GetOrders(int? pageNum, int? maxPerPage, string sort, string search, bool? asc, IResolverContext context)
         {
             //default

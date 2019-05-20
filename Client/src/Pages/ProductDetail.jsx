@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import ContentHeader from '../Components/ContentHeader';
 import ProductForm from '../Components/ProductForm';
+import AddtoOrder from '../Components/AddtoOrder';
+
 
 class ProductDetail extends React.Component {
   constructor(props) {
@@ -12,7 +14,7 @@ class ProductDetail extends React.Component {
 
   render() {
     const {
-      header, dataProduct, edit, refetch,
+      header, dataProduct, edit, refetch, self,
     } = this.props;
     return (
       <div style={{ minHeight: '511px' }}>
@@ -32,7 +34,7 @@ class ProductDetail extends React.Component {
                 <div className="card card-primary card-outline">
                   <div className="card-body box-profile">
                     <div className="text-center">
-                      <img className="profile-user-img img-fluid" src={`/images/${dataProduct.image}`} alt="User profile" />
+                      <img className="profile-user-img img-fluid" src={`/images/${dataProduct.image}`} alt="Product" />
                     </div>
                     <h3 className="profile-username text-center">{dataProduct.name}</h3>
                     <ul className="list-group list-group-unbordered mb-3">
@@ -53,6 +55,7 @@ class ProductDetail extends React.Component {
                         <div className="float-right">{dataProduct.modifiedDate}</div>
                       </li>
                     </ul>
+                    <AddtoOrder dataProduct={dataProduct} self={self} refresh={refetch} />
                   </div>
                 </div>
               </div>
@@ -64,6 +67,15 @@ class ProductDetail extends React.Component {
   }
 }
 ProductDetail.propTypes = {
+  self: PropTypes.shape({
+    userId: PropTypes.number,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    avatar: PropTypes.string,
+    roles: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+    })),
+  }).isRequired,
   dataProduct: PropTypes.shape({
     productId: PropTypes.number,
     name: PropTypes.string,

@@ -200,136 +200,138 @@ class UserList extends React.Component {
                 </div>
                 {users !== null ? (
                   <React.Fragment>
-                    <table className="table dataTable table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'UserId' ? !asccing : true;
-                              sortting = 'UserId';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'UserId'}
-                            {sortting === 'UserId'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'Name' ? !asccing : true;
-                              sortting = 'Name';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'Name'}
-                            {sortting === 'Name'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'Email' ? !asccing : true;
-                              sortting = 'Email';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'Email'}
-                            {sortting === 'Email'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                          <th>Roles</th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'SuperiorId' ? !asccing : true;
-                              sortting = 'SuperiorId';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'SuperiorId'}
-                            {sortting === 'SuperiorId'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
+                    <div style={{ overflowX: 'auto' }}>
+                      <table className="table dataTable table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'UserId' ? !asccing : true;
+                                sortting = 'UserId';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'UserId'}
+                              {sortting === 'UserId'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'Name' ? !asccing : true;
+                                sortting = 'Name';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'Name'}
+                              {sortting === 'Name'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'Email' ? !asccing : true;
+                                sortting = 'Email';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'Email'}
+                              {sortting === 'Email'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
+                            <th>Roles</th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'SuperiorId' ? !asccing : true;
+                                sortting = 'SuperiorId';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'SuperiorId'}
+                              {sortting === 'SuperiorId'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
 
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'CreatedDate' ? !asccing : true;
-                              sortting = 'CreatedDate';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'CreatedDate'}
-                            {sortting === 'CreatedDate'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'CreatedDate' ? !asccing : true;
+                                sortting = 'CreatedDate';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'CreatedDate'}
+                              {sortting === 'CreatedDate'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
 
-                          </th>
-                          <th
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              asccing = sortting === 'ModifiedDate' ? !asccing : true;
-                              sortting = 'ModifiedDate';
-                              this.redirect({
-                                pageNum, maxPerPage, search, sort: sortting, asc: asccing,
-                              });
-                            }}
-                          >
-                            {'ModifiedDate'}
-                            {sortting === 'ModifiedDate'
-                              ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
-                              : ''}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {users && users.map((user, index) => (
-                          <tr
-                            key={user.userId || index}
-                          >
-                            <td>{user.userId}</td>
-                            <td>
-                              <Link to={`/users/detail?UserId=${user.userId}`}>
-                                {user.name}
-                              </Link>
-                            </td>
-                            <td>{user.email}</td>
-                            <td>
-                              {user.roles.map((role, index1 = index) => (
-                                <React.Fragment key={role.roleId || index1}>
-                                  {`${role.name}, `}
-                                </React.Fragment>
-                              ))}
-                            </td>
-                            <td>
-                              {user.superiorId !== 0 && user.superiorId !== 1000 ? (
-                                <Link to={`/users/detail?UserId=${user.superiorId}`}>
-                                  {user.superiorId}
-                                </Link>
-                              ) : user.superiorId}
-                            </td>
-                            <td>{user.createdDate}</td>
-                            <td>{user.modifiedDate}</td>
+                            </th>
+                            <th
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => {
+                                asccing = sortting === 'ModifiedDate' ? !asccing : true;
+                                sortting = 'ModifiedDate';
+                                this.redirect({
+                                  pageNum, maxPerPage, search, sort: sortting, asc: asccing,
+                                });
+                              }}
+                            >
+                              {'ModifiedDate'}
+                              {sortting === 'ModifiedDate'
+                                ? (<div className="float-right">{asccing ? (<i className="fas fa-arrow-up" />) : <i className="fas fa-arrow-down" />}</div>)
+                                : ''}
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {users && users.map((user, index) => (
+                            <tr
+                              key={user.userId || index}
+                            >
+                              <td>{user.userId}</td>
+                              <td>
+                                <Link to={`/users/detail?UserId=${user.userId}`}>
+                                  {user.name}
+                                </Link>
+                              </td>
+                              <td>{user.email}</td>
+                              <td>
+                                {user.roles.map((role, index1 = index) => (
+                                  <React.Fragment key={role.roleId || index1}>
+                                    {`${role.name}, `}
+                                  </React.Fragment>
+                                ))}
+                              </td>
+                              <td>
+                                {user.superiorId !== 0 && user.superiorId !== 1000 ? (
+                                  <Link to={`/users/detail?UserId=${user.superiorId}`}>
+                                    {user.superiorId}
+                                  </Link>
+                                ) : user.superiorId}
+                              </td>
+                              <td>{user.createdDate}</td>
+                              <td>{user.modifiedDate}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                     {totalCountUser !== null ? (
                       <div className="row">
                         <div className="col-sm-12 col-md-5">

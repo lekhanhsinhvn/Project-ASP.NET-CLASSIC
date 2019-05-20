@@ -31,7 +31,7 @@ class Main extends React.Component {
       <div className={`sidebar-mini ${sidebarOpen ? 'sidebar-open' : 'sidebar-collapse'}`}>
         <Navbar sidebarToggle={this.sidebarToggle} getSelf={getSelf} />
         <Sidebar sidebarToggle={this.sidebarToggle} sidebarOpen={sidebarOpen} self={self} />
-        <div className="content-wrapper">
+        <div id="content" className="content-wrapper">
           <Switch>
             <Route
               path="/users"

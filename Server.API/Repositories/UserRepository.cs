@@ -16,10 +16,11 @@ namespace Server.API.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ServerContext _db= new ServerContext();
+        private readonly ServerContext _db;
         private readonly IFileHandler _fileHandler;
-        public UserRepository(IFileHandler fileHandler)
+        public UserRepository(ServerContext db, IFileHandler fileHandler)
         {
+            _db = db;
             _fileHandler = fileHandler;
         }
 
