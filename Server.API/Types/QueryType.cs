@@ -49,10 +49,18 @@ namespace Server.API.Types
             // Order
             descriptor.Field(t => t.GetOrder(default, default))
                 .Type<OrderType>().Name("getOrder");
-            descriptor.Field(t => t.GetSelfOrdersWithStatus(default, default, default))
-                .Type<ListType<OrderType>>().Name("getSelfOrdersWithStatus");
+            descriptor.Field(t => t.GetOrdersUserandStatus(default, default, default))
+                .Type<ListType<OrderType>>().Name("getOrdersUserandStatus");
+            descriptor.Field(t => t.GetOrdersfromUserasSuperior(default, default, default, default, default, default, default))
+                .Type<ListType<OrderType>>().Name("getOrdersfromUserasSuperior");
+            descriptor.Field(t => t.GetOrdersfromUserasInferior(default, default, default, default, default, default, default))
+                .Type<ListType<OrderType>>().Name("getOrdersfromUserasInferior");
             descriptor.Field(t => t.GetOrders(default, default, default, default, default, default))
-                .Type<ListType<OrderType>>().Name("getOrders");
+                .Type<ListType<OrderType>>().Name("getOrders").Use((services, next) => new AuthMiddleware(next, new string[] { "Admin" }));
+            descriptor.Field(t => t.GetTotalCountOrdersfromUserasInferior(default, default))
+                .Type<IntType>().Name("getTotalCountOrdersfromUserasInferior");
+            descriptor.Field(t => t.GetTotalCountOrdersfromUserasSuperior(default, default))
+                .Type<IntType>().Name("getTotalCountOrdersfromUserasSuperior");
             descriptor.Field(t => t.GetTotalCountOrder(default))
                 .Type<IntType>().Name("getTotalCountOrder");
         }

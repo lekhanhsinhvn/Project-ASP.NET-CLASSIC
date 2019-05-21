@@ -36,7 +36,7 @@ const DELETECATEGORY_QUERY = gql`
     }
   }
 `;
-class CategoryCreate extends React.Component {
+class CategoryDetail extends React.Component {
   constructor(props) {
     super(props);
     const { dataCategory } = this.props;
@@ -84,12 +84,12 @@ class CategoryCreate extends React.Component {
         <section className="content">
           <div className="container-fluid">
             <Mutation mutation={UPDATECATEGORY_QUERY} errorPolicy="ignore" onCompleted={() => { refetch(); this.editableToggle(); }}>
-              {(createCategory, { loading, error }) => (
+              {(updateCategory, { loading, error }) => (
                 <form
                   className="card"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    createCategory({ variables: { category: dataCategory } });
+                    updateCategory({ variables: { category: dataCategory } });
                   }}
                 >
                   <div className="form-group">
@@ -186,7 +186,7 @@ class CategoryCreate extends React.Component {
     );
   }
 }
-CategoryCreate.propTypes = {
+CategoryDetail.propTypes = {
   dataCategory: PropTypes.shape({
     categoryId: PropTypes.number,
     name: PropTypes.string,
@@ -200,4 +200,4 @@ CategoryCreate.propTypes = {
   refetch: PropTypes.func.isRequired,
   header: PropTypes.string.isRequired,
 };
-export default CategoryCreate;
+export default CategoryDetail;

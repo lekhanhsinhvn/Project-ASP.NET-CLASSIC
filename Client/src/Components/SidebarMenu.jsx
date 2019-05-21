@@ -32,18 +32,38 @@ const data = [
   },
   {
     id: '3',
+    path: '/orders',
+    name: 'Orders',
+    icon: 'fas fa-list',
+    children: [
+      {
+        id: '3-1',
+        path: '/orders/superior',
+        name: 'Superior Order List',
+        icon: 'fas fa-list',
+      },
+      {
+        id: '3-2',
+        path: '/orders/inferior',
+        name: 'Inferior Order List',
+        icon: 'fas fa-list',
+      },
+    ],
+  },
+  {
+    id: '4',
     path: '/products',
     name: 'Products',
     icon: 'fas fa-cubes',
     children: [
       {
-        id: '2-1',
+        id: '4-1',
         path: '/products',
         name: 'Product List',
         icon: 'fas fa-cubes',
       },
       {
-        id: '2-2',
+        id: '4-2',
         path: '/products/create',
         name: 'Create Product',
         icon: 'fas fa-cubes',
@@ -51,19 +71,19 @@ const data = [
     ],
   },
   {
-    id: '4',
+    id: '5',
     path: '/categories',
     name: 'Categories',
     icon: 'fas fa-list',
     children: [
       {
-        id: '4-1',
+        id: '5-1',
         path: '/categories',
         name: 'Category List',
         icon: 'fas fa-list',
       },
       {
-        id: '4-2',
+        id: '5-2',
         path: '/categories/create',
         name: 'Create Category',
         icon: 'fas fa-list',

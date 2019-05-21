@@ -327,7 +327,7 @@ namespace Server.API.GraphQLSchema
             return null;
         }
 
-        public List<Order> GetSelfOrdersWithStatus(int? userId,string status, IResolverContext context)
+        public List<Order> GetOrdersUserandStatus(int? userId,string status, IResolverContext context)
         {
             if (userId == null)
             {
@@ -335,7 +335,7 @@ namespace Server.API.GraphQLSchema
             }
             try
             {
-                return _orderRepository.GetSelfOrdersWithStatus(userId.Value, status, context.RequestAborted).Result;
+                return _orderRepository.GetOrdersUserandStatus(userId.Value, status, context.RequestAborted).Result;
             }
             catch (Exception ex)
             {
@@ -343,6 +343,75 @@ namespace Server.API.GraphQLSchema
             }
             return null;
         }
+
+        public List<Order> GetOrdersfromUserasSuperior(int? userId, int? pageNum, int? maxPerPage, string sort, string search, bool? asc, IResolverContext context)
+        {
+            if (userId == null)
+            {
+                userId = 0;
+            }
+            //default
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                sort = "ModifiedDate";
+            }
+            if (asc == null)
+            {
+                asc = false;
+            }
+            if (pageNum == null)
+            {
+                pageNum = 0;
+            }
+            if (maxPerPage == null)
+            {
+                maxPerPage = 10;
+            }
+            try
+            {
+                return _orderRepository.GetOrdersfromUserasSuperior(userId.Value, pageNum.Value, maxPerPage.Value, sort, search, asc.Value, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
+        public List<Order> GetOrdersfromUserasInferior(int? userId, int? pageNum, int? maxPerPage, string sort, string search, bool? asc, IResolverContext context)
+        {
+            if (userId == null)
+            {
+                userId = 0;
+            }
+            //default
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                sort = "ModifiedDate";
+            }
+            if (asc == null)
+            {
+                asc = false;
+            }
+            if (pageNum == null)
+            {
+                pageNum = 0;
+            }
+            if (maxPerPage == null)
+            {
+                maxPerPage = 10;
+            }
+            try
+            {
+                return _orderRepository.GetOrdersfromUserasInferior(userId.Value, pageNum.Value, maxPerPage.Value, sort, search, asc.Value, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return null;
+        }
+
         public List<Order> GetOrders(int? pageNum, int? maxPerPage, string sort, string search, bool? asc, IResolverContext context)
         {
             //default
@@ -383,6 +452,40 @@ namespace Server.API.GraphQLSchema
             catch(Exception ex)
             {
 
+            }
+            return 0;
+        }
+
+        public int GetTotalCountOrdersfromUserasInferior(int? userId, IResolverContext context)
+        {
+            if (userId == null)
+            {
+                userId = 0;
+            }
+            try
+            {
+                return _orderRepository.GetTotalCountOrdersfromUserasInferior(userId.Value, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
+            }
+            return 0;
+        }
+
+        public int GetTotalCountOrdersfromUserasSuperior(int? userId, IResolverContext context)
+        {
+            if (userId == null)
+            {
+                userId = 0;
+            }
+            try
+            {
+                return _orderRepository.GetTotalCountOrdersfromUserasSuperior(userId.Value, context.RequestAborted).Result;
+            }
+            catch (Exception ex)
+            {
+                context.ReportError(ex.Message);
             }
             return 0;
         }

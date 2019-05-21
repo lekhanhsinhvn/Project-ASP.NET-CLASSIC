@@ -24,9 +24,9 @@ const override = css`
       display: block;
       margin: 0 auto;
   `;
-const GETSELFORDERSWITHSTATUS_QUERY = gql`
-query GetSelfOrdersWithStatus($userId: Int!,$status: String){
-    getSelfOrdersWithStatus(userId: $userId, status: $status){
+const GETUSERORDERSWITHSTATUS_QUERY = gql`
+query GetUserOrdersWithStatus($userId: Int!,$status: String){
+    getUserOrdersWithStatus(userId: $userId, status: $status){
         orderId
         inferior{
         userId
@@ -171,13 +171,13 @@ class AddtoOrder extends React.Component {
     const { self } = this.props;
     clearStore();
     if (modalIsOpen === true) {
-      client.query({ query: GETSELFORDERSWITHSTATUS_QUERY, variables: { userId: self.userId, status: 'Adding' } })
+      client.query({ query: GETUSERORDERSWITHSTATUS_QUERY, variables: { userId: self.userId, status: 'Adding' } })
         .then((response) => {
           this.setState(() => (
             {
               modalIsOpen,
-              orders: response.data.getSelfOrdersWithStatus,
-              currOrder: response.data.getSelfOrdersWithStatus[0],
+              orders: response.data.getUserOrdersWithStatus,
+              currOrder: response.data.getUserOrdersWithStatus[0],
             }
           ));
         });
@@ -379,7 +379,13 @@ class AddtoOrder extends React.Component {
                             />
                           ) : 'Submit'}
                         </button>
-                        <button type="button" className="btn btn-danger" onClick={this.deleteOrder}>Delete</button>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={this.deleteOrder}
+                        >
+                          {'Delete'}
+                        </button>
                       </div>
                     </form>
                   )}

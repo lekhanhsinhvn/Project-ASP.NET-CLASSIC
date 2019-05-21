@@ -86,10 +86,40 @@ namespace Server.API.Repositories
             return Task.FromResult(found);
         }
 
-        public Task<List<Order>> GetSelfOrdersWithStatus(int UserId, string status, CancellationToken cancellationToken)
+        public Task<List<Order>> GetOrdersUserandStatus(int UserId, string status, CancellationToken cancellationToken)
         {
             List<Order> orders = _db.Orders.ToList();
             orders = orders.Where(o => o.Status.Equals(status) && o.Inferior.UserId == UserId).ToList();
+            return Task.FromResult(orders);
+        }
+
+        public Task<List<Order>> GetOrdersfromUserasSuperior(int UserId, int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
+        {
+            List<Order> orders = _db.Orders.ToList();
+            orders = orders.Where(o => !o.Status.Equals("Adding") && o.Superior.UserId == UserId).ToList();
+            orders = FilterOrders(orders, search);
+            orders = SortOrders(orders, sort, asc);
+            orders = orders.Skip(pageNum * maxPerPage).ToList();
+            orders = orders.Take(maxPerPage).ToList();
+            if (!orders.Any())
+            {
+                throw new Exception("No Results.");
+            }
+            return Task.FromResult(orders);
+        }
+
+        public Task<List<Order>> GetOrdersfromUserasInferior(int UserId, int pageNum, int maxPerPage, string sort, string search, bool asc, CancellationToken cancellationToken)
+        {
+            List<Order> orders = _db.Orders.ToList();
+            orders = orders.Where(o => o.Inferior.UserId == UserId).ToList();
+            orders = FilterOrders(orders, search);
+            orders = SortOrders(orders, sort, asc);
+            orders = orders.Skip(pageNum * maxPerPage).ToList();
+            orders = orders.Take(maxPerPage).ToList();
+            if (!orders.Any())
+            {
+                throw new Exception("No Results.");
+            }
             return Task.FromResult(orders);
         }
 
@@ -101,7 +131,7 @@ namespace Server.API.Repositories
             orders = SortOrders(orders, sort, asc);
             orders = orders.Skip(pageNum * maxPerPage).ToList();
             orders = orders.Take(maxPerPage).ToList();
-            if (!_db.Orders.Any())
+            if (!orders.Any())
             {
                 throw new Exception("No Results.");
             }
@@ -112,6 +142,16 @@ namespace Server.API.Repositories
         public Task<int> GetTotalCountOrder(CancellationToken cancellationToken)
         {
             return Task.FromResult(_db.Orders.Count());
+        }
+
+        public Task<int> GetTotalCountOrdersfromUserasInferior(int UserId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_db.Orders.Where(o => o.Inferior.UserId == UserId).Count());
+        }
+
+        public Task<int> GetTotalCountOrdersfromUserasSuperior(int UserId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_db.Orders.Where(o => !o.Status.Equals("Adding") && o.Superior.UserId == UserId).Count());
         }
 
         public Task<Order> UpdateOrder(Order order, CancellationToken cancellationToken)
