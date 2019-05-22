@@ -34,19 +34,19 @@ const data = [
     id: '3',
     path: '/orders',
     name: 'Orders',
-    icon: 'fas fa-list',
+    icon: 'fas fa-save',
     children: [
       {
         id: '3-1',
         path: '/orders/superior',
         name: 'Superior Order List',
-        icon: 'fas fa-list',
+        icon: 'far fa-save',
       },
       {
         id: '3-2',
         path: '/orders/inferior',
         name: 'Inferior Order List',
-        icon: 'fas fa-list',
+        icon: 'far fa-save',
       },
     ],
   },

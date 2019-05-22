@@ -52,6 +52,10 @@
     <Compile Include="Migrations\201905070652419_ReCreateDatabase.Designer.cs">
       <DependentUpon>201905070652419_ReCreateDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905220541068_VarchartoNvarchar.cs" />
+    <Compile Include="Migrations\201905220541068_VarchartoNvarchar.Designer.cs">
+      <DependentUpon>201905220541068_VarchartoNvarchar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Order.cs" />
@@ -69,6 +73,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201905070652419_ReCreateDatabase.resx">
       <DependentUpon>201905070652419_ReCreateDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905220541068_VarchartoNvarchar.resx">
+      <DependentUpon>201905220541068_VarchartoNvarchar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

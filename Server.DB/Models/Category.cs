@@ -18,7 +18,7 @@ namespace Server.DB.Models
         [Index(IsUnique = true)]
         public string Name { get; set; }
 
-        [Column(TypeName = "varchar(MAX)")]
+        [Column(TypeName = "nvarchar(MAX)")]
         public string Description { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }

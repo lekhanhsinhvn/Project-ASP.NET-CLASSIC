@@ -15,7 +15,7 @@ namespace Server.DB.Models
         [MaxLength(15, ErrorMessage = "Name cannot be less than 15")]
         public string Name { get; set; }
 
-        [Column(TypeName = "varchar(MAX)")]
+        [Column(TypeName = "nvarchar(MAX)")]
         public string Avatar { get; set; } = "default.png";
 
         [Required]
@@ -26,7 +26,7 @@ namespace Server.DB.Models
 
         [Required]
         [MinLength(5, ErrorMessage = "Password cannot be less than 5")]
-        [Column(TypeName = "varchar(MAX)")]
+        [Column(TypeName = "nvarchar(MAX)")]
         public string Password { get; set; }
 
         public virtual ICollection<Role> Roles { get; set; } 

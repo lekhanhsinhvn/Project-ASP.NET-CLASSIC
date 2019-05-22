@@ -207,6 +207,30 @@ class OrderDetail extends React.Component {
                         updateOrder({ variables: { order: dataOrder } });
                       }}
                     >
+                      <div className="form-group">
+                        <label htmlFor="status" style={{ width: '100%' }}>
+                          <div className="col-sm-3 control-label">Status</div>
+                          <div className="col-sm-10">
+                            <select
+                              className="form-control"
+                              id="status"
+                              name="status"
+                              readOnly={self.userId === dataOrder.superior.userId ? !editable : true}
+                              disabled={self.userId === dataOrder.superior.userId ? !editable : true}
+                              value={dataOrder.status}
+                              onChange={(e) => {
+                                dataOrder.status = e.target.value;
+                                this.setState(() => ({ dataOrder }));
+                              }}
+                            >
+                              <option value="Accepted">Accepted</option>
+                              <option value="Rejected">Rejected</option>
+                              <option value="Adding">Adding</option>
+                              <option value="Processing">Processing</option>
+                            </select>
+                          </div>
+                        </label>
+                      </div>
                       <div style={{ overflow: 'auto', maxHeight: '350px' }}>
                         <table className="table table-bordered table-hover">
                           <thead>

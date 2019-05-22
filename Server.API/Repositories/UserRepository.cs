@@ -218,7 +218,7 @@ namespace Server.API.Repositories
                         }
                     }
                 }
-                found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null) ? found.SuperiorId : user.SuperiorId;
+                found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null || user.SuperiorId==1000) ? found.SuperiorId : user.SuperiorId;
                 found.ModifiedDate = DateTime.Now;
                 _db.SaveChanges();
             }

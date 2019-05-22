@@ -21,9 +21,13 @@ namespace Server.API.Repositories
         {
             order.Inferior = _db.Users.FirstOrDefault(x => x.UserId == InferiorId);
             order.Superior = _db.Users.FirstOrDefault(x => x.UserId == SuperiorId);
-            if(order.Inferior == null || order.Superior == null)
+            if(order.Inferior == null)
             {
-                throw new Exception("Order not valid");
+                throw new Exception("Order invalid");
+            }
+            if (order.Superior == null)
+            {
+                throw new Exception("You don't have a Superior");
             }
             order.TotalCount = 0;
             order.TotalPrice = 0;
@@ -32,11 +36,11 @@ namespace Server.API.Repositories
                 Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
                 if (foundProduct == null)
                 {
-                    throw new Exception("Product not valid");
+                    throw new Exception("Product invalid");
                 }
                 if (d.Quantity > foundProduct.Quantity)
                 {
-                    throw new Exception("Product" + foundProduct.Name + "out of stock");
+                    throw new Exception("Product" + foundProduct.Name + " out of stock");
                 }
                 d.Product = foundProduct;
                 d.UnitPrice = foundProduct.Price.Value;
@@ -160,10 +164,6 @@ namespace Server.API.Repositories
             if (found == null)
             {
                 throw new Exception("Order doesn't exist.");
-            }
-            if (!found.Status.Equals("Adding"))
-            {
-                throw new Exception("Order invaild.");
             }
             // reset
             order.TotalCount = 0;

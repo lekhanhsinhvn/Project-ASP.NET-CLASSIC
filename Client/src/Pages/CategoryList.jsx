@@ -119,7 +119,7 @@ class CategoryList extends React.Component {
             query: GET_TOTALCOUNTCATEGORY,
             errorPolicy: 'ignore',
           }).then((response1 = response) => {
-            dataTotalCountCategory = response1.data.getTotalCountProduct;
+            dataTotalCountCategory = response1.data.getTotalCountCategory;
             this.setCategories(dataCategories, dataTotalCountCategory);
           });
         }
@@ -269,7 +269,7 @@ class CategoryList extends React.Component {
                                   {category.name}
                                 </Link>
                               </td>
-                              <td>{category.price}</td>
+                              <td>{category.description}</td>
                               <td>{category.createdDate}</td>
                               <td>{category.modifiedDate}</td>
                             </tr>

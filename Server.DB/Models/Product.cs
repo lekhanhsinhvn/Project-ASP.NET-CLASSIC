@@ -20,10 +20,10 @@ namespace Server.DB.Models
 
         public float? Price { get; set; }
 
-        [Column(TypeName = "varchar(MAX)")]
+        [Column(TypeName = "nvarchar(MAX)")]
         public string Description { get; set; }
 
-        [Column(TypeName = "varchar(MAX)")]
+        [Column(TypeName = "nvarchar(MAX)")]
         public string Image { get; set; }
 
         public int? Quantity { get; set; }

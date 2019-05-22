@@ -25,8 +25,8 @@ const override = css`
       margin: 0 auto;
   `;
 const GETUSERORDERSWITHSTATUS_QUERY = gql`
-query GetUserOrdersWithStatus($userId: Int!,$status: String){
-    getUserOrdersWithStatus(userId: $userId, status: $status){
+query GetOrdersUserandStatus($userId: Int!,$status: String){
+  getOrdersUserandStatus(userId: $userId, status: $status){
         orderId
         inferior{
         userId
@@ -155,16 +155,25 @@ class AddtoOrder extends React.Component {
       modalIsOpen: false,
       orders: [],
       currOrder: null,
+      err: null,
     };
     this.setModal = this.setModal.bind(this);
     this.orderChange = this.orderChange.bind(this);
     this.createOrder = this.createOrder.bind(this);
     this.deleteOrder = this.deleteOrder.bind(this);
     this.selectOrder = this.selectOrder.bind(this);
+    this.setErr = this.setErr.bind(this);
   }
 
   componentDidMount() {
     Modal.setAppElement('#content');
+  }
+
+  setErr(data) {
+    const data1 = data.replace('GraphQL error:', '');
+    this.setState(() => ({
+      err: data1,
+    }));
   }
 
   setModal(modalIsOpen) {
@@ -176,8 +185,8 @@ class AddtoOrder extends React.Component {
           this.setState(() => (
             {
               modalIsOpen,
-              orders: response.data.getUserOrdersWithStatus,
-              currOrder: response.data.getUserOrdersWithStatus[0],
+              orders: response.data.getOrdersUserandStatus,
+              currOrder: response.data.getOrdersUserandStatus[0],
             }
           ));
         });
@@ -212,7 +221,12 @@ class AddtoOrder extends React.Component {
           unitPrice: 0,
         },
       },
-    }).then(() => this.setModal(true));
+      errorPolicy: 'none',
+    }).then(() => {
+      this.setModal(true);
+    }).catch((e) => {
+      this.setErr(e.message);
+    });
   }
 
   deleteOrder() {
@@ -222,14 +236,19 @@ class AddtoOrder extends React.Component {
       variables: {
         orderId: currOrder.orderId,
       },
-    }).then(() => this.setModal(true));
+      errorPolicy: 'none',
+    }).then(() => {
+      this.setModal(true);
+    }).catch((e) => {
+      this.setErr(e.message);
+    });
   }
 
   orderChange(event) {
     let { currOrder } = this.state;
     const { dataProduct } = this.props;
     if (currOrder) {
-      if (currOrder.orderDetails) {
+      if (!currOrder.orderDetails) {
         currOrder = { ...currOrder, orderDetails: [] };
       }
       const od = _.find(currOrder.orderDetails,
@@ -256,7 +275,7 @@ class AddtoOrder extends React.Component {
   render() {
     const { dataProduct, refresh } = this.props;
     const {
-      modalIsOpen, orders, currOrder,
+      modalIsOpen, orders, currOrder, err,
     } = this.state;
     return (
       <React.Fragment>
@@ -362,6 +381,7 @@ class AddtoOrder extends React.Component {
                         </label>
                       </div>
                       <br />
+                      {err && <span className="text-danger">{err}</span>}
                       {error && error.graphQLErrors.map(({ message }, i) => (
                         <span className="text-danger" key={i.toString()}>{message}</span>
                       ))}
