@@ -5,10 +5,20 @@ import {
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
+import { css } from '@emotion/core';
+import { BounceLoader } from 'react-spinners';
 
 import Main from './Pages/Main';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
+
+const override = css`
+      display: block;
+      margin: 0 auto;
+      position: absolute !important;
+      top: 40%;
+      left: 42%;
+  `;
 
 let client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
@@ -130,7 +140,14 @@ class App extends React.Component {
                 ))}
               />
             </Switch>
-          ) : ''}
+          ) : (
+            <BounceLoader
+              css={override}
+              sizeUnit="px"
+              size={200}
+              color="blue"
+            />
+          )}
         </Router>
       </ApolloProvider>
     );

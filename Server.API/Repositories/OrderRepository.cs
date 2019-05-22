@@ -40,7 +40,7 @@ namespace Server.API.Repositories
                 }
                 if (d.Quantity > foundProduct.Quantity)
                 {
-                    throw new Exception("Product" + foundProduct.Name + " out of stock");
+                    throw new Exception("Product " + foundProduct.Name + " out of stock");
                 }
                 d.Product = foundProduct;
                 d.UnitPrice = foundProduct.Price.Value;
@@ -168,14 +168,6 @@ namespace Server.API.Repositories
             // reset
             order.TotalCount = 0;
             order.TotalPrice = 0;
-            if (found.OrderDetails != null)
-            {
-                foreach (OrderDetail d in found.OrderDetails)
-                {
-                    Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
-                    foundProduct.Quantity += d.Quantity;
-                }
-            }
 
             List<OrderDetail> orderDetails = new List<OrderDetail>();
             if (order.OrderDetails != null)
@@ -193,7 +185,7 @@ namespace Server.API.Repositories
                     }
                     if (d.Quantity > foundProduct.Quantity)
                     {
-                        throw new Exception("Product " + foundProduct.Name + "out of stock");
+                        throw new Exception("Product " + foundProduct.Name + " out of stock");
                     }
                     d.Product = foundProduct;
                     d.UnitPrice = foundProduct.Price.Value;
@@ -227,6 +219,16 @@ namespace Server.API.Repositories
                     foundProduct.Quantity -= d.Quantity;
                 }
             }
+
+            if (found.OrderDetails != null)
+            {
+                foreach (OrderDetail d in found.OrderDetails)
+                {
+                    Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                    foundProduct.Quantity += d.Quantity;
+                }
+            }
+
             found.Status = string.IsNullOrWhiteSpace(order.Status) ? found.Status : order.Status;
             found.OrderDetails = orderDetails;
             found.ModifiedDate = DateTime.Now;

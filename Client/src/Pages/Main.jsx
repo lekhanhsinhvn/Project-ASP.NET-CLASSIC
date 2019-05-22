@@ -8,6 +8,7 @@ import UsersPage from './UsersPage';
 import ProductsPage from './ProductsPage';
 import CategoriesPage from './CategoriesPage';
 import OrdersPage from './OrdersPage';
+import Dashboard from './Dashboard';
 
 class Main extends React.Component {
   constructor(props) {
@@ -56,6 +57,12 @@ class Main extends React.Component {
               path="/orders"
               render={() => (
                 <OrdersPage self={self} getSelf={getSelf} />
+              )}
+            />
+            <Route
+              path="/"
+              render={() => (
+                <Dashboard self={self} getSelf={getSelf} />
               )}
             />
           </Switch>

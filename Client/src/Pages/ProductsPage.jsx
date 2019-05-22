@@ -85,12 +85,17 @@ class ProductsPage extends React.Component {
         <Route
           exact
           path="/products/create"
-          render={props => (
-            <ProductCreate
-              {...props}
-              header="Create Product"
-            />
-          )}
+          render={(props) => {
+            if (edit) {
+              return (
+                <ProductCreate
+                  {...props}
+                  header="Create Product"
+                />
+              );
+            }
+            return (<ErrorPage code={403} message="You don't have permission" />);
+          }}
         />
         <Route
           exact

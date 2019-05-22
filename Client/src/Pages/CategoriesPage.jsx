@@ -72,12 +72,16 @@ class CategoriesPage extends React.Component {
         <Route
           exact
           path="/categories/create"
-          render={props => (
-            <CategoryCreate
-              {...props}
-              header="Create Category"
-            />
-          )}
+          render={(props) => {
+            if (edit) {
+              return (
+                <CategoryCreate
+                  {...props}
+                  header="Create Category"
+                />
+              );
+            } return (<ErrorPage code={403} message="You don't have permission" />);
+          }}
         />
         <Route
           exact

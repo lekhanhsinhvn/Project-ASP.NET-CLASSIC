@@ -209,6 +209,7 @@ class AddtoOrder extends React.Component {
   }
 
   createOrder() {
+    const { refresh } = this.props;
     const { self } = this.props;
     client.mutate({
       mutation: CREATEORDER_QUERY,
@@ -224,24 +225,31 @@ class AddtoOrder extends React.Component {
       errorPolicy: 'none',
     }).then(() => {
       this.setModal(true);
+      refresh();
     }).catch((e) => {
       this.setErr(e.message);
     });
   }
 
   deleteOrder() {
+    const { refresh } = this.props;
     const { currOrder } = this.state;
-    client.mutate({
-      mutation: DELETEORDER_QUERY,
-      variables: {
-        orderId: currOrder.orderId,
-      },
-      errorPolicy: 'none',
-    }).then(() => {
-      this.setModal(true);
-    }).catch((e) => {
-      this.setErr(e.message);
-    });
+    if (currOrder) {
+      client.mutate({
+        mutation: DELETEORDER_QUERY,
+        variables: {
+          orderId: currOrder.orderId,
+        },
+        errorPolicy: 'none',
+      }).then(() => {
+        this.setModal(true);
+        refresh();
+      }).catch((e) => {
+        this.setErr(e.message);
+      });
+    } else {
+      this.setErr('There\'s no Order');
+    }
   }
 
   orderChange(event) {
@@ -311,19 +319,20 @@ class AddtoOrder extends React.Component {
             </div>
             <div className="row">
               <div className="col-8">
-                <div style={{ overflow: 'auto', maxHeight: '200px' }}>
-                  <table className="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Unit Price</th>
-                        <th>Quantity</th>
-                        <th>Cost</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currOrder && currOrder.orderDetails
+                {currOrder ? (
+                  <div style={{ overflow: 'auto', maxHeight: '200px' }}>
+                    <table className="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Image</th>
+                          <th>Unit Price</th>
+                          <th>Quantity</th>
+                          <th>Cost</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currOrder && currOrder.orderDetails
                       && currOrder.orderDetails.map((orderDetail, index) => (
                         <tr
                           key={orderDetail.product.productId || index}
@@ -337,10 +346,16 @@ class AddtoOrder extends React.Component {
                           <td>{orderDetail.unitPrice * orderDetail.quantity}</td>
                         </tr>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
-                <button type="button" className="btn btn-link" onClick={() => this.createOrder()}>Create new order</button>
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <React.Fragment>
+                    <span style={{ paddingLeft: '12px' }} className="text-danger">{'There\'s no Order'}</span>
+                    <br />
+                  </React.Fragment>
+                )}
+                <button type="button" className="btn btn-link align-bottom" onClick={() => this.createOrder()}>Create new order</button>
               </div>
               <div className="col-4">
                 <Mutation mutation={UPDATEORDER_QUERY} errorPolicy="ignore" onCompleted={() => { this.setModal(true); refresh(); }}>
