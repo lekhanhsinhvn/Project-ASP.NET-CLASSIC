@@ -31,7 +31,7 @@ namespace Server.API.Repositories
             }
             order.TotalCount = 0;
             order.TotalPrice = 0;
-            foreach (OrderDetail d in order.OrderDetails)
+            foreach (OrderDetail d in order.OrderDetails.ToList())
             {
                 Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
                 if (foundProduct == null)
@@ -51,7 +51,7 @@ namespace Server.API.Repositories
             order.CreatedDate = DateTime.Now;
             order.ModifiedDate = DateTime.Now;
             _db.Orders.Add(order);
-            foreach (OrderDetail d in order.OrderDetails)
+            foreach (OrderDetail d in order.OrderDetails.ToList())
             {
                 Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
                 foundProduct.Quantity -= d.Quantity;
@@ -69,10 +69,11 @@ namespace Server.API.Repositories
             }
             if (found.OrderDetails != null)
             {
-                foreach (OrderDetail d in found.OrderDetails)
+                foreach (OrderDetail d in found.OrderDetails.ToList())
                 {
                     Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
                     foundProduct.Quantity += d.Quantity;
+                    _db.OrderDetails.Remove(d);
                 }
             }
             _db.Orders.Remove(found);
@@ -172,7 +173,7 @@ namespace Server.API.Repositories
             List<OrderDetail> orderDetails = new List<OrderDetail>();
             if (order.OrderDetails != null)
             {
-                foreach (OrderDetail d in order.OrderDetails)
+                foreach (OrderDetail d in order.OrderDetails.ToList())
                 {
                     if (d.Quantity < 0 || d.UnitPrice < 0)
                     {
@@ -183,7 +184,7 @@ namespace Server.API.Repositories
                     {
                         throw new Exception("Product not valid");
                     }
-                    if (d.Quantity > foundProduct.Quantity)
+                    if (d.Quantity > foundProduct.Quantity + (found.OrderDetails.FirstOrDefault(x => x.Product == foundProduct) != null ? found.OrderDetails.FirstOrDefault(x => x.Product == foundProduct).Quantity : 0))
                     {
                         throw new Exception("Product " + foundProduct.Name + " out of stock");
                     }
@@ -222,20 +223,23 @@ namespace Server.API.Repositories
 
             if (found.OrderDetails != null)
             {
-                foreach (OrderDetail d in found.OrderDetails)
+                foreach (OrderDetail d in found.OrderDetails.ToList())
                 {
                     Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
                     foundProduct.Quantity += d.Quantity;
+                    _db.OrderDetails.Remove(d);
                 }
             }
 
+            found.TotalCount = order.TotalCount;
+            found.TotalPrice = order.TotalPrice;
             found.Status = string.IsNullOrWhiteSpace(order.Status) ? found.Status : order.Status;
             found.OrderDetails = orderDetails;
             found.ModifiedDate = DateTime.Now;
             _db.SaveChanges();
             return Task.FromResult(_db.Orders.SingleOrDefault(i => i.OrderId == order.OrderId));
         }
-
+        
         private List<Order> SortOrders(List<Order> orders, string sort, bool asc)
         {
             if (asc)

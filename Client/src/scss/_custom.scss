@@ -121,8 +121,7 @@ div.dataTables_filter input {
 .modal {
   display: block;
   width: 50%;
-  height: 50%;
-  min-height: 350px;
+  max-height: 380px;
   margin: auto;
   margin-top:100px;
   position: relative;
@@ -136,4 +135,43 @@ div.dataTables_filter input {
   right: 0;
   bottom: 0;
   background-color: rgba(194,199,208,0.5);
+}
+
+.react-calendar{
+  width: 100% !important;
+  background: -webkit-gradient(linear,left bottom,left top,color-stop(0,#28a745),color-stop(1,#34ce57)) !important;
+  .react-calendar__navigation__label{
+    color: #fff;
+  }
+  .react-calendar__month-view__days__day {
+    color: #fff;
+  }
+  .react-calendar__month-view__weekdays__weekday{
+    color: #fff;
+  }
+  .react-calendar__month-view__days__day--neighboringMonth {
+    color: #757575;
+  }
+  .react-calendar__navigation__arrow{
+    color: #fff;
+  }
+  button:hover{
+    background: rgba(0,0,0,0.2) !important;
+  }
+  .react-calendar__tile--active {
+    background: rgba(0,0,0,0.5) !important;
+    color: white;
+  }
+  .react-calendar__navigation button:enabled:hover, .react-calendar__navigation button:enabled:focus {
+    background: rgba(0,0,0,0.2) !important;
+  }
+  .react-calendar__navigation button[disabled] {
+    background: rgba(0,0,0,0.2) !important;
+  }
+  .react-calendar__tile--hasActive:enabled:hover, .react-calendar__tile--hasActive:enabled:focus {
+    background: rgba(0,0,0,0.2) !important;
+  }
+  .react-calendar__tile--hasActive {
+    background: rgba(0,0,0,0.2) !important;
+  }
 }

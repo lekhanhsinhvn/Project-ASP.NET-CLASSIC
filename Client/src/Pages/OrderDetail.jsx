@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { css } from '@emotion/core';
@@ -113,6 +114,11 @@ class OrderDetail extends React.Component {
     // This binding is necessary to make `this` work in the callback
     this.editableToggle = this.editableToggle.bind(this);
     this.deleteOrder = this.deleteOrder.bind(this);
+  }
+
+  componentWillMount() {
+    const { refetch } = this.props;
+    refetch();
   }
 
   editableToggle() {
@@ -230,6 +236,8 @@ class OrderDetail extends React.Component {
                             </select>
                           </div>
                         </label>
+                        <span style={{ marginLeft: '20px' }} className="float-left">{`Total Price: ${dataOrder.totalPrice}`}</span>
+                        <span style={{ marginRight: '20px' }} className="float-right">{`Total Count: ${dataOrder.totalCount}`}</span>
                       </div>
                       <div style={{ overflow: 'auto', maxHeight: '350px' }}>
                         <table className="table table-bordered table-hover">
@@ -248,7 +256,11 @@ class OrderDetail extends React.Component {
                                   <tr
                                     key={orderDetail.product.productId || index}
                                   >
-                                    <td>{orderDetail.product.name}</td>
+                                    <td>
+                                      <Link to={`/products/detail?ProductId=${orderDetail.product.productId}`}>
+                                        {orderDetail.product.name}
+                                      </Link>
+                                    </td>
                                     <td>
                                       <img style={{ width: '50px' }} className="img-fluid" src={`/images/${orderDetail.product.image}`} alt="Product" />
                                     </td>

@@ -155,6 +155,7 @@ class AddtoOrder extends React.Component {
       modalIsOpen: false,
       orders: [],
       currOrder: null,
+      ogOrder: null,
       err: null,
     };
     this.setModal = this.setModal.bind(this);
@@ -180,13 +181,17 @@ class AddtoOrder extends React.Component {
     const { self } = this.props;
     clearStore();
     if (modalIsOpen === true) {
-      client.query({ query: GETUSERORDERSWITHSTATUS_QUERY, variables: { userId: self.userId, status: 'Adding' } })
+      client.query({
+        query: GETUSERORDERSWITHSTATUS_QUERY,
+        variables: { userId: self.userId, status: 'Adding' },
+      })
         .then((response) => {
           this.setState(() => (
             {
               modalIsOpen,
               orders: response.data.getOrdersUserandStatus,
               currOrder: response.data.getOrdersUserandStatus[0],
+              ogOrder: _.cloneDeep(response.data.getOrdersUserandStatus[0]),
             }
           ));
         });
@@ -196,6 +201,7 @@ class AddtoOrder extends React.Component {
           modalIsOpen,
           orders: null,
           currOrder: null,
+          ogOrder: null,
         }
       ));
     }
@@ -205,12 +211,12 @@ class AddtoOrder extends React.Component {
     const { orders } = this.state;
     this.setState({
       currOrder: orders[event.target.value],
+      ogOrder: _.cloneDeep(orders[event.target.value]),
     });
   }
 
   createOrder() {
-    const { refresh } = this.props;
-    const { self } = this.props;
+    const { refresh, self } = this.props;
     client.mutate({
       mutation: CREATEORDER_QUERY,
       variables: {
@@ -283,8 +289,15 @@ class AddtoOrder extends React.Component {
   render() {
     const { dataProduct, refresh } = this.props;
     const {
-      modalIsOpen, orders, currOrder, err,
+      modalIsOpen, orders, currOrder, ogOrder, err,
     } = this.state;
+    let proQuantity = dataProduct.quantity;
+    if (ogOrder
+      && ogOrder.orderDetails
+      && _.find(ogOrder.orderDetails, o => o.product.productId === dataProduct.productId)) {
+      proQuantity += _.find(ogOrder.orderDetails, o => o.product.productId === dataProduct.productId).quantity;
+    }
+
     return (
       <React.Fragment>
         <button
@@ -318,21 +331,22 @@ class AddtoOrder extends React.Component {
               </label>
             </div>
             <div className="row">
-              <div className="col-8">
+              <div style={{ marginBottom: '10px' }} className="col-8">
                 {currOrder ? (
-                  <div style={{ overflow: 'auto', maxHeight: '200px' }}>
-                    <table className="table table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Image</th>
-                          <th>Unit Price</th>
-                          <th>Quantity</th>
-                          <th>Cost</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currOrder && currOrder.orderDetails
+                  <React.Fragment>
+                    <div style={{ overflow: 'auto', maxHeight: '200px' }}>
+                      <table className="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Cost</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currOrder && currOrder.orderDetails
                       && currOrder.orderDetails.map((orderDetail, index) => (
                         <tr
                           key={orderDetail.product.productId || index}
@@ -346,9 +360,13 @@ class AddtoOrder extends React.Component {
                           <td>{orderDetail.unitPrice * orderDetail.quantity}</td>
                         </tr>
                       ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </tbody>
+                      </table>
+                    </div>
+                    <span className="float-right">{`Total Count: ${currOrder.totalCount}`}</span>
+                    <br />
+                    <span className="float-right">{`Total Price: ${currOrder.totalPrice}`}</span>
+                  </React.Fragment>
                 ) : (
                   <React.Fragment>
                     <span style={{ paddingLeft: '12px' }} className="text-danger">{'There\'s no Order'}</span>
@@ -390,7 +408,9 @@ class AddtoOrder extends React.Component {
                                 }
                                 required
                               />
-                              <label htmlFor="quantity">{`/${dataProduct.quantity}`}</label>
+                              <label htmlFor="quantity">
+                                {ogOrder ? `/${proQuantity}` : ''}
+                              </label>
                             </div>
                           </div>
                         </label>

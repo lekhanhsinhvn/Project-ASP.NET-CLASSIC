@@ -67,6 +67,15 @@ class Main extends React.Component {
             />
           </Switch>
         </div>
+        <footer className="main-footer">
+          <strong>
+            {'Le Khanh Sinh'}
+          </strong>
+          <div className="float-right d-none d-sm-inline-block">
+            <b>Version</b>
+            {' 0.0.0'}
+          </div>
+        </footer>
       </div>
     );
   }

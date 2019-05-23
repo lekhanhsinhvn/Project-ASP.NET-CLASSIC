@@ -73,7 +73,6 @@ class OrderList extends React.Component {
                     )}
                   />
                   <Route
-                    exact
                     path="/orders"
                     render={(props) => {
                       if (_.find(self.roles, { name: 'Admin' })) {

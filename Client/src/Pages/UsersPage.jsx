@@ -154,7 +154,7 @@ class UsersPage extends React.Component {
           render={props => (
             <Query query={GET_SELF}>
               {({
-                loading, error, data,
+                loading, error, data, refetch,
               }) => {
                 if (loading) return 'Loading...';
                 if (error) return (<ErrorPage code="300" message={error.message} />);
@@ -167,6 +167,7 @@ class UsersPage extends React.Component {
                     dataUser={data && data.getSelf}
                     header="Me"
                     getSelf={getSelf}
+                    refetch={refetch}
                   />
                 );
               }}

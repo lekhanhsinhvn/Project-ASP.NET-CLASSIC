@@ -16,7 +16,7 @@ const override = css`
       display: block;
       margin: 0 auto;
       position: absolute !important;
-      top: 40%;
+      top: 38%;
       left: 42%;
   `;
 
