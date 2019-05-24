@@ -6,7 +6,7 @@ import UserFormSelf from '../Components/UserFormSelf';
 import UserForm from '../Components/UserForm';
 
 const UserDetail = ({
-  self, dataUser, header, getSelf, edit, QUERY, refetch,
+  self, dataUser, header, getSelf, edit, QUERY, refetch, history,
 }) => (
   <div style={{ minHeight: '511px' }}>
     <ContentHeader header={header} />
@@ -50,7 +50,7 @@ const UserDetail = ({
           <div className="col-md-9">
             <div className="card">
               <div className="card-body">
-                {QUERY === 'USER' && <UserForm edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} refetch={refetch} />}
+                {QUERY === 'USER' && <UserForm edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} refetch={refetch} history={history} />}
                 {QUERY === 'SELF' && <UserFormSelf edit={edit} self={self} dataUser={dataUser} getSelf={getSelf} />}
               </div>
             </div>
@@ -93,6 +93,8 @@ UserDetail.propTypes = {
   edit: PropTypes.bool.isRequired,
   QUERY: PropTypes.string.isRequired,
   refetch: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired,
 };
 
 export default UserDetail;

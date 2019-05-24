@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import _ from 'lodash';
+import ApolloClient from 'apollo-boost';
 
 import ErrorPage from './ErrorPage';
 import CategoryDetail from './CategoryDetail';
@@ -25,6 +26,19 @@ const getUrlParameter = function getUrlParameter(sParam) {
   }
   return null;
 };
+
+let client = new ApolloClient({
+  uri: 'http://localhost:3001/graphql',
+  credentials: 'include',
+});
+
+const clearStore = () => {
+  client = new ApolloClient({
+    uri: 'http://localhost:3001/graphql',
+    credentials: 'include',
+  });
+};
+
 const GET_CATEGORY = gql`
 query Getcatgory($categoryId: Int!){
     getCategory(categoryId:$categoryId){
@@ -49,25 +63,28 @@ class CategoriesPage extends React.Component {
         <Route
           exact
           path="/categories/detail"
-          render={props => (
-            <Query query={GET_CATEGORY} variables={{ categoryId: getUrlParameter('CategoryId') }}>
-              {({
-                loading, error, data, refetch,
-              }) => {
-                if (loading) return '';
-                if (error) return (<ErrorPage code="300" message={error.message} />);
-                return (
-                  <CategoryDetail
-                    {...props}
-                    header={data.getCategory.name}
-                    refetch={refetch}
-                    edit={edit}
-                    dataCategory={data.getCategory}
-                  />
-                );
-              }}
-            </Query>
-          )}
+          render={(props) => {
+            clearStore();
+            return (
+              <Query query={GET_CATEGORY} client={client} variables={{ categoryId: getUrlParameter('CategoryId') }}>
+                {({
+                  loading, error, data, refetch,
+                }) => {
+                  if (loading) return '';
+                  if (error) return (<ErrorPage code="300" message={error.message} />);
+                  return (
+                    <CategoryDetail
+                      {...props}
+                      header={data.getCategory.name}
+                      refetch={refetch}
+                      edit={edit}
+                      dataCategory={data.getCategory}
+                    />
+                  );
+                }}
+              </Query>
+            );
+          }}
         />
         <Route
           exact

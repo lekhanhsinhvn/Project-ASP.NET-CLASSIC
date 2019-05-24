@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-
 import ApolloClient from 'apollo-boost';
 import ErrorPage from './ErrorPage';
 import OrderDetail from './OrderDetail';

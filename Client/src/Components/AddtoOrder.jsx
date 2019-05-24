@@ -291,12 +291,7 @@ class AddtoOrder extends React.Component {
     const {
       modalIsOpen, orders, currOrder, ogOrder, err,
     } = this.state;
-    let proQuantity = dataProduct.quantity;
-    if (ogOrder
-      && ogOrder.orderDetails
-      && _.find(ogOrder.orderDetails, o => o.product.productId === dataProduct.productId)) {
-      proQuantity += _.find(ogOrder.orderDetails, o => o.product.productId === dataProduct.productId).quantity;
-    }
+    const proQuantity = dataProduct.quantity;
 
     return (
       <React.Fragment>

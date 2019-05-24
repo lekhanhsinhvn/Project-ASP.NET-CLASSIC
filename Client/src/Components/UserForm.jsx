@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
-import { Redirect } from 'react-router-dom';
 import { css } from '@emotion/core';
 import { BounceLoader } from 'react-spinners';
 import Select from 'react-select';
@@ -84,7 +83,7 @@ class UserForm extends React.Component {
       editable: false,
       dataUser,
       base64String: '',
-      redirect: null,
+      err: null,
     };
     // This binding is necessary to make `this` work in the callback
     this.editableToggle = this.editableToggle.bind(this);
@@ -93,15 +92,25 @@ class UserForm extends React.Component {
     this.imgChange = this.imgChange.bind(this);
     this.roleChange = this.roleChange.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.setErr = this.setErr.bind(this);
+  }
+
+  setErr(data) {
+    const data1 = data.replace('GraphQL error:', '');
+    this.setState(() => ({
+      err: data1,
+    }));
   }
 
   deleteUser() {
-    const { dataUser } = this.props;
-    client.mutate({
-      mutation: DELETEUSER_QUERY,
-      variables: { userId: parseInt(dataUser.userId, 10) },
-      errorPolicy: 'ignore',
-    }).then(() => this.setState({ redirect: '/users' }));
+    const { dataUser } = this.state;
+    const { history } = this.props;
+    if (dataUser) {
+      client.mutate({
+        mutation: DELETEUSER_QUERY,
+        variables: { userId: parseInt(dataUser.userId, 10) },
+      }).then(() => history.push('/users'), (e) => { this.setErr(e.message); });
+    }
   }
 
   editableToggle() {
@@ -153,14 +162,11 @@ class UserForm extends React.Component {
 
   render() {
     const {
-      editable, dataUser, base64String, redirect,
+      editable, dataUser, base64String, err,
     } = this.state;
     const {
       getSelf, self, edit, refetch,
     } = this.props;
-    if (redirect != null) {
-      return (<Redirect to="/users" />);
-    }
     return (
       <Mutation
         mutation={UPDATEUSER_QUERY}
@@ -289,6 +295,7 @@ class UserForm extends React.Component {
                         </label>
                       </div>
                       <br />
+                      {err && <span className="text-danger">{err}</span>}
                       {error && error.graphQLErrors.map(({ message }, i) => (
                         <span className="text-danger" key={i.toString()}>{message}</span>
                       ))}
@@ -365,6 +372,9 @@ UserForm.propTypes = {
   getSelf: PropTypes.func.isRequired,
   edit: PropTypes.bool.isRequired,
   refetch: PropTypes.func.isRequired,
+
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired,
 };
 
 export default UserForm;

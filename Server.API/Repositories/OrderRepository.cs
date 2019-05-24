@@ -31,6 +31,7 @@ namespace Server.API.Repositories
             }
             order.TotalCount = 0;
             order.TotalPrice = 0;
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
             foreach (OrderDetail d in order.OrderDetails.ToList())
             {
                 Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
@@ -42,20 +43,38 @@ namespace Server.API.Repositories
                 {
                     throw new Exception("Product " + foundProduct.Name + " out of stock");
                 }
+                
                 d.Product = foundProduct;
                 d.UnitPrice = foundProduct.Price.Value;
+                
+                // sort so no duplicate product & 0 quantity
+                Boolean has = false;
+                foreach (OrderDetail p in orderDetails)
+                {
+                    if (p.Product == d.Product)
+                    {
+                        p.Quantity += d.Quantity;
+                        p.UnitPrice = d.UnitPrice;
+                        has = true;
+                    }
+                }
+                if (!has)
+                {
+                    orderDetails.Add(d);
+                }
+                if (d.Quantity <= 0)
+                {
+                    orderDetails.Remove(d);
+                }
+
                 order.TotalCount += d.Quantity;
                 order.TotalPrice += d.UnitPrice * d.Quantity;
             }
+            order.OrderDetails = orderDetails;
             order.Status = "Adding";
             order.CreatedDate = DateTime.Now;
             order.ModifiedDate = DateTime.Now;
             _db.Orders.Add(order);
-            foreach (OrderDetail d in order.OrderDetails.ToList())
-            {
-                Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
-                foundProduct.Quantity -= d.Quantity;
-            }
             _db.SaveChanges();
             return Task.FromResult(order);
         }
@@ -182,9 +201,9 @@ namespace Server.API.Repositories
                     Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
                     if (foundProduct == null)
                     {
-                        throw new Exception("Product not valid");
+                        throw new Exception("Product invalid.");
                     }
-                    if (d.Quantity > foundProduct.Quantity + (found.OrderDetails.FirstOrDefault(x => x.Product == foundProduct) != null ? found.OrderDetails.FirstOrDefault(x => x.Product == foundProduct).Quantity : 0))
+                    if (d.Quantity > foundProduct.Quantity)
                     {
                         throw new Exception("Product " + foundProduct.Name + " out of stock");
                     }
@@ -206,7 +225,7 @@ namespace Server.API.Repositories
                     {
                         orderDetails.Add(d);
                     }
-                    if (d.Quantity <=0 )
+                    if (d.Quantity <= 0)
                     {
                         orderDetails.Remove(d);
                     }
@@ -214,23 +233,29 @@ namespace Server.API.Repositories
                     order.TotalCount += d.Quantity;
                     order.TotalPrice += d.UnitPrice * d.Quantity;
                 }
-                foreach (OrderDetail d in orderDetails)
-                {
-                    Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
-                    foundProduct.Quantity -= d.Quantity;
-                }
-            }
 
-            if (found.OrderDetails != null)
-            {
                 foreach (OrderDetail d in found.OrderDetails.ToList())
                 {
-                    Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
-                    foundProduct.Quantity += d.Quantity;
                     _db.OrderDetails.Remove(d);
                 }
-            }
 
+                if (order.Status.Equals("Accepted"))
+                {
+                    foreach (OrderDetail d in orderDetails)
+                    {
+                        Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                        foundProduct.Quantity -= d.Quantity;
+                    }
+                    if (found.OrderDetails != null)
+                    {
+                        foreach (OrderDetail d in found.OrderDetails.ToList())
+                        {
+                            Product foundProduct = _db.Products.FirstOrDefault(x => x.ProductId == d.Product.ProductId);
+                            foundProduct.Quantity += d.Quantity;
+                        }
+                    }
+                }
+            }
             found.TotalCount = order.TotalCount;
             found.TotalPrice = order.TotalPrice;
             found.Status = string.IsNullOrWhiteSpace(order.Status) ? found.Status : order.Status;

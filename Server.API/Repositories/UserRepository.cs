@@ -135,6 +135,19 @@ namespace Server.API.Repositories
             {
                 throw new Exception("User doesn't exist.");
             }
+            List<Order> deleteList = _db.Orders.Where(x => x.Inferior.UserId == found.UserId && x.Status.Equals("Adding")).ToList();
+            if (_db.Orders.Where(x => x.Inferior.UserId == found.UserId && !x.Status.Equals("Adding")).ToList().Any())
+            {
+                throw new Exception("User still have order.");
+            }
+            if (_db.Orders.Where(x => x.Superior.UserId == found.UserId).ToList().Any())
+            {
+                throw new Exception("User still have order.");
+            }
+            foreach (Order o in deleteList)
+            {
+                _db.Orders.Remove(o);
+            }
             _fileHandler.ImageRemove(found.Avatar);
             _db.Users.Remove(found);
             _db.SaveChanges();

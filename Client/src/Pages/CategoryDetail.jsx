@@ -50,6 +50,11 @@ class CategoryDetail extends React.Component {
     this.deleteCategory = this.deleteCategory.bind(this);
   }
 
+  componentWillMount() {
+    const { refetch } = this.props;
+    refetch();
+  }
+
   editableToggle() {
     this.setState(prevState => (
       { editable: !prevState.editable }

@@ -90,12 +90,18 @@ class ProductForm extends React.Component {
   }
 
   deleteProduct() {
-    const { dataProduct, history } = this.props;
-    client.mutate({
-      mutation: DELETEPRODUCT_QUERY,
-      variables: { productId: parseInt(dataProduct.productId, 10) },
-      errorPolicy: 'ignore',
-    }).then(() => history.push('/products'));
+    const { history } = this.props;
+    const { dataProduct } = this.state;
+    if (dataProduct) {
+      client.mutate({
+        mutation: DELETEPRODUCT_QUERY,
+        variables: { productId: parseInt(dataProduct.productId, 10) },
+        errorPolicy: 'ignore',
+      }).then(() => {
+        this.setState(() => ({ dataProduct: null }));
+        history.push('/products');
+      });
+    }
   }
 
   editableToggle() {

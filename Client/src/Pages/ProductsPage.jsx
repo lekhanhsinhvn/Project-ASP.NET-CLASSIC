@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import _ from 'lodash';
+import ApolloClient from 'apollo-boost';
 
 import ErrorPage from './ErrorPage';
 import ProductDetail from './ProductDetail';
@@ -25,6 +26,19 @@ const getUrlParameter = function getUrlParameter(sParam) {
   }
   return null;
 };
+
+let client = new ApolloClient({
+  uri: 'http://localhost:3001/graphql',
+  credentials: 'include',
+});
+
+const clearStore = () => {
+  client = new ApolloClient({
+    uri: 'http://localhost:3001/graphql',
+    credentials: 'include',
+  });
+};
+
 const GET_PRODUCT = gql`
 query GetProduct($productId: Int!){
     getProduct(productId: $productId){
@@ -61,26 +75,29 @@ class ProductsPage extends React.Component {
         <Route
           exact
           path="/products/detail"
-          render={props => (
-            <Query query={GET_PRODUCT} variables={{ productId: getUrlParameter('ProductId') }}>
-              {({
-                loading, error, data, refetch,
-              }) => {
-                if (loading) return '';
-                if (error) return (<ErrorPage code="300" message={error.message} />);
-                return (
-                  <ProductDetail
-                    {...props}
-                    header={data.getProduct.name}
-                    refetch={refetch}
-                    self={self}
-                    edit={edit}
-                    dataProduct={data.getProduct}
-                  />
-                );
-              }}
-            </Query>
-          )}
+          render={(props) => {
+            clearStore();
+            return (
+              <Query query={GET_PRODUCT} client={client} variables={{ productId: getUrlParameter('ProductId') }}>
+                {({
+                  loading, error, data, refetch,
+                }) => {
+                  if (loading) return '';
+                  if (error) return (<ErrorPage code="300" message={error.message} />);
+                  return (
+                    <ProductDetail
+                      {...props}
+                      header={data.getProduct.name}
+                      refetch={refetch}
+                      self={self}
+                      edit={edit}
+                      dataProduct={data.getProduct}
+                    />
+                  );
+                }}
+              </Query>
+            );
+          }}
         />
         <Route
           exact
