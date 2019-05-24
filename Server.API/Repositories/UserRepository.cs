@@ -231,7 +231,14 @@ namespace Server.API.Repositories
                         }
                     }
                 }
-                found.SuperiorId = (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) == null || user.SuperiorId==1000) ? found.SuperiorId : user.SuperiorId;
+                if (user.SuperiorId == 0 || user.SuperiorId == 1000 || (_db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) != null && _db.Users.SingleOrDefault(i => i.UserId == user.SuperiorId) != found))
+                {
+                    found.SuperiorId = user.SuperiorId;
+                }
+                else
+                {
+                    throw new Exception("SuperiorId invalid.");
+                }
                 found.ModifiedDate = DateTime.Now;
                 _db.SaveChanges();
             }

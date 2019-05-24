@@ -179,6 +179,7 @@ class AddtoOrder extends React.Component {
 
   setModal(modalIsOpen) {
     const { self } = this.props;
+    const { currOrder } = this.state;
     clearStore();
     if (modalIsOpen === true) {
       client.query({
@@ -186,14 +187,27 @@ class AddtoOrder extends React.Component {
         variables: { userId: self.userId, status: 'Adding' },
       })
         .then((response) => {
-          this.setState(() => (
-            {
-              modalIsOpen,
-              orders: response.data.getOrdersUserandStatus,
-              currOrder: response.data.getOrdersUserandStatus[0],
-              ogOrder: _.cloneDeep(response.data.getOrdersUserandStatus[0]),
-            }
-          ));
+          if (currOrder) {
+            this.setState(() => (
+              {
+                modalIsOpen,
+                orders: response.data.getOrdersUserandStatus,
+                currOrder: _.find(response.data.getOrdersUserandStatus,
+                  o => o.orderId === currOrder.orderId),
+                ogOrder: _.cloneDeep(_.find(response.data.getOrdersUserandStatus,
+                  o => o.orderId === currOrder.orderId)),
+              }
+            ));
+          } else {
+            this.setState(() => (
+              {
+                modalIsOpen,
+                orders: response.data.getOrdersUserandStatus,
+                currOrder: response.data.getOrdersUserandStatus[0],
+                ogOrder: _.cloneDeep(response.data.getOrdersUserandStatus[0]),
+              }
+            ));
+          }
         });
     } else {
       this.setState(() => (
@@ -229,7 +243,8 @@ class AddtoOrder extends React.Component {
         },
       },
       errorPolicy: 'none',
-    }).then(() => {
+    }).then((response) => {
+      this.setState(() => ({ currOrder: response.data.createOrder }));
       this.setModal(true);
       refresh();
     }).catch((e) => {
@@ -316,7 +331,7 @@ class AddtoOrder extends React.Component {
               </h3>
               <label htmlFor="currOrder" className="float-right form-inline">
                 {'Current Order:'}
-                <select name="currOrder" className="form-control" onChange={this.selectOrder}>
+                <select name="currOrder" className="form-control" onChange={this.selectOrder} value={_.findIndex(orders, o => o.orderId === currOrder.orderId)}>
                   {orders && orders.map((order, index) => (
                     <option value={index} key={order.Id || index}>
                       {`Id: ${order.orderId}`}
