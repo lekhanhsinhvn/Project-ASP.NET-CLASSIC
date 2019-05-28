@@ -37,7 +37,7 @@
                     new Product() { ProductId = 10, Name = "Bìa hộp", Price = 18000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "bia-hop.jpg" },
                     new Product() { ProductId = 11, Name = "Cặp trình ký", Price = 14000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "cap-trinh-ky.jpg" },
                     new Product() { ProductId = 12, Name = "Băng dính", Price = 14000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "bang-dinh.jpg" },
-                    new Product() { ProductId = 13, Name = "Vở ô ly", Price = 10000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "vo-o-ly.jpg" },
+                    new Product() { ProductId = 13, Name = "Vở ô ly", Price = 10000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "vo-o-ly.png" },
                     new Product() { ProductId = 14, Name = "Vở kẻ ngang", Price = 15000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "vo-ke-ngang.jpg" },
                     new Product() { ProductId = 15, Name = "Sổ tay", Price = 25000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "so-tay.jpg" },
                     new Product() { ProductId = 16, Name = "Sổ bìa da", Price = 30000, Quantity = 100, CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, Image = "so-bia-da.jpg" },
