@@ -17,6 +17,15 @@ const override = css`
     display: block;
     margin: 0 auto;
 `;
+const GET_USERS = gql`
+  {
+    getUsers {
+      userId
+      name
+      email
+      }
+  }
+`;
 const GET_ROLES = gql`
   {
     getRoles{
@@ -224,23 +233,46 @@ class UserForm extends React.Component {
                 </div>
               </label>
             </div>
-            <div className="form-group">
-              <label htmlFor="superiorId" style={{ width: '100%' }}>
-                <div className="col-sm-3 control-label">SuperiorId</div>
-                <div className="col-sm-10">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="superiorId"
-                    name="superiorId"
-                    placeholder="SuperiorId"
-                    onChange={this.userChange}
-                    readOnly={!editable}
-                    value={dataUser.superiorId}
-                  />
-                </div>
-              </label>
-            </div>
+            <Query query={GET_USERS}>
+              {({ loading: loading1, data }) => {
+                if (loading1) return '';
+                return (
+                  <div className="form-group">
+                    <label htmlFor="superiorId" style={{ width: '100%' }}>
+                      <div className="col-sm-3 control-label">SuperiorId</div>
+                      <div className="col-sm-10">
+                        <select
+                          className="form-control"
+                          id="superiorId"
+                          name="superiorId"
+                          placeholder="SuperiorId"
+                          onChange={this.userChange}
+                          readOnly={!editable}
+                          value={dataUser.superiorId}
+                        >
+                          {data.getUsers && (
+                            data.getUsers.map((user, index) => {
+                              if (user.userId !== dataUser.userId) {
+                                return (
+                                  <option
+                                    value={user.userId}
+                                    key={user.userId || index}
+                                  >
+                                    {user.name}
+                                  </option>
+                                );
+                              }
+                              return '';
+                            })
+                          )}
+                          <option value={1000}>None</option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                );
+              }}
+            </Query>
             <Query query={GET_ROLES}>
               {({ loading: loading1, data }) => {
                 if (loading1) return '';

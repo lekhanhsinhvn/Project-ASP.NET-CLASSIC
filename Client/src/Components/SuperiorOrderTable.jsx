@@ -348,25 +348,25 @@ class SuperiorOrderTable extends React.Component {
                       </li>
                       <li className="paginate_button page-item">
                         {pageNum - 2 >= 0
-                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum - 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum - 2}</Link>)
+                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum - 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum - 1}</Link>)
                           : ''}
                       </li>
                       <li className="paginate_button page-item">
                         {pageNum - 1 >= 0
-                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum - 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum - 1}</Link>)
+                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum - 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum}</Link>)
                           : ''}
                       </li>
                       <li className="paginate_button page-item active disabled">
-                        <div className="page-link">{pageNum}</div>
+                        <div className="page-link">{pageNum + 1}</div>
                       </li>
                       <li className="paginate_button page-item">
                         {(pageNum + 1) * maxPerPage < totalCountOrder
-                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum + 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 1}</Link>)
+                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum + 1}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 2}</Link>)
                           : ''}
                       </li>
                       <li className="paginate_button page-item">
                         {(pageNum + 2) * maxPerPage < totalCountOrder
-                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum + 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 2}</Link>)
+                          ? (<Link className="page-link" to={`/orders/superior?pageNum=${pageNum + 2}&maxPerPage=${maxPerPage}&search=${search}&sort=${sort}&asc=${asc}`}>{pageNum + 3}</Link>)
                           : ''}
                       </li>
                       <li className={`paginate_button page-item ${(pageNum + 1) * maxPerPage < totalCountOrder ? '' : 'disabled'}`}>

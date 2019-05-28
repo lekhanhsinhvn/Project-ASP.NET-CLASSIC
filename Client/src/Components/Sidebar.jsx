@@ -44,7 +44,7 @@ class Sidebar extends React.Component {
                       </div>
                     </div>
                   </Link>
-                  <SidebarMenu reload={this.reload} />
+                  <SidebarMenu reload={this.reload} self={self} />
                 </div>
               </Scrollbars>
             </div>
